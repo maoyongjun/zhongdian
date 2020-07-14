@@ -28,6 +28,12 @@
 			<li><label>入库单名称：</label>
 				<form:input path="name" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
+			<li><label>入库单类型：</label>
+				<form:select path="type" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('dev_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -41,6 +47,7 @@
 				<th>采购人</th>
 				<th>库管</th>
 				<th>审批人</th>
+				<th>入库单类型</th>
 				<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -61,6 +68,9 @@
 				</td>
 				<td>
 					${devWarehouseReceipt.approver}
+				</td>
+				<td>
+					${fns:getDictLabel(devWarehouseReceipt.type, 'dev_type', '')}
 				</td>
 				<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit"><td>
     				<a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/formDetail?id=${devWarehouseReceipt.id}">修改</a>

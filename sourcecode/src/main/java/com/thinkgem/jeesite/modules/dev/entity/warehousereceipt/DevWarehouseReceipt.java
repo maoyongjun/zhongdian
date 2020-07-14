@@ -12,7 +12,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 入库单Entity
  * @author myj
- * @version 2020-07-07
+ * @version 2020-07-14
  */
 public class DevWarehouseReceipt extends DataEntity<DevWarehouseReceipt> {
 	
@@ -22,6 +22,7 @@ public class DevWarehouseReceipt extends DataEntity<DevWarehouseReceipt> {
 	private String purchaser;		// 采购人
 	private String warehouseManagement;		// 库管
 	private String approver;		// 审批人
+	private String type;		// 入库单类型
 	
 	public DevWarehouseReceipt() {
 		super();
@@ -74,6 +75,15 @@ public class DevWarehouseReceipt extends DataEntity<DevWarehouseReceipt> {
 
 	public void setApprover(String approver) {
 		this.approver = approver;
+	}
+	
+	@Length(min=0, max=200, message="入库单类型长度必须介于 0 和 200 之间")
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

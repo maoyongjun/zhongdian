@@ -2343,3 +2343,937 @@ Caused by: java.net.ConnectException: Connection timed out: connect
 2020-07-14 14:38:43,941 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
 2020-07-14 14:38:43,942 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: c2c6d533aa474a2ca9e19586572db994(String), 1(String), 设备管理-A类（大型设备）-A4:车辆-入库(String), 1(String), 2020-07-14 14:38:43.941(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/dev/warehousereceipt/devWarehouseReceipt/list(String), GET(String), (String), (String)
 2020-07-14 14:38:43,944 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:11:19,496 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findAllList] - ==>  Preparing: SELECT * FROM sys_dict WHERE del_flag = ? ORDER BY type, sort, update_date DESC 
+2020-07-14 17:11:19,503 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findAllList] - ==> Parameters: 0(String)
+2020-07-14 17:11:19,537 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findAllList] - <==      Total: 141
+2020-07-14 17:11:21,360 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm] - login submit, active session size: 1, username: thinkgem
+2020-07-14 17:11:21,364 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.getByLoginName] - ==>  Preparing: SELECT a.id, a.company_id AS "company.id", a.office_id AS "office.id", a.login_name, a.password, a.no, a.name, a.email, a.phone, a.mobile, a.user_type, a.login_ip, a.login_date, a.remarks, a.login_flag, a.photo, a.create_by AS "createBy.id", a.create_date, a.update_by AS "updateBy.id", a.update_date, a.del_flag, a.level, a.coefficient, c.name AS "company.name", c.parent_id AS "company.parent.id", c.parent_ids AS "company.parentIds", ca.id AS "company.area.id", ca.name AS "company.area.name", ca.parent_id AS "company.area.parent.id", ca.parent_ids AS "company.area.parentIds", o.name AS "office.name", o.parent_id AS "office.parent.id", o.parent_ids AS "office.parentIds", oa.id AS "office.area.id", oa.name AS "office.area.name", oa.parent_id AS "office.area.parent.id", oa.parent_ids AS "office.area.parentIds", cu.id AS "company.primaryPerson.id", cu.name AS "company.primaryPerson.name", cu2.id AS "company.deputyPerson.id", cu2.name AS "company.deputyPerson.name", ou.id AS "office.primaryPerson.id", ou.name AS "office.primaryPerson.name", ou2.id AS "office.deputyPerson.id", ou2.name AS "office.deputyPerson.name" FROM sys_user a LEFT JOIN sys_office c ON c.id = a.company_id LEFT JOIN sys_area ca ON ca.id = c.area_id LEFT JOIN sys_office o ON o.id = a.office_id LEFT JOIN sys_area oa ON oa.id = o.area_id LEFT JOIN sys_user cu ON cu.id = c.primary_person LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person LEFT JOIN sys_user ou ON ou.id = o.primary_person LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person WHERE a.login_name = ? AND a.del_flag = ? 
+2020-07-14 17:11:21,365 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.getByLoginName] - ==> Parameters: thinkgem(String), 0(String)
+2020-07-14 17:11:21,372 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.getByLoginName] - <==      Total: 1
+2020-07-14 17:11:21,563 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.RoleDao.findList] - ==>  Preparing: SELECT a.id, a.office_id AS "office.id", a.name, a.enname, a.role_type AS roleType, a.data_scope AS dataScope, a.remarks, a.create_by AS "createBy.id", a.create_date, a.update_by AS "updateBy.id", a.update_date, a.del_flag, o.name AS "office.name", o.code, a.useable AS useable, a.is_sys AS sysData , ro.office_id AS "officeList.id" FROM sys_role a LEFT JOIN sys_office o ON o.id = a.office_id LEFT JOIN sys_user_role ur ON ur.role_id = a.id LEFT JOIN sys_user u ON u.id = ur.user_id LEFT JOIN sys_role_office ro ON ro.role_id = a.id WHERE a.del_flag = ? AND a.useable=? AND u.id = ? AND u.login_name = ? ORDER BY o.code, a.name 
+2020-07-14 17:11:21,564 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.RoleDao.findList] - ==> Parameters: 0(String), 1(String), 1(String), thinkgem(String)
+2020-07-14 17:11:21,567 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.RoleDao.findList] - <==      Total: 2
+2020-07-14 17:11:21,600 [http-bio-8181-exec-7] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:21.599  URI: /jeesite/a
+2020-07-14 17:11:21,617 [http-bio-8181-exec-7] DEBUG [com.thinkgem.jeesite.modules.sys.dao.MenuDao.findAllList] - ==>  Preparing: SELECT a.id, a.parent_id AS "parent.id", a.parent_ids, a.name, a.href, a.target, a.icon, a.sort, a.is_show, a.permission, a.remarks, a.create_by AS "createBy.id", a.create_date, a.update_by AS "updateBy.id", a.update_date, a.del_flag, p.name AS "parent.name" FROM sys_menu a LEFT JOIN sys_menu p ON p.id = a.parent_id WHERE a.del_flag = ? ORDER BY a.sort 
+2020-07-14 17:11:21,618 [http-bio-8181-exec-7] DEBUG [com.thinkgem.jeesite.modules.sys.dao.MenuDao.findAllList] - ==> Parameters: 0(String)
+2020-07-14 17:11:21,644 [http-bio-8181-exec-7] DEBUG [com.thinkgem.jeesite.modules.sys.dao.MenuDao.findAllList] - <==      Total: 147
+2020-07-14 17:11:21,646 [http-bio-8181-exec-7] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.updateLoginInfo] - ==>  Preparing: UPDATE sys_user SET login_ip = ?, login_Date = ? WHERE id = ? 
+2020-07-14 17:11:21,647 [http-bio-8181-exec-7] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.updateLoginInfo] - ==> Parameters: 0:0:0:0:0:0:0:1(String), 2020-07-14 17:11:21.646(Timestamp), 1(String)
+2020-07-14 17:11:21,649 [http-bio-8181-exec-7] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.updateLoginInfo] - <==    Updates: 1
+2020-07-14 17:11:21,676 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:11:21,676 [http-bio-8181-exec-7] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/sysIndex
+2020-07-14 17:11:21,679 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: 29667eb8126546af8dae54126e21987f(String), 1(String), 系统登录(String), 1(String), 2020-07-14 17:11:21.675(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a(String), GET(String), login=(String), (String)
+2020-07-14 17:11:21,682 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:11:21,703 [http-bio-8181-exec-7] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:21.702  耗时：0:0:0.103  URI: /jeesite/a  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 708m  最大可用内存: 1694m
+2020-07-14 17:11:21,703 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.MenuDao.findAllList] - ==>  Preparing: SELECT a.id, a.parent_id AS "parent.id", a.parent_ids, a.name, a.href, a.target, a.icon, a.sort, a.is_show, a.permission, a.remarks, a.create_by AS "createBy.id", a.create_date, a.update_by AS "updateBy.id", a.update_date, a.del_flag, p.name AS "parent.name" FROM sys_menu a LEFT JOIN sys_menu p ON p.id = a.parent_id WHERE a.del_flag = ? ORDER BY a.sort 
+2020-07-14 17:11:21,704 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.MenuDao.findAllList] - ==> Parameters: 0(String)
+2020-07-14 17:11:21,736 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.MenuDao.findAllList] - <==      Total: 147
+2020-07-14 17:11:21,872 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:21.872  URI: /jeesite/a/sys/user/info
+2020-07-14 17:11:21,883 [http-bio-8181-exec-9] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/userInfo
+2020-07-14 17:11:21,999 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:21.999  耗时：0:0:0.127  URI: /jeesite/a/sys/user/info  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 663m  最大可用内存: 1650m
+2020-07-14 17:11:22,000 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:11:22,000 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: ad7cac81f864470082f6fc3f5e36f1e3(String), 1(String), 我的面板-个人信息-个人信息(String), 1(String), 2020-07-14 17:11:21.999(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/sys/user/info(String), GET(String), (String), (String)
+2020-07-14 17:11:22,003 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:11:28,404 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:28.404  URI: /jeesite/a/dev/vehicle/devVehicle/listByDevStatus
+2020-07-14 17:11:28,435 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.name AS "name",   a.type AS "type",   a.location AS "location",   a.specifications AS "specifications",   a.model AS "model",   a.use_by AS "useBy",   a.insurance_date AS "insuranceDate",   a.review_date AS "reviewDate",   a.status AS "status",   a.project_id AS "projectId",   a.project_name AS "projectName",   a.warehouse_receipt_id AS "warehouseReceiptId"      FROM dev_vehicle a           WHERE  a.status = ?) tmp_count
+2020-07-14 17:11:28,438 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.name AS "name", a.type AS "type", a.location AS "location", a.specifications AS "specifications", a.model AS "model", a.use_by AS "useBy", a.insurance_date AS "insuranceDate", a.review_date AS "reviewDate", a.status AS "status", a.project_id AS "projectId", a.project_name AS "projectName", a.warehouse_receipt_id AS "warehouseReceiptId" FROM dev_vehicle a WHERE a.status = ? limit 30 
+2020-07-14 17:11:28,439 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - ==> Parameters: 1(Integer)
+2020-07-14 17:11:28,442 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - <==      Total: 9
+2020-07-14 17:11:28,447 [http-bio-8181-exec-9] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/vehicle/devVehicleList
+2020-07-14 17:11:28,498 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:28.498  耗时：0:0:0.94  URI: /jeesite/a/dev/vehicle/devVehicle/listByDevStatus  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 642m  最大可用内存: 1629m
+2020-07-14 17:11:31,083 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:31.083  URI: /jeesite/a/dev/contract/devContract/list
+2020-07-14 17:11:31,099 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.name AS "name",   a.purchase_items AS "purchaseItems",   a.purchaser AS "purchaser",   a.supplier AS "supplier",   a.purchase_date AS "purchaseDate",   a.purchase_price AS "purchasePrice",   a.purchase_number AS "purchaseNumber"      FROM dev_contract a) tmp_count
+2020-07-14 17:11:31,100 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.dev.dao.contract.DevContractDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.name AS "name", a.purchase_items AS "purchaseItems", a.purchaser AS "purchaser", a.supplier AS "supplier", a.purchase_date AS "purchaseDate", a.purchase_price AS "purchasePrice", a.purchase_number AS "purchaseNumber" FROM dev_contract a limit 30 
+2020-07-14 17:11:31,101 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.dev.dao.contract.DevContractDao.findList] - ==> Parameters: 
+2020-07-14 17:11:31,103 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.dev.dao.contract.DevContractDao.findList] - <==      Total: 1
+2020-07-14 17:11:31,107 [http-bio-8181-exec-9] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/contract/devContractList
+2020-07-14 17:11:31,132 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:31.132  耗时：0:0:0.49  URI: /jeesite/a/dev/contract/devContract/list  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 619m  最大可用内存: 1605m
+2020-07-14 17:11:31,133 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:11:31,134 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: dbe722068be3425a91dc22b43d40bdd3(String), 1(String), 设备管理-合同管理-设备合同(String), 1(String), 2020-07-14 17:11:31.132(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/dev/contract/devContract/list(String), GET(String), (String), (String)
+2020-07-14 17:11:31,139 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:11:35,999 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:35.999  URI: /jeesite/a/dev/contract/devContract/pic
+2020-07-14 17:11:36,004 [http-bio-8181-exec-9] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/pic
+2020-07-14 17:11:36,025 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:36.025  耗时：0:0:0.26  URI: /jeesite/a/dev/contract/devContract/pic  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 614m  最大可用内存: 1601m
+2020-07-14 17:11:36,026 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:11:36,028 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: a69d72c44a0d46ce9aafdad758dfc8c2(String), 1(String), 设备管理-合同管理-图片上传demo(String), 1(String), 2020-07-14 17:11:36.026(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/dev/contract/devContract/pic(String), GET(String), contractId=beb397ef2a3541a4a5b0763cb95de92b(String), (String)
+2020-07-14 17:11:36,031 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:11:36,052 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:36.052  URI: /jeesite/a/dev/contract/devContract/aaa
+2020-07-14 17:11:36,063 [http-bio-8181-exec-9] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:36.063  耗时：0:0:0.11  URI: /jeesite/a/dev/contract/devContract/aaa  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 609m  最大可用内存: 1596m
+2020-07-14 17:11:36,079 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:36.079  URI: /jeesite/a/dev/contract/devContract/loadPic
+2020-07-14 17:11:36,094 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.contractpic.DevContractPicDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.picpath AS "picpath", a.picname AS "picname", a.orgname AS "orgname", a.contractid AS "contractid" FROM dev_contract_pic a WHERE a.contractid = ? 
+2020-07-14 17:11:36,094 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.contractpic.DevContractPicDao.findList] - ==> Parameters: beb397ef2a3541a4a5b0763cb95de92b(String)
+2020-07-14 17:11:36,096 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.contractpic.DevContractPicDao.findList] - <==      Total: 4
+2020-07-14 17:11:36,124 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:36.124  耗时：0:0:0.45  URI: /jeesite/a/dev/contract/devContract/loadPic  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 598m  最大可用内存: 1585m
+2020-07-14 17:11:38,548 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:38.548  URI: /jeesite/a/dev/contract/devContract/list
+2020-07-14 17:11:38,552 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.name AS "name",   a.purchase_items AS "purchaseItems",   a.purchaser AS "purchaser",   a.supplier AS "supplier",   a.purchase_date AS "purchaseDate",   a.purchase_price AS "purchasePrice",   a.purchase_number AS "purchaseNumber"      FROM dev_contract a) tmp_count
+2020-07-14 17:11:38,554 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.contract.DevContractDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.name AS "name", a.purchase_items AS "purchaseItems", a.purchaser AS "purchaser", a.supplier AS "supplier", a.purchase_date AS "purchaseDate", a.purchase_price AS "purchasePrice", a.purchase_number AS "purchaseNumber" FROM dev_contract a limit 30 
+2020-07-14 17:11:38,555 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.contract.DevContractDao.findList] - ==> Parameters: 
+2020-07-14 17:11:38,557 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.contract.DevContractDao.findList] - <==      Total: 1
+2020-07-14 17:11:38,561 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/contract/devContractList
+2020-07-14 17:11:38,569 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:38.569  耗时：0:0:0.21  URI: /jeesite/a/dev/contract/devContract/list  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 593m  最大可用内存: 1580m
+2020-07-14 17:11:38,571 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:11:38,572 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: debdcdc64d39424a81bef9a22ab1429d(String), 1(String), 设备管理-合同管理-设备合同(String), 1(String), 2020-07-14 17:11:38.57(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/dev/contract/devContract/list(String), GET(String), (String), (String)
+2020-07-14 17:11:38,576 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:11:47,347 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:47.347  URI: /jeesite/a/dev/warehouse/devInWarehouse/form
+2020-07-14 17:11:47,360 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehouse/devInWarehouseForm
+2020-07-14 17:11:47,380 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:47.380  耗时：0:0:0.33  URI: /jeesite/a/dev/warehouse/devInWarehouse/form  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 586m  最大可用内存: 1572m
+2020-07-14 17:11:54,013 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:54.013  URI: /jeesite/a/dev/warehouse/devInWarehouse/form
+2020-07-14 17:11:54,018 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehouse/devInWarehouseForm
+2020-07-14 17:11:54,026 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:54.026  耗时：0:0:0.13  URI: /jeesite/a/dev/warehouse/devInWarehouse/form  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 581m  最大可用内存: 1567m
+2020-07-14 17:11:55,347 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:55.347  URI: /jeesite/a/dev/warehouse/devInWarehouse/list
+2020-07-14 17:11:55,357 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.type AS "type",   a.name AS "name",   a.specifications AS "specifications",   a.model AS "model",   a.count AS "count",   a.cost AS "cost",   a.account_number AS "accountNumber",   a.purchaser AS "purchaser",   a.purchase_project AS "purchaseProject",   a.manufacturer AS "manufacturer",   a.in_date AS "inDate",   a.acceptance_results AS "acceptanceResults",   a.charger AS "charger",   a.location AS "location",   a.contract_id AS "contractId",   a.warehouse_receipt_id AS "warehouseReceiptId"      FROM dev_in_warehouse a           WHERE  a.type = ?) tmp_count
+2020-07-14 17:11:55,361 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.type AS "type", a.name AS "name", a.specifications AS "specifications", a.model AS "model", a.count AS "count", a.cost AS "cost", a.account_number AS "accountNumber", a.purchaser AS "purchaser", a.purchase_project AS "purchaseProject", a.manufacturer AS "manufacturer", a.in_date AS "inDate", a.acceptance_results AS "acceptanceResults", a.charger AS "charger", a.location AS "location", a.contract_id AS "contractId", a.warehouse_receipt_id AS "warehouseReceiptId" FROM dev_in_warehouse a WHERE a.type = ? limit 30 
+2020-07-14 17:11:55,362 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - ==> Parameters: B1(String)
+2020-07-14 17:11:55,364 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - <==      Total: 1
+2020-07-14 17:11:55,368 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehouse/devInWarehouseList
+2020-07-14 17:11:55,389 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:55.389  耗时：0:0:0.42  URI: /jeesite/a/dev/warehouse/devInWarehouse/list  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 571m  最大可用内存: 1558m
+2020-07-14 17:11:55,946 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:11:55.946  URI: /jeesite/a/dev/warehouse/devInWarehouse/form
+2020-07-14 17:11:55,951 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehouse/devInWarehouseForm
+2020-07-14 17:11:55,956 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:11:55.956  耗时：0:0:0.10  URI: /jeesite/a/dev/warehouse/devInWarehouse/form  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 567m  最大可用内存: 1553m
+2020-07-14 17:12:04,621 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:12:04.621  URI: /jeesite/a/dev/warehouse/devInWarehouse/list
+2020-07-14 17:12:04,627 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.type AS "type",   a.name AS "name",   a.specifications AS "specifications",   a.model AS "model",   a.count AS "count",   a.cost AS "cost",   a.account_number AS "accountNumber",   a.purchaser AS "purchaser",   a.purchase_project AS "purchaseProject",   a.manufacturer AS "manufacturer",   a.in_date AS "inDate",   a.acceptance_results AS "acceptanceResults",   a.charger AS "charger",   a.location AS "location",   a.contract_id AS "contractId",   a.warehouse_receipt_id AS "warehouseReceiptId"      FROM dev_in_warehouse a           WHERE  a.type = ?) tmp_count
+2020-07-14 17:12:04,628 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.type AS "type", a.name AS "name", a.specifications AS "specifications", a.model AS "model", a.count AS "count", a.cost AS "cost", a.account_number AS "accountNumber", a.purchaser AS "purchaser", a.purchase_project AS "purchaseProject", a.manufacturer AS "manufacturer", a.in_date AS "inDate", a.acceptance_results AS "acceptanceResults", a.charger AS "charger", a.location AS "location", a.contract_id AS "contractId", a.warehouse_receipt_id AS "warehouseReceiptId" FROM dev_in_warehouse a WHERE a.type = ? limit 30 
+2020-07-14 17:12:04,629 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - ==> Parameters: B1(String)
+2020-07-14 17:12:04,630 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - <==      Total: 1
+2020-07-14 17:12:04,633 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehouse/devInWarehouseList
+2020-07-14 17:12:04,641 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:12:04.640  耗时：0:0:0.19  URI: /jeesite/a/dev/warehouse/devInWarehouse/list  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 563m  最大可用内存: 1550m
+2020-07-14 17:12:05,155 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:12:05.155  URI: /jeesite/a/dev/warehouse/devInWarehouse/form
+2020-07-14 17:12:05,161 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehouse/devInWarehouseForm
+2020-07-14 17:12:05,168 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:12:05.168  耗时：0:0:0.13  URI: /jeesite/a/dev/warehouse/devInWarehouse/form  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 558m  最大可用内存: 1545m
+2020-07-14 17:12:06,204 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:12:06.204  URI: /jeesite/a/dev/warehouse/devInWarehouse/list
+2020-07-14 17:12:06,209 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.type AS "type",   a.name AS "name",   a.specifications AS "specifications",   a.model AS "model",   a.count AS "count",   a.cost AS "cost",   a.account_number AS "accountNumber",   a.purchaser AS "purchaser",   a.purchase_project AS "purchaseProject",   a.manufacturer AS "manufacturer",   a.in_date AS "inDate",   a.acceptance_results AS "acceptanceResults",   a.charger AS "charger",   a.location AS "location",   a.contract_id AS "contractId",   a.warehouse_receipt_id AS "warehouseReceiptId"      FROM dev_in_warehouse a           WHERE  a.type = ?) tmp_count
+2020-07-14 17:12:06,210 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.type AS "type", a.name AS "name", a.specifications AS "specifications", a.model AS "model", a.count AS "count", a.cost AS "cost", a.account_number AS "accountNumber", a.purchaser AS "purchaser", a.purchase_project AS "purchaseProject", a.manufacturer AS "manufacturer", a.in_date AS "inDate", a.acceptance_results AS "acceptanceResults", a.charger AS "charger", a.location AS "location", a.contract_id AS "contractId", a.warehouse_receipt_id AS "warehouseReceiptId" FROM dev_in_warehouse a WHERE a.type = ? limit 30 
+2020-07-14 17:12:06,211 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - ==> Parameters: B1(String)
+2020-07-14 17:12:06,212 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - <==      Total: 1
+2020-07-14 17:12:06,215 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehouse/devInWarehouseList
+2020-07-14 17:12:06,221 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:12:06.221  耗时：0:0:0.17  URI: /jeesite/a/dev/warehouse/devInWarehouse/list  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 555m  最大可用内存: 1542m
+2020-07-14 17:12:06,581 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:12:06.581  URI: /jeesite/a/dev/warehouse/devInWarehouse/form
+2020-07-14 17:12:06,586 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehouse/devInWarehouseForm
+2020-07-14 17:12:06,591 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:12:06.591  耗时：0:0:0.10  URI: /jeesite/a/dev/warehouse/devInWarehouse/form  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 551m  最大可用内存: 1537m
+2020-07-14 17:12:14,445 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:12:14.445  URI: /jeesite/a/dev/vehicle/devVehicle/listByDevStatus
+2020-07-14 17:12:14,451 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.name AS "name",   a.type AS "type",   a.location AS "location",   a.specifications AS "specifications",   a.model AS "model",   a.use_by AS "useBy",   a.insurance_date AS "insuranceDate",   a.review_date AS "reviewDate",   a.status AS "status",   a.project_id AS "projectId",   a.project_name AS "projectName",   a.warehouse_receipt_id AS "warehouseReceiptId"      FROM dev_vehicle a           WHERE  a.status = ?) tmp_count
+2020-07-14 17:12:14,452 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.name AS "name", a.type AS "type", a.location AS "location", a.specifications AS "specifications", a.model AS "model", a.use_by AS "useBy", a.insurance_date AS "insuranceDate", a.review_date AS "reviewDate", a.status AS "status", a.project_id AS "projectId", a.project_name AS "projectName", a.warehouse_receipt_id AS "warehouseReceiptId" FROM dev_vehicle a WHERE a.status = ? limit 30 
+2020-07-14 17:12:14,453 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - ==> Parameters: 1(Integer)
+2020-07-14 17:12:14,457 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - <==      Total: 9
+2020-07-14 17:12:14,461 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/vehicle/devVehicleList
+2020-07-14 17:12:14,480 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:12:14.480  耗时：0:0:0.35  URI: /jeesite/a/dev/vehicle/devVehicle/listByDevStatus  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 538m  最大可用内存: 1524m
+2020-07-14 17:12:15,332 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:12:15.332  URI: /jeesite/a/dev/warehousereceipt/devWarehouseReceipt/list
+2020-07-14 17:12:15,346 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.name AS "name",   a.date AS "date",   a.purchaser AS "purchaser",   a.warehouse_management AS "warehouseManagement",   a.approver AS "approver"      FROM dev_warehouse_receipt a) tmp_count
+2020-07-14 17:12:15,349 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.name AS "name", a.date AS "date", a.purchaser AS "purchaser", a.warehouse_management AS "warehouseManagement", a.approver AS "approver" FROM dev_warehouse_receipt a limit 30 
+2020-07-14 17:12:15,349 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao.findList] - ==> Parameters: 
+2020-07-14 17:12:15,351 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao.findList] - <==      Total: 3
+2020-07-14 17:12:15,355 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehousereceipt/devWarehouseReceiptList
+2020-07-14 17:12:15,378 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:12:15.378  耗时：0:0:0.46  URI: /jeesite/a/dev/warehousereceipt/devWarehouseReceipt/list  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 520m  最大可用内存: 1506m
+2020-07-14 17:12:15,379 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:12:15,380 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: 52c28d16a6844ab3b81831bb9ea5f6e4(String), 1(String), 设备管理-A类（大型设备）-A4:车辆-入库(String), 1(String), 2020-07-14 17:12:15.379(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/dev/warehousereceipt/devWarehouseReceipt/list(String), GET(String), (String), (String)
+2020-07-14 17:12:15,383 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:12:17,572 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:12:17.572  URI: /jeesite/a/dev/warehousereceipt/devWarehouseReceipt/formDetail
+2020-07-14 17:12:17,576 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao.get] - ==>  Preparing: SELECT a.id AS "id", a.name AS "name", a.date AS "date", a.purchaser AS "purchaser", a.warehouse_management AS "warehouseManagement", a.approver AS "approver" FROM dev_warehouse_receipt a WHERE a.id = ? 
+2020-07-14 17:12:17,576 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao.get] - ==> Parameters: 052a393aec224970a3422bb4d44bb027(String)
+2020-07-14 17:12:17,577 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao.get] - <==      Total: 1
+2020-07-14 17:12:17,580 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.name AS "name",   a.type AS "type",   a.location AS "location",   a.specifications AS "specifications",   a.model AS "model",   a.use_by AS "useBy",   a.insurance_date AS "insuranceDate",   a.review_date AS "reviewDate",   a.status AS "status",   a.project_id AS "projectId",   a.project_name AS "projectName",   a.warehouse_receipt_id AS "warehouseReceiptId"      FROM dev_vehicle a           WHERE  a.warehouse_receipt_id = ?) tmp_count
+2020-07-14 17:12:17,581 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.name AS "name", a.type AS "type", a.location AS "location", a.specifications AS "specifications", a.model AS "model", a.use_by AS "useBy", a.insurance_date AS "insuranceDate", a.review_date AS "reviewDate", a.status AS "status", a.project_id AS "projectId", a.project_name AS "projectName", a.warehouse_receipt_id AS "warehouseReceiptId" FROM dev_vehicle a WHERE a.warehouse_receipt_id = ? limit 30 
+2020-07-14 17:12:17,581 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - ==> Parameters: 052a393aec224970a3422bb4d44bb027(String)
+2020-07-14 17:12:17,582 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - <==      Total: 2
+2020-07-14 17:12:17,585 [http-bio-8181-exec-10] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehousereceipt/devWarehouseReceiptFormDetail
+2020-07-14 17:12:17,604 [http-bio-8181-exec-10] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:12:17.604  耗时：0:0:0.32  URI: /jeesite/a/dev/warehousereceipt/devWarehouseReceipt/formDetail  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 508m  最大可用内存: 1495m
+2020-07-14 17:14:18,175 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:14:18.175  URI: /jeesite/a/dev/warehousereceipt/devWarehouseReceipt/
+2020-07-14 17:14:18,179 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.name AS "name",   a.date AS "date",   a.purchaser AS "purchaser",   a.warehouse_management AS "warehouseManagement",   a.approver AS "approver"      FROM dev_warehouse_receipt a) tmp_count
+2020-07-14 17:14:18,181 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.name AS "name", a.date AS "date", a.purchaser AS "purchaser", a.warehouse_management AS "warehouseManagement", a.approver AS "approver" FROM dev_warehouse_receipt a limit 30 
+2020-07-14 17:14:18,181 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao.findList] - ==> Parameters: 
+2020-07-14 17:14:18,182 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao.findList] - <==      Total: 3
+2020-07-14 17:14:18,185 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehousereceipt/devWarehouseReceiptList
+2020-07-14 17:14:18,195 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:14:18.195  耗时：0:0:0.20  URI: /jeesite/a/dev/warehousereceipt/devWarehouseReceipt/  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 481m  最大可用内存: 1468m
+2020-07-14 17:14:35,667 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:14:35.667  URI: /jeesite/a/dev/warehouse/devInWarehouse/list
+2020-07-14 17:14:35,671 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.type AS "type",   a.name AS "name",   a.specifications AS "specifications",   a.model AS "model",   a.count AS "count",   a.cost AS "cost",   a.account_number AS "accountNumber",   a.purchaser AS "purchaser",   a.purchase_project AS "purchaseProject",   a.manufacturer AS "manufacturer",   a.in_date AS "inDate",   a.acceptance_results AS "acceptanceResults",   a.charger AS "charger",   a.location AS "location",   a.contract_id AS "contractId",   a.warehouse_receipt_id AS "warehouseReceiptId"      FROM dev_in_warehouse a           WHERE  a.type = ?) tmp_count
+2020-07-14 17:14:35,672 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.type AS "type", a.name AS "name", a.specifications AS "specifications", a.model AS "model", a.count AS "count", a.cost AS "cost", a.account_number AS "accountNumber", a.purchaser AS "purchaser", a.purchase_project AS "purchaseProject", a.manufacturer AS "manufacturer", a.in_date AS "inDate", a.acceptance_results AS "acceptanceResults", a.charger AS "charger", a.location AS "location", a.contract_id AS "contractId", a.warehouse_receipt_id AS "warehouseReceiptId" FROM dev_in_warehouse a WHERE a.type = ? limit 30 
+2020-07-14 17:14:35,673 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - ==> Parameters: A1(String)
+2020-07-14 17:14:35,674 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao.findList] - <==      Total: 4
+2020-07-14 17:14:35,677 [http-bio-8181-exec-8] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/warehouse/devInWarehouseList
+2020-07-14 17:14:35,685 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:14:35.685  耗时：0:0:0.18  URI: /jeesite/a/dev/warehouse/devInWarehouse/list  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 471m  最大可用内存: 1457m
+2020-07-14 17:15:16,703 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:15:16.703  URI: /jeesite/a/sys/user/index
+2020-07-14 17:15:16,708 [http-bio-8181-exec-8] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/userIndex
+2020-07-14 17:15:16,734 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:15:16.734  耗时：0:0:0.31  URI: /jeesite/a/sys/user/index  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 454m  最大可用内存: 1440m
+2020-07-14 17:15:16,735 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:15:16,736 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: d7b26888b6c442b48d0a67ffcbea8870(String), 1(String), 系统设置-机构用户-用户管理(String), 1(String), 2020-07-14 17:15:16.735(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/sys/user/index(String), GET(String), (String), (String)
+2020-07-14 17:15:16,738 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:15:16,804 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:15:16.804  URI: /jeesite/a/sys/user/list
+2020-07-14 17:15:16,804 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:15:16.804  URI: /jeesite/a/sys/office/treeData
+2020-07-14 17:15:16,820 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT           a.id,      a.company_id AS "company.id",      a.office_id AS "office.id",      a.login_name,      a.password,      a.no,   a.name,   a.email,   a.phone,   a.mobile,   a.user_type,   a.login_ip,   a.login_date,   a.remarks,   a.login_flag,   a.photo,   a.create_by AS "createBy.id",   a.create_date,   a.update_by AS "updateBy.id",   a.update_date,   a.del_flag,   a.level,   a.coefficient,      c.name AS "company.name",      c.parent_id AS "company.parent.id",      c.parent_ids AS "company.parentIds",      ca.id AS "company.area.id",      ca.name AS "company.area.name",      ca.parent_id AS "company.area.parent.id",      ca.parent_ids AS "company.area.parentIds",      o.name AS "office.name",      o.parent_id AS "office.parent.id",      o.parent_ids AS "office.parentIds",      oa.id AS "office.area.id",      oa.name AS "office.area.name",      oa.parent_id AS "office.area.parent.id",      oa.parent_ids AS "office.area.parentIds",      cu.id AS "company.primaryPerson.id",      cu.name AS "company.primaryPerson.name",      cu2.id AS "company.deputyPerson.id",      cu2.name AS "company.deputyPerson.name",      ou.id AS "office.primaryPerson.id",      ou.name AS "office.primaryPerson.name",      ou2.id AS "office.deputyPerson.id",      ou2.name AS "office.deputyPerson.name"         FROM sys_user a       LEFT JOIN sys_office c ON c.id = a.company_id   LEFT JOIN sys_area ca ON ca.id = c.area_id   LEFT JOIN sys_office o ON o.id = a.office_id   LEFT JOIN sys_area oa ON oa.id = o.area_id   LEFT JOIN sys_user cu ON cu.id = c.primary_person   LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person   LEFT JOIN sys_user ou ON ou.id = o.primary_person   LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person             WHERE a.del_flag = ?                                      ) tmp_count
+2020-07-14 17:15:16,827 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.sys.dao.OfficeDao.findAllList] - ==>  Preparing: SELECT a.id, a.parent_id AS "parent.id", a.parent_ids, a.area_id AS "area.id", a.code, a.name, a.sort, a.type, a.grade, a.address, a.zip_code, a.master, a.phone, a.fax, a.email, a.remarks, a.create_by AS "createBy.id", a.create_date, a.update_by AS "updateBy.id", a.update_date, a.del_flag, a.useable AS useable, a.primary_person AS "primaryPerson.id", a.deputy_person AS "deputyPerson.id", p.name AS "parent.name", ar.name AS "area.name", ar.parent_ids AS "area.parentIds", pp.name AS "primaryPerson.name", dp.name AS "deputyPerson.name" FROM sys_office a LEFT JOIN sys_office p ON p.id = a.parent_id LEFT JOIN sys_area ar ON ar.id = a.area_id LEFT JOIN SYS_USER pp ON pp.id = a.primary_person LEFT JOIN SYS_USER dp ON dp.id = a.deputy_person WHERE a.del_flag = ? ORDER BY a.code 
+2020-07-14 17:15:16,828 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.sys.dao.OfficeDao.findAllList] - ==> Parameters: 0(String)
+2020-07-14 17:15:16,832 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.sys.dao.OfficeDao.findAllList] - <==      Total: 7
+2020-07-14 17:15:16,844 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.findList] - ==>  Preparing: SELECT a.id, a.company_id AS "company.id", a.office_id AS "office.id", a.login_name, a.password, a.no, a.name, a.email, a.phone, a.mobile, a.user_type, a.login_ip, a.login_date, a.remarks, a.login_flag, a.photo, a.create_by AS "createBy.id", a.create_date, a.update_by AS "updateBy.id", a.update_date, a.del_flag, a.level, a.coefficient, c.name AS "company.name", c.parent_id AS "company.parent.id", c.parent_ids AS "company.parentIds", ca.id AS "company.area.id", ca.name AS "company.area.name", ca.parent_id AS "company.area.parent.id", ca.parent_ids AS "company.area.parentIds", o.name AS "office.name", o.parent_id AS "office.parent.id", o.parent_ids AS "office.parentIds", oa.id AS "office.area.id", oa.name AS "office.area.name", oa.parent_id AS "office.area.parent.id", oa.parent_ids AS "office.area.parentIds", cu.id AS "company.primaryPerson.id", cu.name AS "company.primaryPerson.name", cu2.id AS "company.deputyPerson.id", cu2.name AS "company.deputyPerson.name", ou.id AS "office.primaryPerson.id", ou.name AS "office.primaryPerson.name", ou2.id AS "office.deputyPerson.id", ou2.name AS "office.deputyPerson.name" FROM sys_user a LEFT JOIN sys_office c ON c.id = a.company_id LEFT JOIN sys_area ca ON ca.id = c.area_id LEFT JOIN sys_office o ON o.id = a.office_id LEFT JOIN sys_area oa ON oa.id = o.area_id LEFT JOIN sys_user cu ON cu.id = c.primary_person LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person LEFT JOIN sys_user ou ON ou.id = o.primary_person LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person WHERE a.del_flag = ? ORDER BY c.code, o.code, a.name limit 30 
+2020-07-14 17:15:16,847 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.findList] - ==> Parameters: 0(String)
+2020-07-14 17:15:16,847 [http-bio-8181-exec-8] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:15:16.847  耗时：0:0:0.43  URI: /jeesite/a/sys/office/treeData  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 438m  最大可用内存: 1425m
+2020-07-14 17:15:16,867 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.findList] - <==      Total: 6
+2020-07-14 17:15:16,872 [http-bio-8181-exec-5] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/userList
+2020-07-14 17:15:16,921 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:15:16.921  耗时：0:0:0.117  URI: /jeesite/a/sys/user/list  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 424m  最大可用内存: 1411m
+2020-07-14 17:15:16,924 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:15:16,928 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: 2510ec7bcb024a11b71da7839bf0c6aa(String), 1(String), 系统设置-机构用户-用户管理-查看(String), 1(String), 2020-07-14 17:15:16.924(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/sys/user/list(String), GET(String), (String), (String)
+2020-07-14 17:15:16,933 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:15:17,453 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:15:17.453  URI: /jeesite/a/gen/genTable
+2020-07-14 17:15:17,469 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.*      FROM gen_table a                WHERE a.del_flag = ?                          ) tmp_count
+2020-07-14 17:15:17,471 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findList] - ==>  Preparing: SELECT a.* FROM gen_table a WHERE a.del_flag = ? ORDER BY a.name ASC limit 30 
+2020-07-14 17:15:17,472 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findList] - ==> Parameters: 0(String)
+2020-07-14 17:15:17,478 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findList] - <==      Total: 17
+2020-07-14 17:15:17,481 [http-bio-8181-exec-5] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/gen/genTableList
+2020-07-14 17:15:17,515 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:15:17.515  耗时：0:0:0.62  URI: /jeesite/a/gen/genTable  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 407m  最大可用内存: 1394m
+2020-07-14 17:15:17,516 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:15:17,517 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: 908a479ad2a24887822fbe5628da1453(String), 1(String), 代码生成-代码生成-业务表配置(String), 1(String), 2020-07-14 17:15:17.515(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/gen/genTable(String), GET(String), (String), (String)
+2020-07-14 17:15:17,519 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:15:25,668 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:15:25.668  URI: /jeesite/a/gen/genTable/form
+2020-07-14 17:15:25,671 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.get] - ==>  Preparing: SELECT a.* FROM gen_table a WHERE a.id = ? 
+2020-07-14 17:15:25,671 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.get] - ==> Parameters: f46a20fc87494229ab3be1d28259c4b2(String)
+2020-07-14 17:15:25,672 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.get] - <==      Total: 1
+2020-07-14 17:15:25,673 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.findList] - ==>  Preparing: SELECT a.*, b.id AS "genTable.id", b.name AS "genTable.name", b.comments AS "genTable.comments", b.class_name AS "genTable.className", b.parent_table AS "genTable.parentTable", b.parent_table_fk AS "genTable.parentTableFk" FROM gen_table_column a JOIN gen_table b ON b.id = a.gen_table_id WHERE a.del_flag = ? AND a.gen_table_id = ? ORDER BY a.sort ASC 
+2020-07-14 17:15:25,674 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.findList] - ==> Parameters: 0(String), f46a20fc87494229ab3be1d28259c4b2(String)
+2020-07-14 17:15:25,679 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.findList] - <==      Total: 6
+2020-07-14 17:15:25,683 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTableList] - ==>  Preparing: SELECT t.table_name AS name,t.TABLE_COMMENT AS comments FROM information_schema.`TABLES` t WHERE t.TABLE_SCHEMA = (select database()) ORDER BY t.TABLE_NAME 
+2020-07-14 17:15:25,683 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTableList] - ==> Parameters: 
+2020-07-14 17:15:25,687 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTableList] - <==      Total: 77
+2020-07-14 17:15:25,690 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTableList] - ==>  Preparing: SELECT t.table_name AS name,t.TABLE_COMMENT AS comments FROM information_schema.`TABLES` t WHERE t.TABLE_SCHEMA = (select database()) AND t.TABLE_NAME = (?) ORDER BY t.TABLE_NAME 
+2020-07-14 17:15:25,690 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTableList] - ==> Parameters: dev_warehouse_receipt(String)
+2020-07-14 17:15:25,691 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTableList] - <==      Total: 1
+2020-07-14 17:15:25,692 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTableColumnList] - ==>  Preparing: SELECT t.COLUMN_NAME AS name, (CASE WHEN t.IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) AS isNull, (t.ORDINAL_POSITION * 10) AS sort,t.COLUMN_COMMENT AS comments,t.COLUMN_TYPE AS jdbcType FROM information_schema.`COLUMNS` t WHERE t.TABLE_SCHEMA = (select database()) AND t.TABLE_NAME = (?) ORDER BY t.ORDINAL_POSITION 
+2020-07-14 17:15:25,692 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTableColumnList] - ==> Parameters: dev_warehouse_receipt(String)
+2020-07-14 17:15:25,696 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTableColumnList] - <==      Total: 7
+2020-07-14 17:15:25,697 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTablePK] - ==>  Preparing: SELECT lower(au.COLUMN_NAME) AS columnName FROM information_schema.`COLUMNS` au WHERE au.TABLE_SCHEMA = (select database()) AND au.COLUMN_KEY='PRI' AND au.TABLE_NAME = (?) 
+2020-07-14 17:15:25,697 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTablePK] - ==> Parameters: dev_warehouse_receipt(String)
+2020-07-14 17:15:25,700 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenDataBaseDictDao.findTablePK] - <==      Total: 1
+2020-07-14 17:15:25,876 [http-bio-8181-exec-5] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/gen/genTableForm
+2020-07-14 17:15:25,920 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:15:25.920  耗时：0:0:0.252  URI: /jeesite/a/gen/genTable/form  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 377m  最大可用内存: 1364m
+2020-07-14 17:15:59,251 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:15:59.251  URI: /jeesite/a/gen/genTable/save
+2020-07-14 17:15:59,254 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.get] - ==>  Preparing: SELECT a.* FROM gen_table a WHERE a.id = ? 
+2020-07-14 17:15:59,255 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.get] - ==> Parameters: f46a20fc87494229ab3be1d28259c4b2(String)
+2020-07-14 17:15:59,256 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.get] - <==      Total: 1
+2020-07-14 17:15:59,257 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.findList] - ==>  Preparing: SELECT a.*, b.id AS "genTable.id", b.name AS "genTable.name", b.comments AS "genTable.comments", b.class_name AS "genTable.className", b.parent_table AS "genTable.parentTable", b.parent_table_fk AS "genTable.parentTableFk" FROM gen_table_column a JOIN gen_table b ON b.id = a.gen_table_id WHERE a.del_flag = ? AND a.gen_table_id = ? ORDER BY a.sort ASC 
+2020-07-14 17:15:59,257 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.findList] - ==> Parameters: 0(String), f46a20fc87494229ab3be1d28259c4b2(String)
+2020-07-14 17:15:59,260 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.findList] - <==      Total: 6
+2020-07-14 17:15:59,371 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.update] - ==>  Preparing: UPDATE gen_table SET comments = ?, class_name = ?, parent_table = ?, parent_table_fk = ?, update_by = ?, update_date = ?, remarks = ? WHERE id = ? 
+2020-07-14 17:15:59,372 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.update] - ==> Parameters: 入库单(String), DevWarehouseReceipt(String), (String), (String), 1(String), 2020-07-14 17:15:59.371(Timestamp), (String), f46a20fc87494229ab3be1d28259c4b2(String)
+2020-07-14 17:15:59,374 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.update] - <==    Updates: 1
+2020-07-14 17:15:59,374 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==>  Preparing: UPDATE gen_table_column SET comments = ?, jdbc_type = ?, java_type = ?, java_field = ?, is_pk = ?, is_null = ?, is_insert = ?, is_edit = ?, is_list = ?, is_query = ?, query_type = ?, show_type = ?, dict_type = ?, sort = ?, update_by = ?, update_date = ?, remarks = ?, del_flag = ? WHERE id = ? 
+2020-07-14 17:15:59,376 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==> Parameters: id(String), varchar(64)(String), String(String), id(String), 1(String), 0(String), 1(String), 0(String), 0(String), 0(String), =(String), input(String), (String), 10(Integer), 1(String), 2020-07-14 17:15:59.374(Timestamp), null, 0(String), 706c97cfc74948ebb774806486e97638(String)
+2020-07-14 17:15:59,377 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - <==    Updates: 1
+2020-07-14 17:15:59,378 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==>  Preparing: UPDATE gen_table_column SET comments = ?, jdbc_type = ?, java_type = ?, java_field = ?, is_pk = ?, is_null = ?, is_insert = ?, is_edit = ?, is_list = ?, is_query = ?, query_type = ?, show_type = ?, dict_type = ?, sort = ?, update_by = ?, update_date = ?, remarks = ?, del_flag = ? WHERE id = ? 
+2020-07-14 17:15:59,378 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==> Parameters: 入库单名称(String), varchar(200)(String), String(String), name(String), 0(String), 1(String), 1(String), 1(String), 1(String), 1(String), like(String), input(String), (String), 20(Integer), 1(String), 2020-07-14 17:15:59.377(Timestamp), null, 0(String), 17ba8991b5d142cb850caede24a89dc8(String)
+2020-07-14 17:15:59,379 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - <==    Updates: 1
+2020-07-14 17:15:59,379 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==>  Preparing: UPDATE gen_table_column SET comments = ?, jdbc_type = ?, java_type = ?, java_field = ?, is_pk = ?, is_null = ?, is_insert = ?, is_edit = ?, is_list = ?, is_query = ?, query_type = ?, show_type = ?, dict_type = ?, sort = ?, update_by = ?, update_date = ?, remarks = ?, del_flag = ? WHERE id = ? 
+2020-07-14 17:15:59,380 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==> Parameters: 入库单时间(String), datetime(String), java.util.Date(String), date(String), 0(String), 1(String), 1(String), 1(String), 1(String), 0(String), =(String), dateselect(String), (String), 30(Integer), 1(String), 2020-07-14 17:15:59.379(Timestamp), null, 0(String), 177a411ebeab49a39945d5a7e4ff827a(String)
+2020-07-14 17:15:59,381 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - <==    Updates: 1
+2020-07-14 17:15:59,381 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==>  Preparing: UPDATE gen_table_column SET comments = ?, jdbc_type = ?, java_type = ?, java_field = ?, is_pk = ?, is_null = ?, is_insert = ?, is_edit = ?, is_list = ?, is_query = ?, query_type = ?, show_type = ?, dict_type = ?, sort = ?, update_by = ?, update_date = ?, remarks = ?, del_flag = ? WHERE id = ? 
+2020-07-14 17:15:59,382 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==> Parameters: 采购人(String), varchar(200)(String), String(String), purchaser(String), 0(String), 1(String), 1(String), 1(String), 1(String), 0(String), =(String), input(String), (String), 40(Integer), 1(String), 2020-07-14 17:15:59.381(Timestamp), null, 0(String), e02f0b154f52469589e3bd794ed89c9f(String)
+2020-07-14 17:15:59,382 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - <==    Updates: 1
+2020-07-14 17:15:59,383 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==>  Preparing: UPDATE gen_table_column SET comments = ?, jdbc_type = ?, java_type = ?, java_field = ?, is_pk = ?, is_null = ?, is_insert = ?, is_edit = ?, is_list = ?, is_query = ?, query_type = ?, show_type = ?, dict_type = ?, sort = ?, update_by = ?, update_date = ?, remarks = ?, del_flag = ? WHERE id = ? 
+2020-07-14 17:15:59,384 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==> Parameters: 库管(String), varchar(200)(String), String(String), warehouseManagement(String), 0(String), 1(String), 1(String), 1(String), 1(String), 0(String), =(String), input(String), (String), 50(Integer), 1(String), 2020-07-14 17:15:59.383(Timestamp), null, 0(String), 235ab0bf72204362bb4458ca259f8c2b(String)
+2020-07-14 17:15:59,384 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - <==    Updates: 1
+2020-07-14 17:15:59,385 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==>  Preparing: UPDATE gen_table_column SET comments = ?, jdbc_type = ?, java_type = ?, java_field = ?, is_pk = ?, is_null = ?, is_insert = ?, is_edit = ?, is_list = ?, is_query = ?, query_type = ?, show_type = ?, dict_type = ?, sort = ?, update_by = ?, update_date = ?, remarks = ?, del_flag = ? WHERE id = ? 
+2020-07-14 17:15:59,385 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - ==> Parameters: 审批人(String), varchar(200)(String), String(String), approver(String), 0(String), 1(String), 1(String), 1(String), 1(String), 0(String), =(String), input(String), (String), 60(Integer), 1(String), 2020-07-14 17:15:59.384(Timestamp), null, 0(String), 46c4e12b3f844999a0b476d6bd9c0bbd(String)
+2020-07-14 17:15:59,386 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.update] - <==    Updates: 1
+2020-07-14 17:15:59,386 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.insert] - ==>  Preparing: INSERT INTO gen_table_column( id, gen_table_id, name, comments, jdbc_type, java_type, java_field, is_pk, is_null, is_insert, is_edit, is_list, is_query, query_type, show_type, dict_type, sort, create_by, create_date, update_by, update_date, remarks, del_flag ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:15:59,387 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.insert] - ==> Parameters: e62d55729a154b2484a9af1b5e198bfd(String), f46a20fc87494229ab3be1d28259c4b2(String), type(String), 入库单类型(String), varchar(200)(String), String(String), type(String), 0(String), 1(String), 1(String), 1(String), 1(String), 1(String), =(String), select(String), dev_type(String), 70(Integer), 1(String), 2020-07-14 17:15:59.386(Timestamp), 1(String), 2020-07-14 17:15:59.386(Timestamp), null, 0(String)
+2020-07-14 17:15:59,388 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.insert] - <==    Updates: 1
+2020-07-14 17:15:59,393 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: redirect:/a/gen/genTable/?repage
+2020-07-14 17:15:59,412 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:15:59.412  耗时：0:0:0.161  URI: /jeesite/a/gen/genTable/save  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 345m  最大可用内存: 1331m
+2020-07-14 17:15:59,420 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:15:59.420  URI: /jeesite/a/gen/genTable/
+2020-07-14 17:15:59,425 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.*      FROM gen_table a                WHERE a.del_flag = ?                          ) tmp_count
+2020-07-14 17:15:59,426 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findList] - ==>  Preparing: SELECT a.* FROM gen_table a WHERE a.del_flag = ? ORDER BY a.name ASC limit 30 
+2020-07-14 17:15:59,427 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findList] - ==> Parameters: 0(String)
+2020-07-14 17:15:59,428 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findList] - <==      Total: 17
+2020-07-14 17:15:59,431 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/gen/genTableList
+2020-07-14 17:15:59,443 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:15:59.443  耗时：0:0:0.23  URI: /jeesite/a/gen/genTable/  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 334m  最大可用内存: 1320m
+2020-07-14 17:16:01,550 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:01.550  URI: /jeesite/a/sys/user/index
+2020-07-14 17:16:01,556 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/userIndex
+2020-07-14 17:16:01,561 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:01.560  耗时：0:0:0.10  URI: /jeesite/a/sys/user/index  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 330m  最大可用内存: 1317m
+2020-07-14 17:16:01,561 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:16:01,562 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: ad5f5597d1844e1db8da2d0e9373e3d7(String), 1(String), 系统设置-机构用户-用户管理(String), 1(String), 2020-07-14 17:16:01.561(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/sys/user/index(String), GET(String), (String), (String)
+2020-07-14 17:16:01,566 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:16:01,604 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:01.603  URI: /jeesite/a/sys/user/list
+2020-07-14 17:16:01,604 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:01.604  URI: /jeesite/a/sys/office/treeData
+2020-07-14 17:16:01,608 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT           a.id,      a.company_id AS "company.id",      a.office_id AS "office.id",      a.login_name,      a.password,      a.no,   a.name,   a.email,   a.phone,   a.mobile,   a.user_type,   a.login_ip,   a.login_date,   a.remarks,   a.login_flag,   a.photo,   a.create_by AS "createBy.id",   a.create_date,   a.update_by AS "updateBy.id",   a.update_date,   a.del_flag,   a.level,   a.coefficient,      c.name AS "company.name",      c.parent_id AS "company.parent.id",      c.parent_ids AS "company.parentIds",      ca.id AS "company.area.id",      ca.name AS "company.area.name",      ca.parent_id AS "company.area.parent.id",      ca.parent_ids AS "company.area.parentIds",      o.name AS "office.name",      o.parent_id AS "office.parent.id",      o.parent_ids AS "office.parentIds",      oa.id AS "office.area.id",      oa.name AS "office.area.name",      oa.parent_id AS "office.area.parent.id",      oa.parent_ids AS "office.area.parentIds",      cu.id AS "company.primaryPerson.id",      cu.name AS "company.primaryPerson.name",      cu2.id AS "company.deputyPerson.id",      cu2.name AS "company.deputyPerson.name",      ou.id AS "office.primaryPerson.id",      ou.name AS "office.primaryPerson.name",      ou2.id AS "office.deputyPerson.id",      ou2.name AS "office.deputyPerson.name"         FROM sys_user a       LEFT JOIN sys_office c ON c.id = a.company_id   LEFT JOIN sys_area ca ON ca.id = c.area_id   LEFT JOIN sys_office o ON o.id = a.office_id   LEFT JOIN sys_area oa ON oa.id = o.area_id   LEFT JOIN sys_user cu ON cu.id = c.primary_person   LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person   LEFT JOIN sys_user ou ON ou.id = o.primary_person   LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person             WHERE a.del_flag = ?                                      ) tmp_count
+2020-07-14 17:16:01,609 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.findList] - ==>  Preparing: SELECT a.id, a.company_id AS "company.id", a.office_id AS "office.id", a.login_name, a.password, a.no, a.name, a.email, a.phone, a.mobile, a.user_type, a.login_ip, a.login_date, a.remarks, a.login_flag, a.photo, a.create_by AS "createBy.id", a.create_date, a.update_by AS "updateBy.id", a.update_date, a.del_flag, a.level, a.coefficient, c.name AS "company.name", c.parent_id AS "company.parent.id", c.parent_ids AS "company.parentIds", ca.id AS "company.area.id", ca.name AS "company.area.name", ca.parent_id AS "company.area.parent.id", ca.parent_ids AS "company.area.parentIds", o.name AS "office.name", o.parent_id AS "office.parent.id", o.parent_ids AS "office.parentIds", oa.id AS "office.area.id", oa.name AS "office.area.name", oa.parent_id AS "office.area.parent.id", oa.parent_ids AS "office.area.parentIds", cu.id AS "company.primaryPerson.id", cu.name AS "company.primaryPerson.name", cu2.id AS "company.deputyPerson.id", cu2.name AS "company.deputyPerson.name", ou.id AS "office.primaryPerson.id", ou.name AS "office.primaryPerson.name", ou2.id AS "office.deputyPerson.id", ou2.name AS "office.deputyPerson.name" FROM sys_user a LEFT JOIN sys_office c ON c.id = a.company_id LEFT JOIN sys_area ca ON ca.id = c.area_id LEFT JOIN sys_office o ON o.id = a.office_id LEFT JOIN sys_area oa ON oa.id = o.area_id LEFT JOIN sys_user cu ON cu.id = c.primary_person LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person LEFT JOIN sys_user ou ON ou.id = o.primary_person LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person WHERE a.del_flag = ? ORDER BY c.code, o.code, a.name limit 30 
+2020-07-14 17:16:01,610 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.findList] - ==> Parameters: 0(String)
+2020-07-14 17:16:01,614 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:01.614  耗时：0:0:0.10  URI: /jeesite/a/sys/office/treeData  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 327m  最大可用内存: 1313m
+2020-07-14 17:16:01,616 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.findList] - <==      Total: 6
+2020-07-14 17:16:01,623 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/userList
+2020-07-14 17:16:01,633 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:01.633  耗时：0:0:0.30  URI: /jeesite/a/sys/user/list  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 321m  最大可用内存: 1307m
+2020-07-14 17:16:01,635 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:16:01,635 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: d486b49e96ba444f9f1a099020f5c829(String), 1(String), 系统设置-机构用户-用户管理-查看(String), 1(String), 2020-07-14 17:16:01.634(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/sys/user/list(String), GET(String), (String), (String)
+2020-07-14 17:16:01,638 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:16:04,853 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:04.853  URI: /jeesite/a/sys/dict/
+2020-07-14 17:16:04,867 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findTypeList] - ==>  Preparing: SELECT type FROM sys_dict WHERE del_flag = ? GROUP BY type ORDER BY type 
+2020-07-14 17:16:04,867 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findTypeList] - ==> Parameters: 0(String)
+2020-07-14 17:16:04,869 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findTypeList] - <==      Total: 37
+2020-07-14 17:16:04,872 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT     *    FROM sys_dict    WHERE del_flag = ?            ) tmp_count
+2020-07-14 17:16:04,873 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findList] - ==>  Preparing: SELECT * FROM sys_dict WHERE del_flag = ? ORDER BY type, sort, update_date DESC limit 30 
+2020-07-14 17:16:04,873 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findList] - ==> Parameters: 0(String)
+2020-07-14 17:16:04,875 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findList] - <==      Total: 30
+2020-07-14 17:16:04,878 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/dictList
+2020-07-14 17:16:04,908 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:04.908  耗时：0:0:0.55  URI: /jeesite/a/sys/dict/  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 301m  最大可用内存: 1287m
+2020-07-14 17:16:04,908 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:16:04,909 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: 6b6eac874da847179b3072a1335997b1(String), 1(String), 系统设置-系统设置-字典管理(String), 1(String), 2020-07-14 17:16:04.908(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/sys/dict/(String), GET(String), (String), (String)
+2020-07-14 17:16:04,911 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:16:11,709 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:11.709  URI: /jeesite/a/sys/dict/
+2020-07-14 17:16:11,713 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findTypeList] - ==>  Preparing: SELECT type FROM sys_dict WHERE del_flag = ? GROUP BY type ORDER BY type 
+2020-07-14 17:16:11,713 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findTypeList] - ==> Parameters: 0(String)
+2020-07-14 17:16:11,715 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findTypeList] - <==      Total: 37
+2020-07-14 17:16:11,717 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT     *    FROM sys_dict    WHERE del_flag = ?         AND type = ?           ) tmp_count
+2020-07-14 17:16:11,718 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findList] - ==>  Preparing: SELECT * FROM sys_dict WHERE del_flag = ? AND type = ? ORDER BY type, sort, update_date DESC limit 30 
+2020-07-14 17:16:11,718 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findList] - ==> Parameters: 0(String), dev_type(String)
+2020-07-14 17:16:11,719 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findList] - <==      Total: 9
+2020-07-14 17:16:11,722 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/dictList
+2020-07-14 17:16:11,730 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:11.730  耗时：0:0:0.21  URI: /jeesite/a/sys/dict/  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 293m  最大可用内存: 1280m
+2020-07-14 17:16:11,731 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:16:11,732 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: bd6271a6e3734cc0ad62e97c8b66addd(String), 1(String), 系统设置-系统设置-字典管理(String), 1(String), 2020-07-14 17:16:11.73(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/sys/dict/(String), POST(String), pageNo=1&pageSize=30&type=dev_type&description=(String), (String)
+2020-07-14 17:16:11,735 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:16:24,584 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:24.584  URI: /jeesite/a/dev/vehicle/devVehicle/listByDevStatus
+2020-07-14 17:16:24,588 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.name AS "name",   a.type AS "type",   a.location AS "location",   a.specifications AS "specifications",   a.model AS "model",   a.use_by AS "useBy",   a.insurance_date AS "insuranceDate",   a.review_date AS "reviewDate",   a.status AS "status",   a.project_id AS "projectId",   a.project_name AS "projectName",   a.warehouse_receipt_id AS "warehouseReceiptId"      FROM dev_vehicle a           WHERE  a.status = ?) tmp_count
+2020-07-14 17:16:24,590 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.name AS "name", a.type AS "type", a.location AS "location", a.specifications AS "specifications", a.model AS "model", a.use_by AS "useBy", a.insurance_date AS "insuranceDate", a.review_date AS "reviewDate", a.status AS "status", a.project_id AS "projectId", a.project_name AS "projectName", a.warehouse_receipt_id AS "warehouseReceiptId" FROM dev_vehicle a WHERE a.status = ? limit 30 
+2020-07-14 17:16:24,591 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - ==> Parameters: 1(Integer)
+2020-07-14 17:16:24,592 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - <==      Total: 9
+2020-07-14 17:16:24,596 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/vehicle/devVehicleList
+2020-07-14 17:16:24,608 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:24.608  耗时：0:0:0.24  URI: /jeesite/a/dev/vehicle/devVehicle/listByDevStatus  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 282m  最大可用内存: 1269m
+2020-07-14 17:16:28,236 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:28.236  URI: /jeesite/a/dev/vehicle/devVehicle/listByDevStatus
+2020-07-14 17:16:28,241 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.id AS "id",   a.name AS "name",   a.type AS "type",   a.location AS "location",   a.specifications AS "specifications",   a.model AS "model",   a.use_by AS "useBy",   a.insurance_date AS "insuranceDate",   a.review_date AS "reviewDate",   a.status AS "status",   a.project_id AS "projectId",   a.project_name AS "projectName",   a.warehouse_receipt_id AS "warehouseReceiptId"      FROM dev_vehicle a           WHERE  a.status = ?) tmp_count
+2020-07-14 17:16:28,241 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - ==>  Preparing: SELECT a.id AS "id", a.name AS "name", a.type AS "type", a.location AS "location", a.specifications AS "specifications", a.model AS "model", a.use_by AS "useBy", a.insurance_date AS "insuranceDate", a.review_date AS "reviewDate", a.status AS "status", a.project_id AS "projectId", a.project_name AS "projectName", a.warehouse_receipt_id AS "warehouseReceiptId" FROM dev_vehicle a WHERE a.status = ? limit 30 
+2020-07-14 17:16:28,242 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - ==> Parameters: 1(Integer)
+2020-07-14 17:16:28,243 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao.findList] - <==      Total: 9
+2020-07-14 17:16:28,245 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/dev/vehicle/devVehicleList
+2020-07-14 17:16:28,257 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:28.257  耗时：0:0:0.21  URI: /jeesite/a/dev/vehicle/devVehicle/listByDevStatus  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 270m  最大可用内存: 1256m
+2020-07-14 17:16:30,182 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:30.182  URI: /jeesite/a/sys/user/index
+2020-07-14 17:16:30,186 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/userIndex
+2020-07-14 17:16:30,192 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:30.192  耗时：0:0:0.10  URI: /jeesite/a/sys/user/index  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 259m  最大可用内存: 1245m
+2020-07-14 17:16:30,193 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:16:30,193 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: 455b514c6a084d37b46f524bdf32f7fe(String), 1(String), 系统设置-机构用户-用户管理(String), 1(String), 2020-07-14 17:16:30.192(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/sys/user/index(String), GET(String), (String), (String)
+2020-07-14 17:16:30,196 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:16:30,231 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:30.231  URI: /jeesite/a/sys/user/list
+2020-07-14 17:16:30,231 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:30.231  URI: /jeesite/a/sys/office/treeData
+2020-07-14 17:16:30,234 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT           a.id,      a.company_id AS "company.id",      a.office_id AS "office.id",      a.login_name,      a.password,      a.no,   a.name,   a.email,   a.phone,   a.mobile,   a.user_type,   a.login_ip,   a.login_date,   a.remarks,   a.login_flag,   a.photo,   a.create_by AS "createBy.id",   a.create_date,   a.update_by AS "updateBy.id",   a.update_date,   a.del_flag,   a.level,   a.coefficient,      c.name AS "company.name",      c.parent_id AS "company.parent.id",      c.parent_ids AS "company.parentIds",      ca.id AS "company.area.id",      ca.name AS "company.area.name",      ca.parent_id AS "company.area.parent.id",      ca.parent_ids AS "company.area.parentIds",      o.name AS "office.name",      o.parent_id AS "office.parent.id",      o.parent_ids AS "office.parentIds",      oa.id AS "office.area.id",      oa.name AS "office.area.name",      oa.parent_id AS "office.area.parent.id",      oa.parent_ids AS "office.area.parentIds",      cu.id AS "company.primaryPerson.id",      cu.name AS "company.primaryPerson.name",      cu2.id AS "company.deputyPerson.id",      cu2.name AS "company.deputyPerson.name",      ou.id AS "office.primaryPerson.id",      ou.name AS "office.primaryPerson.name",      ou2.id AS "office.deputyPerson.id",      ou2.name AS "office.deputyPerson.name"         FROM sys_user a       LEFT JOIN sys_office c ON c.id = a.company_id   LEFT JOIN sys_area ca ON ca.id = c.area_id   LEFT JOIN sys_office o ON o.id = a.office_id   LEFT JOIN sys_area oa ON oa.id = o.area_id   LEFT JOIN sys_user cu ON cu.id = c.primary_person   LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person   LEFT JOIN sys_user ou ON ou.id = o.primary_person   LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person             WHERE a.del_flag = ?                                      ) tmp_count
+2020-07-14 17:16:30,236 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.findList] - ==>  Preparing: SELECT a.id, a.company_id AS "company.id", a.office_id AS "office.id", a.login_name, a.password, a.no, a.name, a.email, a.phone, a.mobile, a.user_type, a.login_ip, a.login_date, a.remarks, a.login_flag, a.photo, a.create_by AS "createBy.id", a.create_date, a.update_by AS "updateBy.id", a.update_date, a.del_flag, a.level, a.coefficient, c.name AS "company.name", c.parent_id AS "company.parent.id", c.parent_ids AS "company.parentIds", ca.id AS "company.area.id", ca.name AS "company.area.name", ca.parent_id AS "company.area.parent.id", ca.parent_ids AS "company.area.parentIds", o.name AS "office.name", o.parent_id AS "office.parent.id", o.parent_ids AS "office.parentIds", oa.id AS "office.area.id", oa.name AS "office.area.name", oa.parent_id AS "office.area.parent.id", oa.parent_ids AS "office.area.parentIds", cu.id AS "company.primaryPerson.id", cu.name AS "company.primaryPerson.name", cu2.id AS "company.deputyPerson.id", cu2.name AS "company.deputyPerson.name", ou.id AS "office.primaryPerson.id", ou.name AS "office.primaryPerson.name", ou2.id AS "office.deputyPerson.id", ou2.name AS "office.deputyPerson.name" FROM sys_user a LEFT JOIN sys_office c ON c.id = a.company_id LEFT JOIN sys_area ca ON ca.id = c.area_id LEFT JOIN sys_office o ON o.id = a.office_id LEFT JOIN sys_area oa ON oa.id = o.area_id LEFT JOIN sys_user cu ON cu.id = c.primary_person LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person LEFT JOIN sys_user ou ON ou.id = o.primary_person LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person WHERE a.del_flag = ? ORDER BY c.code, o.code, a.name limit 30 
+2020-07-14 17:16:30,237 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.findList] - ==> Parameters: 0(String)
+2020-07-14 17:16:30,244 [http-bio-8181-exec-5] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:30.243  耗时：0:0:0.12  URI: /jeesite/a/sys/office/treeData  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 255m  最大可用内存: 1242m
+2020-07-14 17:16:30,248 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.dao.UserDao.findList] - <==      Total: 6
+2020-07-14 17:16:30,251 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/userList
+2020-07-14 17:16:30,260 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:30.260  耗时：0:0:0.29  URI: /jeesite/a/sys/user/list  最大内存: 1797m  已分配内存: 811m  已分配内存中的剩余空间: 252m  最大可用内存: 1238m
+2020-07-14 17:16:30,263 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:16:30,264 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: 7f7a46f6f5a54234938a20c023808752(String), 1(String), 系统设置-机构用户-用户管理-查看(String), 1(String), 2020-07-14 17:16:30.263(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/sys/user/list(String), GET(String), (String), (String)
+2020-07-14 17:16:30,267 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:16:32,701 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:32.701  URI: /jeesite/a/sys/menu/
+2020-07-14 17:16:32,710 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/sys/menuList
+2020-07-14 17:16:32,787 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:32.787  耗时：0:0:0.86  URI: /jeesite/a/sys/menu/  最大内存: 1797m  已分配内存: 813m  已分配内存中的剩余空间: 700m  最大可用内存: 1684m
+2020-07-14 17:16:32,788 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:16:32,789 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: 46d11c97175140299eb09ffc5695531c(String), 1(String), 系统设置-系统设置-菜单管理(String), 1(String), 2020-07-14 17:16:32.787(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/sys/menu/(String), GET(String), (String), (String)
+2020-07-14 17:16:32,793 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:16:34,325 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:34.325  URI: /jeesite/a/gen/genTable
+2020-07-14 17:16:34,329 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.*      FROM gen_table a                WHERE a.del_flag = ?                          ) tmp_count
+2020-07-14 17:16:34,330 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findList] - ==>  Preparing: SELECT a.* FROM gen_table a WHERE a.del_flag = ? ORDER BY a.name ASC limit 30 
+2020-07-14 17:16:34,330 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findList] - ==> Parameters: 0(String)
+2020-07-14 17:16:34,333 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findList] - <==      Total: 17
+2020-07-14 17:16:34,336 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/gen/genTableList
+2020-07-14 17:16:34,343 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:34.343  耗时：0:0:0.18  URI: /jeesite/a/gen/genTable  最大内存: 1797m  已分配内存: 813m  已分配内存中的剩余空间: 688m  最大可用内存: 1672m
+2020-07-14 17:16:34,343 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:16:34,344 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: 106238fac40e42f581da68240208ef9b(String), 1(String), 代码生成-代码生成-业务表配置(String), 1(String), 2020-07-14 17:16:34.343(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/gen/genTable(String), GET(String), (String), (String)
+2020-07-14 17:16:34,346 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:16:35,229 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:35.229  URI: /jeesite/a/gen/genScheme
+2020-07-14 17:16:35,244 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.*,   a.gen_table_id AS "genTable.id"      FROM gen_scheme a                WHERE a.del_flag = ?        ) tmp_count
+2020-07-14 17:16:35,246 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.findList] - ==>  Preparing: SELECT a.*, a.gen_table_id AS "genTable.id" FROM gen_scheme a WHERE a.del_flag = ? ORDER BY a.update_date DESC limit 30 
+2020-07-14 17:16:35,246 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.findList] - ==> Parameters: 0(String)
+2020-07-14 17:16:35,250 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.findList] - <==      Total: 16
+2020-07-14 17:16:35,253 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/gen/genSchemeList
+2020-07-14 17:16:35,273 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:35.273  耗时：0:0:0.44  URI: /jeesite/a/gen/genScheme  最大内存: 1797m  已分配内存: 813m  已分配内存中的剩余空间: 676m  最大可用内存: 1660m
+2020-07-14 17:16:35,273 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==>  Preparing: INSERT INTO sys_log( id, type, title, create_by, create_date, remote_addr, user_agent, request_uri, method, params, exception ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2020-07-14 17:16:35,274 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - ==> Parameters: 966d874dd6eb4802a4c0adea62903370(String), 1(String), 代码生成-代码生成-生成方案配置(String), 1(String), 2020-07-14 17:16:35.273(Timestamp), 0:0:0:0:0:0:0:1(String), Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36(String), /jeesite/a/gen/genScheme(String), GET(String), (String), (String)
+2020-07-14 17:16:35,275 [SaveLogThread] DEBUG [com.thinkgem.jeesite.modules.sys.dao.LogDao.insert] - <==    Updates: 1
+2020-07-14 17:16:46,483 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:16:46.482  URI: /jeesite/a/gen/genScheme/form
+2020-07-14 17:16:46,486 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.get] - ==>  Preparing: SELECT a.*, a.gen_table_id AS "genTable.id" FROM gen_scheme a WHERE a.id = ? 
+2020-07-14 17:16:46,486 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.get] - ==> Parameters: 599175db40284e6b8e15d4a8065c4e8a(String)
+2020-07-14 17:16:46,486 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.get] - <==      Total: 1
+2020-07-14 17:16:46,492 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findAllList] - ==>  Preparing: SELECT a.* FROM gen_table a WHERE a.del_flag = ? ORDER BY a.name ASC 
+2020-07-14 17:16:46,493 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findAllList] - ==> Parameters: 0(String)
+2020-07-14 17:16:46,494 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findAllList] - <==      Total: 17
+2020-07-14 17:16:46,496 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/gen/genSchemeForm
+2020-07-14 17:16:46,523 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:16:46.523  耗时：0:0:0.41  URI: /jeesite/a/gen/genScheme/form  最大内存: 1797m  已分配内存: 813m  已分配内存中的剩余空间: 665m  最大可用内存: 1649m
+2020-07-14 17:17:04,379 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:17:04.379  URI: /jeesite/a/gen/genScheme/form
+2020-07-14 17:17:04,382 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.get] - ==>  Preparing: SELECT a.*, a.gen_table_id AS "genTable.id" FROM gen_scheme a WHERE a.id = ? 
+2020-07-14 17:17:04,382 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.get] - ==> Parameters: 599175db40284e6b8e15d4a8065c4e8a(String)
+2020-07-14 17:17:04,383 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.get] - <==      Total: 1
+2020-07-14 17:17:04,387 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findAllList] - ==>  Preparing: SELECT a.* FROM gen_table a WHERE a.del_flag = ? ORDER BY a.name ASC 
+2020-07-14 17:17:04,387 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findAllList] - ==> Parameters: 0(String)
+2020-07-14 17:17:04,388 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.findAllList] - <==      Total: 17
+2020-07-14 17:17:04,391 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/gen/genSchemeForm
+2020-07-14 17:17:04,398 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:17:04.398  耗时：0:0:0.19  URI: /jeesite/a/gen/genScheme/form  最大内存: 1797m  已分配内存: 813m  已分配内存中的剩余空间: 660m  最大可用内存: 1645m
+2020-07-14 17:17:09,826 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:17:09.826  URI: /jeesite/a/gen/genScheme/save
+2020-07-14 17:17:09,828 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.get] - ==>  Preparing: SELECT a.*, a.gen_table_id AS "genTable.id" FROM gen_scheme a WHERE a.id = ? 
+2020-07-14 17:17:09,829 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.get] - ==> Parameters: 599175db40284e6b8e15d4a8065c4e8a(String)
+2020-07-14 17:17:09,829 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.get] - <==      Total: 1
+2020-07-14 17:17:09,837 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.update] - ==>  Preparing: UPDATE gen_scheme SET name = ?, category = ?, package_name = ?, module_name = ?, sub_module_name = ?, function_name = ?, function_name_simple = ?, function_author = ?, gen_table_id = ?, update_by = ?, update_date = ?, remarks = ? WHERE id = ? 
+2020-07-14 17:17:09,837 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.update] - ==> Parameters: 入库单(String), curd(String), com.thinkgem.jeesite.modules(String), dev(String), warehouseReceipt(String), 入库单(String), 入库单(String), myj(String), f46a20fc87494229ab3be1d28259c4b2(String), 1(String), 2020-07-14 17:17:09.837(Timestamp), (String), 599175db40284e6b8e15d4a8065c4e8a(String)
+2020-07-14 17:17:09,838 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.update] - <==    Updates: 1
+2020-07-14 17:17:09,839 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.get] - ==>  Preparing: SELECT a.* FROM gen_table a WHERE a.id = ? 
+2020-07-14 17:17:09,839 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.get] - ==> Parameters: f46a20fc87494229ab3be1d28259c4b2(String)
+2020-07-14 17:17:09,840 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableDao.get] - <==      Total: 1
+2020-07-14 17:17:09,841 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.findList] - ==>  Preparing: SELECT a.*, b.id AS "genTable.id", b.name AS "genTable.name", b.comments AS "genTable.comments", b.class_name AS "genTable.className", b.parent_table AS "genTable.parentTable", b.parent_table_fk AS "genTable.parentTableFk" FROM gen_table_column a JOIN gen_table b ON b.id = a.gen_table_id WHERE a.del_flag = ? AND a.gen_table_id = ? ORDER BY a.sort ASC 
+2020-07-14 17:17:09,841 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.findList] - ==> Parameters: 0(String), f46a20fc87494229ab3be1d28259c4b2(String)
+2020-07-14 17:17:09,846 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenTableColumnDao.findList] - <==      Total: 7
+2020-07-14 17:17:10,115 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  fileName === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\web\warehousereceipt\DevWarehouseReceiptController.java
+2020-07-14 17:17:10,126 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  content === 
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.dev.web.warehousereceipt;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.dev.entity.warehousereceipt.DevWarehouseReceipt;
+import com.thinkgem.jeesite.modules.dev.service.warehousereceipt.DevWarehouseReceiptService;
+
+/**
+ * 入库单Controller
+ * @author myj
+ * @version 2020-07-14
+ */
+@Controller
+@RequestMapping(value = "${adminPath}/dev/warehousereceipt/devWarehouseReceipt")
+public class DevWarehouseReceiptController extends BaseController {
+
+	@Autowired
+	private DevWarehouseReceiptService devWarehouseReceiptService;
+	
+	@ModelAttribute
+	public DevWarehouseReceipt get(@RequestParam(required=false) String id) {
+		DevWarehouseReceipt entity = null;
+		if (StringUtils.isNotBlank(id)){
+			entity = devWarehouseReceiptService.get(id);
+		}
+		if (entity == null){
+			entity = new DevWarehouseReceipt();
+		}
+		return entity;
+	}
+	
+	@RequiresPermissions("dev:warehousereceipt:devWarehouseReceipt:view")
+	@RequestMapping(value = {"list", ""})
+	public String list(DevWarehouseReceipt devWarehouseReceipt, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<DevWarehouseReceipt> page = devWarehouseReceiptService.findPage(new Page<DevWarehouseReceipt>(request, response), devWarehouseReceipt); 
+		model.addAttribute("page", page);
+		return "modules/dev/warehousereceipt/devWarehouseReceiptList";
+	}
+
+	@RequiresPermissions("dev:warehousereceipt:devWarehouseReceipt:view")
+	@RequestMapping(value = "form")
+	public String form(DevWarehouseReceipt devWarehouseReceipt, Model model) {
+		model.addAttribute("devWarehouseReceipt", devWarehouseReceipt);
+		return "modules/dev/warehousereceipt/devWarehouseReceiptForm";
+	}
+
+	@RequiresPermissions("dev:warehousereceipt:devWarehouseReceipt:edit")
+	@RequestMapping(value = "save")
+	public String save(DevWarehouseReceipt devWarehouseReceipt, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, devWarehouseReceipt)){
+			return form(devWarehouseReceipt, model);
+		}
+		devWarehouseReceiptService.save(devWarehouseReceipt);
+		addMessage(redirectAttributes, "保存入库单成功");
+		return "redirect:"+Global.getAdminPath()+"/dev/warehousereceipt/devWarehouseReceipt/?repage";
+	}
+	
+	@RequiresPermissions("dev:warehousereceipt:devWarehouseReceipt:edit")
+	@RequestMapping(value = "delete")
+	public String delete(DevWarehouseReceipt devWarehouseReceipt, RedirectAttributes redirectAttributes) {
+		devWarehouseReceiptService.delete(devWarehouseReceipt);
+		addMessage(redirectAttributes, "删除入库单成功");
+		return "redirect:"+Global.getAdminPath()+"/dev/warehousereceipt/devWarehouseReceipt/?repage";
+	}
+
+}
+2020-07-14 17:17:10,136 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 删除文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\web\warehousereceipt\DevWarehouseReceiptController.java 成功!
+2020-07-14 17:17:10,136 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\web\warehousereceipt\DevWarehouseReceiptController.java 文件创建成功!
+2020-07-14 17:17:10,138 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\web\warehousereceipt\DevWarehouseReceiptController.java 写入成功!
+2020-07-14 17:17:10,138 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  file create === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\web\warehousereceipt\DevWarehouseReceiptController.java
+2020-07-14 17:17:10,139 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  fileName === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\service\warehousereceipt\DevWarehouseReceiptService.java
+2020-07-14 17:17:10,141 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  content === 
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.dev.service.warehousereceipt;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.dev.entity.warehousereceipt.DevWarehouseReceipt;
+import com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao;
+
+/**
+ * 入库单Service
+ * @author myj
+ * @version 2020-07-14
+ */
+@Service
+@Transactional(readOnly = true)
+public class DevWarehouseReceiptService extends CrudService<DevWarehouseReceiptDao, DevWarehouseReceipt> {
+
+	public DevWarehouseReceipt get(String id) {
+		return super.get(id);
+	}
+	
+	public List<DevWarehouseReceipt> findList(DevWarehouseReceipt devWarehouseReceipt) {
+		return super.findList(devWarehouseReceipt);
+	}
+	
+	public Page<DevWarehouseReceipt> findPage(Page<DevWarehouseReceipt> page, DevWarehouseReceipt devWarehouseReceipt) {
+		return super.findPage(page, devWarehouseReceipt);
+	}
+	
+	@Transactional(readOnly = false)
+	public void save(DevWarehouseReceipt devWarehouseReceipt) {
+		super.save(devWarehouseReceipt);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(DevWarehouseReceipt devWarehouseReceipt) {
+		super.delete(devWarehouseReceipt);
+	}
+	
+}
+2020-07-14 17:17:10,143 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 删除文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\service\warehousereceipt\DevWarehouseReceiptService.java 成功!
+2020-07-14 17:17:10,144 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\service\warehousereceipt\DevWarehouseReceiptService.java 文件创建成功!
+2020-07-14 17:17:10,145 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\service\warehousereceipt\DevWarehouseReceiptService.java 写入成功!
+2020-07-14 17:17:10,145 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  file create === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\service\warehousereceipt\DevWarehouseReceiptService.java
+2020-07-14 17:17:10,147 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  fileName === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\dao\warehousereceipt\DevWarehouseReceiptDao.java
+2020-07-14 17:17:10,148 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  content === 
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.dev.dao.warehousereceipt;
+
+import com.thinkgem.jeesite.common.persistence.CrudDao;
+import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
+import com.thinkgem.jeesite.modules.dev.entity.warehousereceipt.DevWarehouseReceipt;
+
+/**
+ * 入库单DAO接口
+ * @author myj
+ * @version 2020-07-14
+ */
+@MyBatisDao
+public interface DevWarehouseReceiptDao extends CrudDao<DevWarehouseReceipt> {
+	
+}
+2020-07-14 17:17:10,150 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 删除文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\dao\warehousereceipt\DevWarehouseReceiptDao.java 成功!
+2020-07-14 17:17:10,150 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\dao\warehousereceipt\DevWarehouseReceiptDao.java 文件创建成功!
+2020-07-14 17:17:10,151 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\dao\warehousereceipt\DevWarehouseReceiptDao.java 写入成功!
+2020-07-14 17:17:10,151 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  file create === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\dao\warehousereceipt\DevWarehouseReceiptDao.java
+2020-07-14 17:17:10,152 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  fileName === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\entity\warehousereceipt\DevWarehouseReceipt.java
+2020-07-14 17:17:10,203 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  content === 
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.dev.entity.warehousereceipt;
+
+import org.hibernate.validator.constraints.Length;
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+/**
+ * 入库单Entity
+ * @author myj
+ * @version 2020-07-14
+ */
+public class DevWarehouseReceipt extends DataEntity<DevWarehouseReceipt> {
+	
+	private static final long serialVersionUID = 1L;
+	private String name;		// 入库单名称
+	private Date date;		// 入库单时间
+	private String purchaser;		// 采购人
+	private String warehouseManagement;		// 库管
+	private String approver;		// 审批人
+	private String type;		// 入库单类型
+	
+	public DevWarehouseReceipt() {
+		super();
+	}
+
+	public DevWarehouseReceipt(String id){
+		super(id);
+	}
+
+	@Length(min=0, max=200, message="入库单名称长度必须介于 0 和 200 之间")
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	@Length(min=0, max=200, message="采购人长度必须介于 0 和 200 之间")
+	public String getPurchaser() {
+		return purchaser;
+	}
+
+	public void setPurchaser(String purchaser) {
+		this.purchaser = purchaser;
+	}
+	
+	@Length(min=0, max=200, message="库管长度必须介于 0 和 200 之间")
+	public String getWarehouseManagement() {
+		return warehouseManagement;
+	}
+
+	public void setWarehouseManagement(String warehouseManagement) {
+		this.warehouseManagement = warehouseManagement;
+	}
+	
+	@Length(min=0, max=200, message="审批人长度必须介于 0 和 200 之间")
+	public String getApprover() {
+		return approver;
+	}
+
+	public void setApprover(String approver) {
+		this.approver = approver;
+	}
+	
+	@Length(min=0, max=200, message="入库单类型长度必须介于 0 和 200 之间")
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+}
+2020-07-14 17:17:10,205 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 删除文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\entity\warehousereceipt\DevWarehouseReceipt.java 成功!
+2020-07-14 17:17:10,205 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\entity\warehousereceipt\DevWarehouseReceipt.java 文件创建成功!
+2020-07-14 17:17:10,206 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\entity\warehousereceipt\DevWarehouseReceipt.java 写入成功!
+2020-07-14 17:17:10,206 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  file create === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\java\com\thinkgem\jeesite\modules\dev\entity\warehousereceipt\DevWarehouseReceipt.java
+2020-07-14 17:17:10,207 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  fileName === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\resources\mappings\modules\dev\warehousereceipt\DevWarehouseReceiptDao.xml
+2020-07-14 17:17:10,224 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  content === 
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao">
+    
+	<sql id="devWarehouseReceiptColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.date AS "date",
+		a.purchaser AS "purchaser",
+		a.warehouse_management AS "warehouseManagement",
+		a.approver AS "approver",
+		a.type AS "type"
+	</sql>
+	
+	<sql id="devWarehouseReceiptJoins">
+	</sql>
+    
+	<select id="get" resultType="DevWarehouseReceipt">
+		SELECT 
+			<include refid="devWarehouseReceiptColumns"/>
+		FROM dev_warehouse_receipt a
+		<include refid="devWarehouseReceiptJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevWarehouseReceipt">
+		SELECT 
+			<include refid="devWarehouseReceiptColumns"/>
+		FROM dev_warehouse_receipt a
+		<include refid="devWarehouseReceiptJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevWarehouseReceipt">
+		SELECT 
+			<include refid="devWarehouseReceiptColumns"/>
+		FROM dev_warehouse_receipt a
+		<include refid="devWarehouseReceiptJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_warehouse_receipt(
+			id,
+			name,
+			date,
+			purchaser,
+			warehouse_management,
+			approver,
+			type
+		) VALUES (
+			#{id},
+			#{name},
+			#{date},
+			#{purchaser},
+			#{warehouseManagement},
+			#{approver},
+			#{type}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_warehouse_receipt SET 	
+			name = #{name},
+			date = #{date},
+			purchaser = #{purchaser},
+			warehouse_management = #{warehouseManagement},
+			approver = #{approver},
+			type = #{type}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_warehouse_receipt
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
+2020-07-14 17:17:10,228 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 删除文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\resources\mappings\modules\dev\warehousereceipt\DevWarehouseReceiptDao.xml 成功!
+2020-07-14 17:17:10,230 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\resources\mappings\modules\dev\warehousereceipt\DevWarehouseReceiptDao.xml 文件创建成功!
+2020-07-14 17:17:10,231 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\resources\mappings\modules\dev\warehousereceipt\DevWarehouseReceiptDao.xml 写入成功!
+2020-07-14 17:17:10,231 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  file create === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\resources\mappings\modules\dev\warehousereceipt\DevWarehouseReceiptDao.xml
+2020-07-14 17:17:10,233 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  fileName === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\webapp\WEB-INF\views\modules\dev\warehousereceipt\devWarehouseReceiptForm.jsp
+2020-07-14 17:17:10,239 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  content === 
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<html>
+<head>
+	<title>入库单管理</title>
+	<meta name="decorator" content="default"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//$("#name").focus();
+			$("#inputForm").validate({
+				submitHandler: function(form){
+					loading('正在提交，请稍等...');
+					form.submit();
+				},
+				errorContainer: "#messageBox",
+				errorPlacement: function(error, element) {
+					$("#messageBox").text("输入有误，请先更正。");
+					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
+						error.appendTo(element.parent().parent());
+					} else {
+						error.insertAfter(element);
+					}
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<ul class="nav nav-tabs">
+		<li><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/">入库单列表</a></li>
+		<li class="active"><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/form?id=${devWarehouseReceipt.id}">入库单<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit">${not empty devWarehouseReceipt.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:warehousereceipt:devWarehouseReceipt:edit">查看</shiro:lacksPermission></a></li>
+	</ul><br/>
+	<form:form id="inputForm" modelAttribute="devWarehouseReceipt" action="${ctx}/dev/warehousereceipt/devWarehouseReceipt/save" method="post" class="form-horizontal">
+		<form:hidden path="id"/>
+		<sys:message content="${message}"/>		
+		<div class="control-group">
+			<label class="control-label">入库单名称：</label>
+			<div class="controls">
+				<form:input path="name" htmlEscape="false" maxlength="200" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">入库单时间：</label>
+			<div class="controls">
+				<input name="date" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
+					value="<fmt:formatDate value="${devWarehouseReceipt.date}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">采购人：</label>
+			<div class="controls">
+				<form:input path="purchaser" htmlEscape="false" maxlength="200" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">库管：</label>
+			<div class="controls">
+				<form:input path="warehouseManagement" htmlEscape="false" maxlength="200" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">审批人：</label>
+			<div class="controls">
+				<form:input path="approver" htmlEscape="false" maxlength="200" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">入库单类型：</label>
+			<div class="controls">
+				<form:select path="type" class="input-xlarge ">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('dev_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
+		<div class="form-actions">
+			<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		</div>
+	</form:form>
+</body>
+</html>
+2020-07-14 17:17:10,241 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 删除文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\webapp\WEB-INF\views\modules\dev\warehousereceipt\devWarehouseReceiptForm.jsp 成功!
+2020-07-14 17:17:10,241 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\webapp\WEB-INF\views\modules\dev\warehousereceipt\devWarehouseReceiptForm.jsp 文件创建成功!
+2020-07-14 17:17:10,242 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\webapp\WEB-INF\views\modules\dev\warehousereceipt\devWarehouseReceiptForm.jsp 写入成功!
+2020-07-14 17:17:10,242 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  file create === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\webapp\WEB-INF\views\modules\dev\warehousereceipt\devWarehouseReceiptForm.jsp
+2020-07-14 17:17:10,243 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  fileName === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\webapp\WEB-INF\views\modules\dev\warehousereceipt\devWarehouseReceiptList.jsp
+2020-07-14 17:17:10,248 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  content === 
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<html>
+<head>
+	<title>入库单管理</title>
+	<meta name="decorator" content="default"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+		});
+		function page(n,s){
+			$("#pageNo").val(n);
+			$("#pageSize").val(s);
+			$("#searchForm").submit();
+        	return false;
+        }
+	</script>
+</head>
+<body>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/">入库单列表</a></li>
+		<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit"><li><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/form">入库单添加</a></li></shiro:hasPermission>
+	</ul>
+	<form:form id="searchForm" modelAttribute="devWarehouseReceipt" action="${ctx}/dev/warehousereceipt/devWarehouseReceipt/" method="post" class="breadcrumb form-search">
+		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+		<ul class="ul-form">
+			<li><label>入库单名称：</label>
+				<form:input path="name" htmlEscape="false" maxlength="200" class="input-medium"/>
+			</li>
+			<li><label>入库单类型：</label>
+				<form:select path="type" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('dev_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="clearfix"></li>
+		</ul>
+	</form:form>
+	<sys:message content="${message}"/>
+	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th>入库单名称</th>
+				<th>入库单时间</th>
+				<th>采购人</th>
+				<th>库管</th>
+				<th>审批人</th>
+				<th>入库单类型</th>
+				<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit"><th>操作</th></shiro:hasPermission>
+			</tr>
+		</thead>
+		<tbody>
+		<c:forEach items="${page.list}" var="devWarehouseReceipt">
+			<tr>
+				<td><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/form?id=${devWarehouseReceipt.id}">
+					${devWarehouseReceipt.name}
+				</a></td>
+				<td>
+					<fmt:formatDate value="${devWarehouseReceipt.date}" pattern="yyyy-MM-dd HH:mm:ss"/>
+				</td>
+				<td>
+					${devWarehouseReceipt.purchaser}
+				</td>
+				<td>
+					${devWarehouseReceipt.warehouseManagement}
+				</td>
+				<td>
+					${devWarehouseReceipt.approver}
+				</td>
+				<td>
+					${fns:getDictLabel(devWarehouseReceipt.type, 'dev_type', '')}
+				</td>
+				<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit"><td>
+    				<a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/form?id=${devWarehouseReceipt.id}">修改</a>
+					<a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/delete?id=${devWarehouseReceipt.id}" onclick="return confirmx('确认要删除该入库单吗？', this.href)">删除</a>
+				</td></shiro:hasPermission>
+			</tr>
+		</c:forEach>
+		</tbody>
+	</table>
+	<div class="pagination">${page}</div>
+</body>
+</html>
+2020-07-14 17:17:10,250 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 删除文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\webapp\WEB-INF\views\modules\dev\warehousereceipt\devWarehouseReceiptList.jsp 成功!
+2020-07-14 17:17:10,251 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\webapp\WEB-INF\views\modules\dev\warehousereceipt\devWarehouseReceiptList.jsp 文件创建成功!
+2020-07-14 17:17:10,252 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.utils.FileUtils] - 文件 D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\webapp\WEB-INF\views\modules\dev\warehousereceipt\devWarehouseReceiptList.jsp 写入成功!
+2020-07-14 17:17:10,252 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.util.GenUtils] -  file create === D:\工作内容\2020.7.9中电\zhongdian\sourcecode\src\main\webapp\WEB-INF\views\modules\dev\warehousereceipt\devWarehouseReceiptList.jsp
+2020-07-14 17:17:10,258 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: redirect:/a/gen/genScheme/?repage
+2020-07-14 17:17:10,272 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:17:10.272  耗时：0:0:0.446  URI: /jeesite/a/gen/genScheme/save  最大内存: 1797m  已分配内存: 813m  已分配内存中的剩余空间: 610m  最大可用内存: 1594m
+2020-07-14 17:17:10,290 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 开始计时: 05:17:10.290  URI: /jeesite/a/gen/genScheme/
+2020-07-14 17:17:10,294 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.common.persistence.interceptor.PaginationInterceptor] - COUNT SQL: select count(1) from (SELECT         a.*,   a.gen_table_id AS "genTable.id"      FROM gen_scheme a                WHERE a.del_flag = ?        ) tmp_count
+2020-07-14 17:17:10,296 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.findList] - ==>  Preparing: SELECT a.*, a.gen_table_id AS "genTable.id" FROM gen_scheme a WHERE a.del_flag = ? ORDER BY a.update_date DESC limit 30 
+2020-07-14 17:17:10,296 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.findList] - ==> Parameters: 0(String)
+2020-07-14 17:17:10,299 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.gen.dao.GenSchemeDao.findList] - <==      Total: 16
+2020-07-14 17:17:10,301 [http-bio-8181-exec-6] INFO  [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - ViewName: modules/gen/genSchemeList
+2020-07-14 17:17:10,309 [http-bio-8181-exec-6] DEBUG [com.thinkgem.jeesite.modules.sys.interceptor.LogInterceptor] - 计时结束：05:17:10.309  耗时：0:0:0.19  URI: /jeesite/a/gen/genScheme/  最大内存: 1797m  已分配内存: 813m  已分配内存中的剩余空间: 601m  最大可用内存: 1585m

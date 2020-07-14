@@ -8,7 +8,8 @@
 		a.date AS "date",
 		a.purchaser AS "purchaser",
 		a.warehouse_management AS "warehouseManagement",
-		a.approver AS "approver"
+		a.approver AS "approver",
+		a.type AS "type"
 	</sql>
 	
 	<sql id="devWarehouseReceiptJoins">
@@ -34,6 +35,9 @@
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
 			</if>
 		</where>
 		<choose>
@@ -69,14 +73,16 @@
 			date,
 			purchaser,
 			warehouse_management,
-			approver
+			approver,
+			type
 		) VALUES (
 			#{id},
 			#{name},
 			#{date},
 			#{purchaser},
 			#{warehouseManagement},
-			#{approver}
+			#{approver},
+			#{type}
 		)
 	</insert>
 	
@@ -86,7 +92,8 @@
 			date = #{date},
 			purchaser = #{purchaser},
 			warehouse_management = #{warehouseManagement},
-			approver = #{approver}
+			approver = #{approver},
+			type = #{type}
 		WHERE id = #{id}
 	</update>
 	
