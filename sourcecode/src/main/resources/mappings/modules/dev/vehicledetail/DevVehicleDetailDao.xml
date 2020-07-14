@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.vehicledetail.DevVehicleDetailDao">
+    
+	<sql id="devVehicleDetailColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.type AS "type",
+		a.date AS "date",
+		a.vehicle_id AS "vehicleId",
+		a.parts AS "parts",
+		a.mileage AS "mileage",
+		a.cost AS "cost",
+		a.maintainer AS "maintainer"
+	</sql>
+	
+	<sql id="devVehicleDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="DevVehicleDetail">
+		SELECT 
+			<include refid="devVehicleDetailColumns"/>
+		FROM dev_vehicle_detail a
+		<include refid="devVehicleDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevVehicleDetail">
+		SELECT 
+			<include refid="devVehicleDetailColumns"/>
+		FROM dev_vehicle_detail a
+		<include refid="devVehicleDetailJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="vehicleId != null and vehicleId != ''">
+				AND a.vehicle_id = #{vehicleId}
+			</if>
+			<if test="maintainer != null and maintainer != ''">
+				AND a.maintainer = #{maintainer}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevVehicleDetail">
+		SELECT 
+			<include refid="devVehicleDetailColumns"/>
+		FROM dev_vehicle_detail a
+		<include refid="devVehicleDetailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_vehicle_detail(
+			id,
+			name,
+			type,
+			date,
+			vehicle_id,
+			parts,
+			mileage,
+			cost,
+			maintainer
+		) VALUES (
+			#{id},
+			#{name},
+			#{type},
+			#{date},
+			#{vehicleId},
+			#{parts},
+			#{mileage},
+			#{cost},
+			#{maintainer}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_vehicle_detail SET 	
+			name = #{name},
+			type = #{type},
+			date = #{date},
+			vehicle_id = #{vehicleId},
+			parts = #{parts},
+			mileage = #{mileage},
+			cost = #{cost},
+			maintainer = #{maintainer}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_vehicle_detail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.pj.dao.prodchild.PjProdChildDao">
+    
+	<sql id="pjProdChildColumns">
+		a.id AS "id",
+		a.parent_id AS "parentId",
+		a.value_detail_id AS "valueDetailId",
+		a.statu AS "statu",
+		a.real_score AS "realScore",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.note1 AS "note1",
+		a.note2 AS "note2",
+		a.note3 AS "note3",
+		a.note4 AS "note4",
+		v.name AS "pjValueDetails.name",
+		v.cate_id AS "pjValueDetails.cateId",
+		v.score AS "pjValueDetails.score"
+	</sql>
+	
+	<sql id="pjProdChildJoins">
+		LEFT JOIN pj_value_details v ON v.id = a.value_detail_id
+	</sql>
+    
+	<select id="get" resultType="PjProdChild">
+		SELECT 
+			<include refid="pjProdChildColumns"/>
+		FROM pj_prod_child a
+		<include refid="pjProdChildJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="PjProdChild">
+		SELECT 
+			<include refid="pjProdChildColumns"/>
+		FROM pj_prod_child a
+		<include refid="pjProdChildJoins"/>
+		<where>
+			<if test="parentId != null and parentId != ''">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="statu != null and statu != ''">
+				AND a.statu = #{statu}
+			</if>
+			<if test="valueDetailId != null and valueDetailId != ''">
+				AND a.value_detail_id = #{valueDetailId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC , a.statu asc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="PjProdChild">
+		SELECT 
+			<include refid="pjProdChildColumns"/>
+		FROM pj_prod_child a
+		<include refid="pjProdChildJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO pj_prod_child(
+			id,
+			parent_id,
+			value_detail_id,
+			statu,
+			real_score,
+			create_date,
+			update_date,
+			note1,
+			note2,
+			note3,
+			note4
+		) VALUES (
+			#{id},
+			#{parentId},
+			#{valueDetailId},
+			#{statu},
+			#{realScore},
+			#{createDate},
+			#{updateDate},
+			#{note1},
+			#{note2},
+			#{note3},
+			#{note4}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE pj_prod_child SET 	
+			parent_id = #{parentId},
+			value_detail_id = #{valueDetailId},
+			statu = #{statu},
+			real_score = #{realScore},
+			update_date = #{updateDate},
+			note1 = #{note1},
+			note2 = #{note2},
+			note3 = #{note3},
+			note4 = #{note4}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateRealScoreById">
+		UPDATE pj_prod_child SET
+			real_score = #{realScore}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM pj_prod_child
+		WHERE id = #{id}
+	</update>
+
+	<select id="getWXChildListByParentId" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.WXChildVo">
+		select a.id as "id",a.statu as "statu",a.real_score as "realScore",a.create_date as "createDate", CONCAT(d.`name`,'(', round(d.score) ,'分)') as "name",d.score as "score"
+		from pj_prod_child a LEFT JOIN pj_value_details d on a.value_detail_id=d.id
+		where a.parent_id=#{parentId} and date_format(a.create_date,'%Y-%m')=date_format(now(), '%Y-%m')
+		ORDER BY d.cate_id
+	</select>
+	
+</mapper>
+
+
+
+

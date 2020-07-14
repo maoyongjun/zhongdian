@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.allocationdetail.DevAllocationDetailDao">
+    
+	<sql id="devAllocationDetailColumns">
+		a.id AS "id",
+		a.allocation_id AS "allocationId",
+		a.item_number AS "itemNumber",
+		a.dev_id AS "devId",
+		a.dev_name AS "devName"
+	</sql>
+	
+	<sql id="devAllocationDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="DevAllocationDetail">
+		SELECT 
+			<include refid="devAllocationDetailColumns"/>
+		FROM dev_allocation_detail a
+		<include refid="devAllocationDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevAllocationDetail">
+		SELECT 
+			<include refid="devAllocationDetailColumns"/>
+		FROM dev_allocation_detail a
+		<include refid="devAllocationDetailJoins"/>
+		<where>
+			
+			<if test="allocationId != null and allocationId != ''">
+				AND a.allocation_id = #{allocationId}
+			</if>
+			<if test="itemNumber != null and itemNumber != ''">
+				AND a.item_number = #{itemNumber}
+			</if>
+			<if test="devId != null and devId != ''">
+				AND a.dev_id = #{devId}
+			</if>
+			<if test="devName != null and devName != ''">
+				AND a.dev_name = #{devName}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevAllocationDetail">
+		SELECT 
+			<include refid="devAllocationDetailColumns"/>
+		FROM dev_allocation_detail a
+		<include refid="devAllocationDetailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_allocation_detail(
+			id,
+			allocation_id,
+			item_number,
+			dev_id,
+			dev_name
+		) VALUES (
+			#{id},
+			#{allocationId},
+			#{itemNumber},
+			#{devId},
+			#{devName}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_allocation_detail SET 	
+			allocation_id = #{allocationId},
+			item_number = #{itemNumber},
+			dev_id = #{devId},
+			dev_name = #{devName}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_allocation_detail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

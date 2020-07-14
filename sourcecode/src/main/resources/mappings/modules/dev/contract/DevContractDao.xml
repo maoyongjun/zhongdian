@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.contract.DevContractDao">
+    
+	<sql id="devContractColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.purchase_items AS "purchaseItems",
+		a.purchaser AS "purchaser",
+		a.supplier AS "supplier",
+		a.purchase_date AS "purchaseDate",
+		a.purchase_price AS "purchasePrice",
+		a.purchase_number AS "purchaseNumber"
+	</sql>
+	
+	<sql id="devContractJoins">
+	</sql>
+    
+	<select id="get" resultType="DevContract">
+		SELECT 
+			<include refid="devContractColumns"/>
+		FROM dev_contract a
+		<include refid="devContractJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevContract">
+		SELECT 
+			<include refid="devContractColumns"/>
+		FROM dev_contract a
+		<include refid="devContractJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="purchaseItems != null and purchaseItems != ''">
+				AND a.purchase_items = #{purchaseItems}
+			</if>
+			<if test="supplier != null and supplier != ''">
+				AND a.supplier = #{supplier}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevContract">
+		SELECT 
+			<include refid="devContractColumns"/>
+		FROM dev_contract a
+		<include refid="devContractJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_contract(
+			id,
+			name,
+			purchase_items,
+			purchaser,
+			supplier,
+			purchase_date,
+			purchase_price,
+			purchase_number
+		) VALUES (
+			#{id},
+			#{name},
+			#{purchaseItems},
+			#{purchaser},
+			#{supplier},
+			#{purchaseDate},
+			#{purchasePrice},
+			#{purchaseNumber}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_contract SET 	
+			name = #{name},
+			purchase_items = #{purchaseItems},
+			purchaser = #{purchaser},
+			supplier = #{supplier},
+			purchase_date = #{purchaseDate},
+			purchase_price = #{purchasePrice},
+			purchase_number = #{purchaseNumber}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_contract
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

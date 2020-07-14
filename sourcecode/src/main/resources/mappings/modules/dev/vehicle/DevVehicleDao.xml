@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao">
+    
+	<sql id="devVehicleColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.type AS "type",
+		a.location AS "location",
+		a.specifications AS "specifications",
+		a.model AS "model",
+		a.use_by AS "useBy",
+		a.insurance_date AS "insuranceDate",
+		a.review_date AS "reviewDate",
+		a.status AS "status",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
+		a.warehouse_receipt_id AS "warehouseReceiptId"
+	</sql>
+	
+	<sql id="devVehicleJoins">
+	</sql>
+    
+	<select id="get" resultType="DevVehicle">
+		SELECT 
+			<include refid="devVehicleColumns"/>
+		FROM dev_vehicle a
+		<include refid="devVehicleJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevVehicle">
+		SELECT 
+			<include refid="devVehicleColumns"/>
+		FROM dev_vehicle a
+		<include refid="devVehicleJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="projectId != null and projectId != ''">
+				AND a.project_id = #{projectId}
+			</if>
+			<if test="warehouseReceiptId != null and warehouseReceiptId != ''">
+				AND a.warehouse_receipt_id = #{warehouseReceiptId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevVehicle">
+		SELECT 
+			<include refid="devVehicleColumns"/>
+		FROM dev_vehicle a
+		<include refid="devVehicleJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_vehicle(
+			id,
+			name,
+			type,
+			location,
+			specifications,
+			model,
+			use_by,
+			insurance_date,
+			review_date,
+			status,
+			project_id,
+			project_name,
+			warehouse_receipt_id
+		) VALUES (
+			#{id},
+			#{name},
+			#{type},
+			#{location},
+			#{specifications},
+			#{model},
+			#{useBy},
+			#{insuranceDate},
+			#{reviewDate},
+			#{status},
+			#{projectId},
+			#{projectName},
+			#{warehouseReceiptId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_vehicle SET 	
+			name = #{name},
+			type = #{type},
+			location = #{location},
+			specifications = #{specifications},
+			model = #{model},
+			use_by = #{useBy},
+			insurance_date = #{insuranceDate},
+			review_date = #{reviewDate},
+			status = #{status},
+			project_id = #{projectId},
+			project_name = #{projectName},
+			warehouse_receipt_id = #{warehouseReceiptId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_vehicle
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

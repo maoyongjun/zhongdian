@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.pj.dao.summary.PjRaterbySummaryDao">
+    
+	<sql id="pjRaterbySummaryColumns">
+		a.id AS "id",
+		a.raterby_id AS "raterbyId",
+		a.rater_id AS "raterId",
+		a.reter_coefficient AS "reterCoefficient",
+		a.cate_id AS "cateId",
+		a.create_date AS "createDate",
+		a.scores AS "scores",
+		a.first_correction_scores AS "firstCorrectionScores",
+		a.second_correction_scores AS "secondCorrectionScores"
+	</sql>
+	
+	<sql id="pjRaterbySummaryJoins">
+	</sql>
+    
+	<select id="get" resultType="PjRaterbySummary">
+		SELECT 
+			<include refid="pjRaterbySummaryColumns"/>
+		FROM pj_raterby_summary a
+		<include refid="pjRaterbySummaryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="PjRaterbySummary">
+		SELECT 
+			<include refid="pjRaterbySummaryColumns"/>
+		FROM pj_raterby_summary a
+		<include refid="pjRaterbySummaryJoins"/>
+		<where>
+			
+			<if test="raterbyId != null and raterbyId != ''">
+				AND a.raterby_id = #{raterbyId}
+			</if>
+			<if test="raterId != null and raterId != ''">
+				AND a.rater_id = #{raterId}
+			</if>
+			<if test="cateId != null and cateId != ''">
+				AND a.cate_id = #{cateId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="PjRaterbySummary">
+		SELECT 
+			<include refid="pjRaterbySummaryColumns"/>
+		FROM pj_raterby_summary a
+		<include refid="pjRaterbySummaryJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO pj_raterby_summary(
+			id,
+			raterby_id,
+			rater_id,
+			reter_coefficient,
+			cate_id,
+			create_date,
+			scores,
+			first_correction_scores,
+			second_correction_scores
+		) VALUES (
+			#{id},
+			#{raterbyId},
+			#{raterId},
+			#{reterCoefficient},
+			#{cateId},
+			#{createDate},
+			#{scores},
+			#{firstCorrectionScores},
+			#{secondCorrectionScores}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE pj_raterby_summary SET 	
+			raterby_id = #{raterbyId},
+			rater_id = #{raterId},
+			reter_coefficient = #{reterCoefficient},
+			cate_id = #{cateId},
+			scores = #{scores},
+			first_correction_scores = #{firstCorrectionScores},
+			second_correction_scores = #{secondCorrectionScores}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM pj_raterby_summary
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.pj.dao.money.PjCommitmentMoneyDao">
+    
+	<sql id="pjCommitmentMoneyColumns">
+		a.id AS "id",
+		a.`range` AS "range",
+		a.base AS "base",
+		a.left_num AS "leftNum",
+		a.right_num AS "rightNum",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id"
+	</sql>
+
+	<sql id="pjCommitmentMoneyJoins">
+	</sql>
+
+	<select id="get" resultType="PjCommitmentMoney">
+		SELECT
+			<include refid="pjCommitmentMoneyColumns"/>
+		FROM pj_commitment_money a
+		<include refid="pjCommitmentMoneyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="PjCommitmentMoney">
+		SELECT
+			<include refid="pjCommitmentMoneyColumns"/>
+		FROM pj_commitment_money a
+		<include refid="pjCommitmentMoneyJoins"/>
+		<where>
+
+			<if test="base != null and base != ''">
+				AND a.base = #{base}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="PjCommitmentMoney">
+		SELECT
+			<include refid="pjCommitmentMoneyColumns"/>
+		FROM pj_commitment_money a
+		<include refid="pjCommitmentMoneyJoins"/>
+		<where>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO pj_commitment_money(
+			id,
+			`range`,
+			base,
+			left_num,
+			right_num,
+			create_by,
+			create_date,
+			update_date,
+			update_by
+		) VALUES (
+			#{id},
+			#{range},
+			#{base},
+			#{leftNum},
+			#{rightNum},
+			#{createBy.id},
+			#{createDate},
+			#{updateDate},
+			#{updateBy.id}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE pj_commitment_money SET
+			`range` = #{range},
+			base = #{base},
+			left_num = #{leftNum},
+			right_num = #{rightNum},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM pj_commitment_money
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

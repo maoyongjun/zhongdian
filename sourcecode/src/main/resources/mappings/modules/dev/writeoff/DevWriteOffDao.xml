@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.writeoff.DevWriteOffDao">
+    
+	<sql id="devWriteOffColumns">
+		a.id AS "id",
+		a.projectid AS "projectid",
+		a.projectname AS "projectname",
+		a.name AS "name",
+		a.applicant AS "applicant",
+		a.reviewer AS "reviewer",
+		a.applicant_date AS "applicantDate",
+		a.reviewer_date AS "reviewerDate",
+		a.status AS "status"
+	</sql>
+	
+	<sql id="devWriteOffJoins">
+	</sql>
+    
+	<select id="get" resultType="DevWriteOff">
+		SELECT 
+			<include refid="devWriteOffColumns"/>
+		FROM dev_write_off a
+		<include refid="devWriteOffJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevWriteOff">
+		SELECT 
+			<include refid="devWriteOffColumns"/>
+		FROM dev_write_off a
+		<include refid="devWriteOffJoins"/>
+		<where>
+			
+			<if test="projectname != null and projectname != ''">
+				AND a.projectname = #{projectname}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevWriteOff">
+		SELECT 
+			<include refid="devWriteOffColumns"/>
+		FROM dev_write_off a
+		<include refid="devWriteOffJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_write_off(
+			id,
+			projectid,
+			projectname,
+			name,
+			applicant,
+			reviewer,
+			applicant_date,
+			reviewer_date,
+			status
+		) VALUES (
+			#{id},
+			#{projectid},
+			#{projectname},
+			#{name},
+			#{applicant},
+			#{reviewer},
+			#{applicantDate},
+			#{reviewerDate},
+			#{status}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_write_off SET 	
+			projectid = #{projectid},
+			projectname = #{projectname},
+			name = #{name},
+			applicant = #{applicant},
+			reviewer = #{reviewer},
+			applicant_date = #{applicantDate},
+			reviewer_date = #{reviewerDate},
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_write_off
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

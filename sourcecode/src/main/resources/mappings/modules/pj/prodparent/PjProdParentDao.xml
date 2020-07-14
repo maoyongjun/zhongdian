@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.pj.dao.prodparent.PjProdParentDao">
+
+    <sql id="pjProdParentColumns">
+		a.id AS "id",
+		a.code AS "code",
+		a.rater_id AS "raterId",
+		a.raterby_id AS "raterbyId",
+		a.statu AS "statu",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.note1 AS "note1",
+		a.note2 AS "note2",
+		a.note3 AS "note3",
+		a.note4 AS "note4",
+		a.coefficient AS "coefficient",
+		u3.name AS "rater.name",
+		u3.coefficient AS "rater.coefficient",
+		u4.name AS "raterby.name",
+		u4.coefficient AS "raterby.coefficient"
+	</sql>
+
+    <sql id="pjProdParentJoins">
+		LEFT JOIN sys_user u3 ON u3.id = a.rater_id
+		LEFT JOIN sys_user u4 ON u4.id = a.raterby_id
+	</sql>
+
+    <select id="get" resultType="PjProdParent">
+        SELECT
+        <include refid="pjProdParentColumns"/>
+        FROM pj_prod_parent a
+        <include refid="pjProdParentJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="PjProdParent">
+        SELECT
+        <include refid="pjProdParentColumns"/>
+        FROM pj_prod_parent a
+        <include refid="pjProdParentJoins"/>
+        <where>
+            <if test="code != null and code != ''">
+                AND a.code LIKE
+                <if test="dbName == 'oracle'">'%'||#{code}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{code}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{code},'%')</if>
+            </if>
+            <if test="raterId != null and raterId != ''">
+                AND a.rater_id = #{raterId}
+            </if>
+            <if test="raterbyId != null and raterbyId != ''">
+                AND a.raterby_id = #{raterbyId}
+            </if>
+            <if test="statu != null and statu != ''">
+                AND a.statu = #{statu}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                AND a.create_date = #{createDate}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.coefficient desc, a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="PjProdParent">
+        SELECT
+        <include refid="pjProdParentColumns"/>
+        FROM pj_prod_parent a
+        <include refid="pjProdParentJoins"/>
+        <where>
+
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+		INSERT INTO pj_prod_parent(
+			id,
+			code,
+			rater_id,
+			raterby_id,
+			statu,
+			create_date,
+			update_date,
+			coefficient,
+			note1,
+			note2,
+			note3,
+			note4
+		) VALUES (
+			#{id},
+			#{code},
+			#{raterId},
+			#{raterbyId},
+			#{statu},
+			#{createDate},
+			#{updateDate},
+			#{coefficient},
+			#{note1},
+			#{note2},
+			#{note3},
+			#{note4}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE pj_prod_parent SET 	
+			code = #{code},
+			rater_id = #{raterId},
+			raterby_id = #{raterbyId},
+			statu = #{statu},
+			update_date = #{updateDate},
+			note1 = #{note1},
+			note2 = #{note2},
+			note3 = #{note3},
+			note4 = #{note4}
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete">
+		DELETE FROM pj_prod_parent
+		WHERE id = #{id}
+	</update>
+
+    <select id="getPjProdParentByRaterId" resultType="PjProdParent">
+        SELECT
+        <include refid="pjProdParentColumns"/>
+        FROM pj_prod_parent a
+        <include refid="pjProdParentJoins"/>
+        WHERE
+        a.rater_id = #{raterId}
+        AND date_format(a.create_date,'%Y-%m')=date_format(now(),'%Y-%m')
+    </select>
+
+    <select id="getWXParentVoByRaterId" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.WXParentVo">
+        select a.id, b.title, a.statu, a.create_date, a.update_date, date_format(a.update_date,'%Y-%m')=date_format(now(),'%Y-%m') as 'isEvalCurMonth'
+        from pj_prod_parent a LEFT JOIN pj_prod_base b on a.`code` = b.`code`
+        where a.rater_id=#{raterId} and a.create_date>DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+        order by a.statu, a.create_date desc
+    </select>
+
+    <select id="getParentListByRaterbyIdStarEndDate" resultType="PjProdParent">
+        SELECT
+        <include refid="pjProdParentColumns"/>
+        FROM pj_prod_parent a
+        <include refid="pjProdParentJoins"/>
+        WHERE
+        a.raterby_id = #{raterbyId}
+        <if test="startDate!=null and startDate!=''">
+            and a.create_date>#{startDate}
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            and #{endDate}>a.create_date
+        </if>
+        order by u3.coefficient desc
+    </select>
+
+    <select id="getParentListByRaterIdStarEndDate" resultType="PjProdParent">
+        SELECT
+        <include refid="pjProdParentColumns"/>
+        FROM pj_prod_parent a
+        <include refid="pjProdParentJoins"/>
+        WHERE
+        a.rater_id = #{raterId}
+        <if test="startDate!=null and startDate!=''">
+            and a.create_date>#{startDate}
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            and #{endDate}>a.create_date
+        </if>
+        order by u4.coefficient desc
+    </select>
+
+
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.maintaindetail.DevMaintainDetailDao">
+    
+	<sql id="devMaintainDetailColumns">
+		a.id AS "id",
+		a.maintain_id AS "maintainId",
+		a.item_number AS "itemNumber",
+		a.item_name AS "itemName"
+	</sql>
+	
+	<sql id="devMaintainDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="DevMaintainDetail">
+		SELECT 
+			<include refid="devMaintainDetailColumns"/>
+		FROM dev_maintain_detail a
+		<include refid="devMaintainDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevMaintainDetail">
+		SELECT 
+			<include refid="devMaintainDetailColumns"/>
+		FROM dev_maintain_detail a
+		<include refid="devMaintainDetailJoins"/>
+		<where>
+			
+			<if test="maintainId != null and maintainId != ''">
+				AND a.maintain_id = #{maintainId}
+			</if>
+			<if test="itemNumber != null and itemNumber != ''">
+				AND a.item_number = #{itemNumber}
+			</if>
+			<if test="itemName != null and itemName != ''">
+				AND a.item_name = #{itemName}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevMaintainDetail">
+		SELECT 
+			<include refid="devMaintainDetailColumns"/>
+		FROM dev_maintain_detail a
+		<include refid="devMaintainDetailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_maintain_detail(
+			id,
+			maintain_id,
+			item_number,
+			item_name
+		) VALUES (
+			#{id},
+			#{maintainId},
+			#{itemNumber},
+			#{itemName}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_maintain_detail SET 	
+			maintain_id = #{maintainId},
+			item_number = #{itemNumber},
+			item_name = #{itemName}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_maintain_detail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

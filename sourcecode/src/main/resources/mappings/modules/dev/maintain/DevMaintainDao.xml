@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.maintain.DevMaintainDao">
+    
+	<sql id="devMaintainColumns">
+		a.id AS "id",
+		a.dev_id AS "devId",
+		a.date AS "date",
+		a.maintain_by AS "maintainBy",
+		a.dev_name AS "devName"
+	</sql>
+	
+	<sql id="devMaintainJoins">
+	</sql>
+    
+	<select id="get" resultType="DevMaintain">
+		SELECT 
+			<include refid="devMaintainColumns"/>
+		FROM dev_maintain a
+		<include refid="devMaintainJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevMaintain">
+		SELECT 
+			<include refid="devMaintainColumns"/>
+		FROM dev_maintain a
+		<include refid="devMaintainJoins"/>
+		<where>
+			
+			<if test="devId != null and devId != ''">
+				AND a.dev_id = #{devId}
+			</if>
+			<if test="maintainBy != null and maintainBy != ''">
+				AND a.maintain_by = #{maintainBy}
+			</if>
+			<if test="devName != null and devName != ''">
+				AND a.dev_name = #{devName}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevMaintain">
+		SELECT 
+			<include refid="devMaintainColumns"/>
+		FROM dev_maintain a
+		<include refid="devMaintainJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_maintain(
+			id,
+			dev_id,
+			date,
+			maintain_by,
+			dev_name
+		) VALUES (
+			#{id},
+			#{devId},
+			#{date},
+			#{maintainBy},
+			#{devName}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_maintain SET 	
+			dev_id = #{devId},
+			date = #{date},
+			maintain_by = #{maintainBy},
+			dev_name = #{devName}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_maintain
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

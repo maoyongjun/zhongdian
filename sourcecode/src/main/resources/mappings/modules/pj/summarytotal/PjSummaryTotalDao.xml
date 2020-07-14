@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.pj.dao.summarytotal.PjSummaryTotalDao">
+
+    <sql id="pjSummaryTotalColumns">
+		a.id AS "id",
+		a.raterby_id AS "raterbyId",
+		a.base_score AS "baseScore",
+		a.second_score AS "secondScore",
+		a.third_score AS "thirdScore",
+		a.fake_score AS "fakeScore",
+		a.bear_score AS "bearScore",
+		a.bear_rate AS "bearRate",
+		a.create_date AS "createDate",
+		a.note1 AS "note1",
+		a.note2 AS "note2",
+		u2.name AS "raterby.name"
+	</sql>
+
+    <sql id="pjSummaryTotalJoins">
+		LEFT JOIN sys_user u2 ON u2.id = a.raterby_id
+	</sql>
+
+    <select id="get" resultType="PjSummaryTotal">
+        SELECT
+        <include refid="pjSummaryTotalColumns"/>
+        FROM pj_summary_total a
+        <include refid="pjSummaryTotalJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="PjSummaryTotal">
+        SELECT
+        <include refid="pjSummaryTotalColumns"/>
+        FROM pj_summary_total a
+        <include refid="pjSummaryTotalJoins"/>
+        <where>
+
+            <if test="raterbyId != null and raterbyId != ''">
+                AND a.raterby_id = #{raterbyId}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="PjSummaryTotal">
+        SELECT
+        <include refid="pjSummaryTotalColumns"/>
+        FROM pj_summary_total a
+        <include refid="pjSummaryTotalJoins"/>
+        <where>
+
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+		INSERT INTO pj_summary_total(
+			id,
+			raterby_id,
+			base_score,
+			second_score,
+			third_score,
+			fake_score,
+			bear_score,
+			bear_rate,
+			create_date,
+			note1,
+			note2
+		) VALUES (
+			#{id},
+			#{raterbyId},
+			#{baseScore},
+			#{secondScore},
+			#{thirdScore},
+			#{fakeScore},
+			#{bearScore},
+			#{bearRate},
+			#{createDate},
+			#{note1},
+			#{note2}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE pj_summary_total SET 	
+			raterby_id = #{raterbyId},
+			base_score = #{baseScore},
+			second_score = #{secondScore},
+			third_score = #{thirdScore},
+			fake_score = #{fakeScore},
+			bear_score = #{bearScore},
+			bear_rate = #{bearRate},
+			note1 = #{note1},
+			note2 = #{note2}
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete">
+		DELETE FROM pj_summary_total
+		WHERE id = #{id}
+	</update>
+
+    <select id="getSummaryTotalByRaterIdCreateDate" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.SummaryTotalVo">
+		SELECT a.id, a.raterby_id,a.base_score,a.second_score,
+		a.third_score,a.fake_score,a.bear_score,a.bear_rate,
+		DATE_FORMAT(a.create_date,'%Y-%m-01') as 'create_date', u.`name` as 'raterby_name'
+		from pj_summary_total a
+		LEFT JOIN sys_user u on a.raterby_id=u.id
+		where raterby_id=#{raterbyId} and DATE_FORMAT(a.create_date,'%Y-%m-01')=DATE_FORMAT(#{createDate},'%Y-%m-01')
+	</select>
+
+    <select id="getSummaryTotalByCreateDate" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.SummaryTotalVo">
+        SELECT a.raterby_id,avg(a.base_score) 'base_score',avg(a.second_score) 'second_score',
+        avg(a.third_score)'third_score',avg(a.fake_score) 'fake_score',avg(a.bear_score) 'bear_score',
+        avg(a.bear_rate) 'bear_rate',u.`name` as 'raterby_name'
+        from pj_summary_total a
+        LEFT JOIN sys_user u on a.raterby_id=u.id
+        where 1=1
+        <if test="beginDate!=null and beginDate!=''">
+            and DATE_FORMAT(a.create_date,'%Y-%m-01')>=DATE_FORMAT(#{beginDate},'%Y-%m-01')
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            and DATE_FORMAT(#{endDate},'%Y-%m-01')>=DATE_FORMAT(a.create_date,'%Y-%m-01')
+        </if>
+        GROUP BY a.raterby_id
+
+    </select>
+
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.warehousereceipt.DevWarehouseReceiptDao">
+    
+	<sql id="devWarehouseReceiptColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.date AS "date",
+		a.purchaser AS "purchaser",
+		a.warehouse_management AS "warehouseManagement",
+		a.approver AS "approver"
+	</sql>
+	
+	<sql id="devWarehouseReceiptJoins">
+	</sql>
+    
+	<select id="get" resultType="DevWarehouseReceipt">
+		SELECT 
+			<include refid="devWarehouseReceiptColumns"/>
+		FROM dev_warehouse_receipt a
+		<include refid="devWarehouseReceiptJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevWarehouseReceipt">
+		SELECT 
+			<include refid="devWarehouseReceiptColumns"/>
+		FROM dev_warehouse_receipt a
+		<include refid="devWarehouseReceiptJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevWarehouseReceipt">
+		SELECT 
+			<include refid="devWarehouseReceiptColumns"/>
+		FROM dev_warehouse_receipt a
+		<include refid="devWarehouseReceiptJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_warehouse_receipt(
+			id,
+			name,
+			date,
+			purchaser,
+			warehouse_management,
+			approver
+		) VALUES (
+			#{id},
+			#{name},
+			#{date},
+			#{purchaser},
+			#{warehouseManagement},
+			#{approver}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_warehouse_receipt SET 	
+			name = #{name},
+			date = #{date},
+			purchaser = #{purchaser},
+			warehouse_management = #{warehouseManagement},
+			approver = #{approver}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_warehouse_receipt
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

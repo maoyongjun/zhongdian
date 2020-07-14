@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao">
+    
+	<sql id="devInWarehouseColumns">
+		a.id AS "id",
+		a.type AS "type",
+		a.name AS "name",
+		a.specifications AS "specifications",
+		a.model AS "model",
+		a.count AS "count",
+		a.cost AS "cost",
+		a.account_number AS "accountNumber",
+		a.purchaser AS "purchaser",
+		a.purchase_project AS "purchaseProject",
+		a.manufacturer AS "manufacturer",
+		a.in_date AS "inDate",
+		a.acceptance_results AS "acceptanceResults",
+		a.charger AS "charger",
+		a.location AS "location",
+		a.contract_id AS "contractId",
+		a.warehouse_receipt_id AS "warehouseReceiptId"
+	</sql>
+	
+	<sql id="devInWarehouseJoins">
+	</sql>
+    
+	<select id="get" resultType="DevInWarehouse">
+		SELECT 
+			<include refid="devInWarehouseColumns"/>
+		FROM dev_in_warehouse a
+		<include refid="devInWarehouseJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevInWarehouse">
+		SELECT 
+			<include refid="devInWarehouseColumns"/>
+		FROM dev_in_warehouse a
+		<include refid="devInWarehouseJoins"/>
+		<where>
+			
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="purchaser != null and purchaser != ''">
+				AND a.purchaser = #{purchaser}
+			</if>
+			<if test="purchaseProject != null and purchaseProject != ''">
+				AND a.purchase_project = #{purchaseProject}
+			</if>
+			<if test="location != null and location != ''">
+				AND a.location = #{location}
+			</if>
+			<if test="contractId != null and contractId != ''">
+				AND a.contract_id = #{contractId}
+			</if>
+			<if test="warehouseReceiptId != null and warehouseReceiptId != ''">
+				AND a.warehouse_receipt_id = #{warehouseReceiptId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevInWarehouse">
+		SELECT 
+			<include refid="devInWarehouseColumns"/>
+		FROM dev_in_warehouse a
+		<include refid="devInWarehouseJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_in_warehouse(
+			id,
+			type,
+			name,
+			specifications,
+			model,
+			count,
+			cost,
+			account_number,
+			purchaser,
+			purchase_project,
+			manufacturer,
+			in_date,
+			acceptance_results,
+			charger,
+			location,
+			contract_id,
+			warehouse_receipt_id
+		) VALUES (
+			#{id},
+			#{type},
+			#{name},
+			#{specifications},
+			#{model},
+			#{count},
+			#{cost},
+			#{accountNumber},
+			#{purchaser},
+			#{purchaseProject},
+			#{manufacturer},
+			#{inDate},
+			#{acceptanceResults},
+			#{charger},
+			#{location},
+			#{contractId},
+			#{warehouseReceiptId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_in_warehouse SET 	
+			type = #{type},
+			name = #{name},
+			specifications = #{specifications},
+			model = #{model},
+			count = #{count},
+			cost = #{cost},
+			account_number = #{accountNumber},
+			purchaser = #{purchaser},
+			purchase_project = #{purchaseProject},
+			manufacturer = #{manufacturer},
+			in_date = #{inDate},
+			acceptance_results = #{acceptanceResults},
+			charger = #{charger},
+			location = #{location},
+			contract_id = #{contractId},
+			warehouse_receipt_id = #{warehouseReceiptId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_in_warehouse
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

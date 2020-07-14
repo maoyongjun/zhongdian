@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.contractpic.DevContractPicDao">
+    
+	<sql id="devContractPicColumns">
+		a.id AS "id",
+		a.picpath AS "picpath",
+		a.picname AS "picname",
+		a.orgname AS "orgname",
+		a.contractid AS "contractid"
+	</sql>
+	
+	<sql id="devContractPicJoins">
+	</sql>
+    
+	<select id="get" resultType="DevContractPic">
+		SELECT 
+			<include refid="devContractPicColumns"/>
+		FROM dev_contract_pic a
+		<include refid="devContractPicJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevContractPic">
+		SELECT 
+			<include refid="devContractPicColumns"/>
+		FROM dev_contract_pic a
+		<include refid="devContractPicJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="picpath != null and picpath != ''">
+				AND a.picpath = #{picpath}
+			</if>
+			<if test="picname != null and picname != ''">
+				AND a.picname = #{picname}
+			</if>
+			<if test="orgname != null and orgname != ''">
+				AND a.orgname = #{orgname}
+			</if>
+			<if test="contractid != null and contractid != ''">
+				AND a.contractid = #{contractid}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevContractPic">
+		SELECT 
+			<include refid="devContractPicColumns"/>
+		FROM dev_contract_pic a
+		<include refid="devContractPicJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_contract_pic(
+			id,
+			picpath,
+			picname,
+			orgname,
+			contractid
+		) VALUES (
+			#{id},
+			#{picpath},
+			#{picname},
+			#{orgname},
+			#{contractid}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_contract_pic SET 	
+			picpath = #{picpath},
+			picname = #{picname},
+			orgname = #{orgname},
+			contractid = #{contractid}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_contract_pic
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.pj.dao.eval.EvalDao">
+    
+	<sql id="pjValueDetailsColumns">
+
+	</sql>
+
+	<sql id="pjValueDetailsJoins">
+
+	</sql>
+
+	<select id="getEvalDetailsListByRaterbyId" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.EvalDetails">
+
+		SELECT cate.`name` as 'cate_name', d.`name` as 'details_name',d.score,CAST(avg(c.real_score)AS DECIMAL(10,2))AS 'real_score',s.`name` as 'rater_name',cate.id as 'cate_id',c.value_detail_id, s.id as 'rater_id',p.coefficient
+		from pj_prod_child c
+		LEFT JOIN pj_value_details d on c.value_detail_id=d.id
+		LEFT JOIN pj_value_category cate on d.cate_id=cate.id
+		LEFT JOIN pj_prod_parent p on p.id=c.parent_id
+		LEFT JOIN sys_user s on s.id = p.rater_id
+		WHERE p.raterby_id = #{raterbyId}
+
+		<if test="beginDate != null and beginDate != ''">
+			AND p.create_date >= #{beginDate}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND  #{endDate} >= p.create_date
+		</if>
+
+		GROUP BY cate_name,details_name,score,rater_name,cate_id,value_detail_id,rater_id,p.coefficient
+		ORDER BY cate.id asc, p.coefficient desc, s.id, c.value_detail_id + 0
+
+	</select>
+
+	<select id="getEvalDetailsRaterListByRaterId" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.EvalDetailsRater">
+		SELECT cate.`name` as 'cate_name', d.`name` as 'details_name', s.`name` as 'raterby_name',
+		CAST(avg(c.real_score)AS DECIMAL(10,2))AS 'real_score', cate.id as 'cate_id',
+		c.value_detail_id, p.raterby_id, avg(p.coefficient) as 'coefficient'
+		from pj_prod_child c
+		LEFT JOIN pj_prod_parent p on c.parent_id = p.id
+		LEFT JOIN pj_value_details d on c.value_detail_id = d.id
+		LEFT JOIN pj_value_category cate on d.cate_id = cate.id
+		LEFT JOIN sys_user s on p.raterby_id = s.id
+		WHERE p.rater_id = #{raterId}
+		<if test="beginDate != null and beginDate != ''">
+			AND p.create_date >= #{beginDate}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND  #{endDate} >= p.create_date
+		</if>
+		GROUP BY cate_name,details_name,score,raterby_name,cate_id,value_detail_id,raterby_id
+		ORDER BY cate.id asc, s.id desc, s.id, c.value_detail_id+0
+
+	</select>
+
+	<select id="getsummaryList" resultType="com.thinkgem.jeesite.modules.pj.entity.summary.PjRaterbySummary">
+		SELECT p.raterby_id as'raterby_id',p.rater_id as 'rater_id',p.coefficient as'reter_coefficient',d.cate_id,SUM(c.real_score) as 'scores',p.create_date as 'createDate'
+        FROM pj_prod_parent p
+        LEFT JOIN pj_prod_child c on p.id=c.parent_id
+        LEFT JOIN pj_value_details d ON d.id=c.value_detail_id
+        where c.parent_id=#{parentId}
+        GROUP BY d.cate_id
+	</select>
+
+	<select id="getSummaryVoList" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.SummaryVo">
+		SELECT a.raterby_id,a.rater_id,a.cate_id,date_format(a.create_date,'%Y-%m-01') as 'createDate',
+		avg(a.scores) as 'scores', u1.`name` as 'raterName', u2.`name` as 'raterbyName', avg(a.reter_coefficient) as 'reterCoefficient'
+		FROM pj_raterby_summary a
+		LEFT JOIN sys_user u1 on u1.id=a.rater_id
+		LEFT JOIN sys_user u2 on u2.id=a.raterby_id
+		where a.raterby_id=#{raterbyId} and date_format(a.create_date,'%Y-%m')=date_format(#{createDate},'%Y-%m')
+		<if test="cateId != null and cateId != ''">
+			and a.cate_id = #{cateId}
+		</if>
+
+		GROUP BY a.raterby_id,a.rater_id,a.cate_id,date_format(a.create_date,'%Y-%m-01')
+
+	</select>
+
+<!--	返回担当值的评价人列表-->
+	<select id="getRaterMoneySummaryVoList" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.SummaryVo">
+		SELECT DISTINCT a.rater_id,avg(a.reter_coefficient) as 'reter_coefficient', u.name as 'rater_name'
+		FROM pj_raterby_summary a
+		LEFT JOIN sys_user u on a.rater_id=u.id
+		WHERE EXISTS(SELECT cate_id FROM pj_raterby_summary WHERE rater_id=a.rater_id  AND cate_id='2') AND
+		EXISTS(SELECT cate_id FROM pj_raterby_summary WHERE rater_id=a.rater_id  AND cate_id='5')
+		AND a.cate_id in('2','5')
+		<if test="beginDate != null and beginDate != ''">
+			AND a.create_date >= #{beginDate}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND #{endDate} >= a.create_date
+		</if>
+		group by a.rater_id
+	</select>
+
+<!--	返回担当值被评价人列表-->
+	<select id="getRaterByMoneySummaryVoList" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.SummaryVo">
+		SELECT DISTINCT a.raterby_id,u.name as 'raterby_name'
+		from pj_raterby_summary a
+		LEFT JOIN sys_user u on a.raterby_id=u.id
+		WHERE  EXISTS(SELECT cate_id FROM pj_raterby_summary WHERE rater_id=a.rater_id  AND cate_id='2') AND
+		EXISTS(SELECT cate_id FROM pj_raterby_summary WHERE rater_id=a.rater_id  AND cate_id='5')
+		AND a.cate_id in('2','5')
+		<if test="beginDate != null and beginDate != ''">
+			AND a.create_date >= #{beginDate}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND  #{endDate} >= a.create_date
+		</if>
+	</select>
+
+<!--	返回XX被评价人的评价人担当打分值-->
+	<select id="getRaterScoreMoneySummaryVoList" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.SummaryVo">
+		SELECT T.rater_id, rater_name, avg(reter_coefficient) as 'reter_coefficient', sum(T.scores) 'scores' from (
+			SELECT a.rater_id, a.cate_id, avg(a.reter_coefficient) 'reter_coefficient',
+			    avg(a.scores) 'scores', u.name as 'rater_name'
+			FROM pj_raterby_summary a
+            LEFT JOIN sys_user u on a.rater_id=u.id
+			where EXISTS(SELECT cate_id FROM pj_raterby_summary WHERE rater_id=a.rater_id  AND cate_id='2') AND
+			EXISTS(SELECT cate_id FROM pj_raterby_summary WHERE rater_id=a.rater_id  AND cate_id='5')
+			<if test="beginDate != null and beginDate != ''">
+				AND a.create_date >= #{beginDate}
+			</if>
+			<if test="endDate != null and endDate != ''">
+				AND  #{endDate} >= a.create_date
+			</if>
+			and a.cate_id in (2,5) and a.raterby_id=#{raterbyId}
+			GROUP BY a.rater_id,a.cate_id) T
+		GROUP BY T.rater_id
+	</select>
+
+
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.writeoffdetail.DevWriteOffDetailDao">
+    
+	<sql id="devWriteOffDetailColumns">
+		a.id AS "id",
+		a.devid AS "devid",
+		a.devname AS "devname",
+		a.writeoff_id AS "writeoffId",
+		a.projectid AS "projectid",
+		a.projectname AS "projectname"
+	</sql>
+	
+	<sql id="devWriteOffDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="DevWriteOffDetail">
+		SELECT 
+			<include refid="devWriteOffDetailColumns"/>
+		FROM dev_write_off_detail a
+		<include refid="devWriteOffDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevWriteOffDetail">
+		SELECT 
+			<include refid="devWriteOffDetailColumns"/>
+		FROM dev_write_off_detail a
+		<include refid="devWriteOffDetailJoins"/>
+		<where>
+			
+			<if test="devid != null and devid != ''">
+				AND a.devid = #{devid}
+			</if>
+			<if test="devname != null and devname != ''">
+				AND a.devname = #{devname}
+			</if>
+			<if test="writeoffId != null and writeoffId != ''">
+				AND a.writeoff_id = #{writeoffId}
+			</if>
+			<if test="projectid != null and projectid != ''">
+				AND a.projectid = #{projectid}
+			</if>
+			<if test="projectname != null and projectname != ''">
+				AND a.projectname = #{projectname}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevWriteOffDetail">
+		SELECT 
+			<include refid="devWriteOffDetailColumns"/>
+		FROM dev_write_off_detail a
+		<include refid="devWriteOffDetailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_write_off_detail(
+			id,
+			devid,
+			devname,
+			writeoff_id,
+			projectid,
+			projectname
+		) VALUES (
+			#{id},
+			#{devid},
+			#{devname},
+			#{writeoffId},
+			#{projectid},
+			#{projectname}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_write_off_detail SET 	
+			devid = #{devid},
+			devname = #{devname},
+			writeoff_id = #{writeoffId},
+			projectid = #{projectid},
+			projectname = #{projectname}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_write_off_detail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.pj.dao.category.PjValueCategoryDao">
+    
+	<sql id="pjValueCategoryColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.statu AS "statu",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.is_merge AS "isMerge",
+		a.merge_item AS "mergeItem",
+		a.note1 AS "note1",
+		a.note2 AS "note2",
+		a.note3 AS "note3",
+		a.note4 AS "note4"
+	</sql>
+	
+	<sql id="pjValueCategoryJoins">
+	</sql>
+    
+	<select id="get" resultType="PjValueCategory">
+		SELECT 
+			<include refid="pjValueCategoryColumns"/>
+		FROM pj_value_category a
+		<include refid="pjValueCategoryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="PjValueCategory">
+		SELECT 
+			<include refid="pjValueCategoryColumns"/>
+		FROM pj_value_category a
+		<include refid="pjValueCategoryJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+
+			<if test="statu != null and statu != ''">
+				AND a.statu = #{statu}
+			</if>
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="PjValueCategory">
+		SELECT 
+			<include refid="pjValueCategoryColumns"/>
+		FROM pj_value_category a
+		<include refid="pjValueCategoryJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO pj_value_category(
+			id,
+			name,
+			statu,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			is_merge,
+			merge_item,
+			note1,
+			note2,
+			note3,
+			note4
+		) VALUES (
+			#{id},
+			#{name},
+			#{statu},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{isMerge},
+			#{mergeItem},
+			#{note1},
+			#{note2},
+			#{note3},
+			#{note4}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE pj_value_category SET 	
+			name = #{name},
+			statu = #{statu},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			is_merge = #{isMerge},
+			merge_item = #{mergeItem},
+			note1 = #{note1},
+			note2 = #{note2},
+			note3 = #{note3},
+			note4 = #{note4}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM pj_value_category
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
