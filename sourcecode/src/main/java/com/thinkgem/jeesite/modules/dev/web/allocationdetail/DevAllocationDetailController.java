@@ -104,7 +104,7 @@ public class DevAllocationDetailController extends BaseController {
 			addMessage(redirectAttributes, "设备已添加，请勿重复添加！");
 
 			redirectAttributes.addAttribute("id",devAllocationDetail.getAllocationId());
-			//设备添加郭
+			//设备添加过
 			return "redirect:"+Global.getAdminPath()+"/dev/allocation/devAllocation/formDetail";
 		}
 

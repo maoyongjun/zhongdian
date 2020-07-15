@@ -28,7 +28,7 @@
 <body>
 	<ul class="nav nav-tabs">
 <%--		<li><a href="${ctx}/dev/warehouse/devInWarehouse/">在库设备列表</a></li>--%>
-		<li class="active"><a href="${ctx}/dev/warehouse/devInWarehouse/form?id=${devInWarehouse.id}">在库设备<shiro:hasPermission name="dev:warehouse:devInWarehouse:edit">${not empty devInWarehouse.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:warehouse:devInWarehouse:edit">查看</shiro:lacksPermission></a></li>
+		<li class="active"><a href="#">在库设备<shiro:hasPermission name="dev:warehouse:devInWarehouse:edit">${not empty devInWarehouse.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:warehouse:devInWarehouse:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="devInWarehouse" action="${ctx}/dev/warehouse/devInWarehouse/saveRedirect?type=${devInWarehouse.type}" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

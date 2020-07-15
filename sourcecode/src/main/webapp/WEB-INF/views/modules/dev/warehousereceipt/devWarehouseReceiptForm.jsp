@@ -65,7 +65,7 @@
 				<form:input path="approver" htmlEscape="false" maxlength="200" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" style="display: none">
 			<label class="control-label">入库单类型：</label>
 			<div class="controls">
 				<form:select path="type" class="input-xlarge ">

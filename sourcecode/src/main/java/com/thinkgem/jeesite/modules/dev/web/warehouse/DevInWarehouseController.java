@@ -6,6 +6,9 @@ package com.thinkgem.jeesite.modules.dev.web.warehouse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.dev.entity.warehousereceipt.DevWarehouseReceipt;
+import com.thinkgem.jeesite.modules.dev.service.warehousereceipt.DevWarehouseReceiptService;
+import com.thinkgem.jeesite.modules.util.BeanUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +25,9 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevInWarehouse;
 import com.thinkgem.jeesite.modules.dev.service.warehouse.DevInWarehouseService;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 在库设备Controller
  * @author myj
@@ -33,6 +39,8 @@ public class DevInWarehouseController extends BaseController {
 
 	@Autowired
 	private DevInWarehouseService devInWarehouseService;
+	@Autowired
+	private DevWarehouseReceiptService devWarehouseReceiptService;
 	
 	@ModelAttribute
 	public DevInWarehouse get(@RequestParam(required=false) String id) {
@@ -62,6 +70,15 @@ public class DevInWarehouseController extends BaseController {
 		return "modules/dev/warehouse/devInWarehouseForm";
 	}
 
+
+
+	@RequiresPermissions("dev:warehouse:devInWarehouse:view")
+	@RequestMapping(value = "formRedirect")
+	public String formRedirect(DevInWarehouse devInWarehouse, Model model) {
+		model.addAttribute("devInWarehouse", devInWarehouse);
+		return "modules/dev/warehouse/devInWarehouseFormRedirect";
+	}
+
 	@RequiresPermissions("dev:warehouse:devInWarehouse:edit")
 	@RequestMapping(value = "save")
 	public String save(DevInWarehouse devInWarehouse, Model model, RedirectAttributes redirectAttributes) {
@@ -72,6 +89,30 @@ public class DevInWarehouseController extends BaseController {
 		addMessage(redirectAttributes, "保存在库设备成功");
 		return "redirect:"+Global.getAdminPath()+"/dev/warehouse/devInWarehouse/?repage&type="+devInWarehouse.getType();
 	}
+
+	@RequiresPermissions("dev:warehouse:devInWarehouse:edit")
+	@RequestMapping(value = "saveRedirect")
+	public String saveRedirect(HttpServletRequest request, HttpServletResponse response,DevInWarehouse devInWarehouse, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, devInWarehouse)){
+			return form(devInWarehouse, model);
+		}
+		devInWarehouseService.save(devInWarehouse);
+		addMessage(redirectAttributes, "保存在库设备成功");
+		DevWarehouseReceipt devWarehouseReceiptCondition = new DevWarehouseReceipt();
+		devWarehouseReceiptCondition.setId(devInWarehouse.getWarehouseReceiptId());
+		List<DevWarehouseReceipt> list = devWarehouseReceiptService.findList(devWarehouseReceiptCondition);
+		if(list.size()>0){
+			model.addAttribute("devWarehouseReceipt", list.get(0));
+		}
+		DevInWarehouse devInWarehouseCondition = new DevInWarehouse();
+		devInWarehouseCondition.setWarehouseReceiptId(devInWarehouse.getWarehouseReceiptId());
+		devInWarehouseCondition.setType(devInWarehouse.getType());
+		Page<DevInWarehouse> page = devInWarehouseService.findPage(new Page<DevInWarehouse>(request, response), devInWarehouseCondition);
+		model.addAttribute("page", page);
+		return "modules/dev/warehousereceipt/devWarehouseReceiptFormOtherDetail";
+	}
+
+
 	
 	@RequiresPermissions("dev:warehouse:devInWarehouse:edit")
 	@RequestMapping(value = "delete")
@@ -79,6 +120,25 @@ public class DevInWarehouseController extends BaseController {
 		devInWarehouseService.delete(devInWarehouse);
 		addMessage(redirectAttributes, "删除在库设备成功");
 		return "redirect:"+Global.getAdminPath()+"/dev/warehouse/devInWarehouse/?repage";
+	}
+
+	@RequiresPermissions("dev:warehouse:devInWarehouse:edit")
+	@RequestMapping(value = "deleteRedirect")
+	public String deleteRedirect(Model model,HttpServletRequest request, HttpServletResponse response,DevInWarehouse devInWarehouse, RedirectAttributes redirectAttributes) {
+		devInWarehouseService.delete(devInWarehouse);
+		addMessage(redirectAttributes, "删除在库设备成功");
+		DevWarehouseReceipt devWarehouseReceiptCondition = new DevWarehouseReceipt();
+		devWarehouseReceiptCondition.setId(devInWarehouse.getWarehouseReceiptId());
+		List<DevWarehouseReceipt> list = devWarehouseReceiptService.findList(devWarehouseReceiptCondition);
+		if(list.size()>0){
+			model.addAttribute("devWarehouseReceipt", list.get(0));
+		}
+		DevInWarehouse devInWarehouseCondition = new DevInWarehouse();
+		devInWarehouseCondition.setWarehouseReceiptId(devInWarehouse.getWarehouseReceiptId());
+		devInWarehouseCondition.setType(devInWarehouse.getType());
+		Page<DevInWarehouse> page = devInWarehouseService.findPage(new Page<DevInWarehouse>(request, response), devInWarehouseCondition);
+		model.addAttribute("page", page);
+		return "modules/dev/warehousereceipt/devWarehouseReceiptFormOtherDetail";
 	}
 
 }

@@ -8,8 +8,10 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.dev.entity.vehicle.DevVehicle;
+import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevInWarehouse;
 import com.thinkgem.jeesite.modules.dev.entity.warehousereceipt.DevWarehouseReceipt;
 import com.thinkgem.jeesite.modules.dev.service.vehicle.DevVehicleService;
+import com.thinkgem.jeesite.modules.dev.service.warehouse.DevInWarehouseService;
 import com.thinkgem.jeesite.modules.dev.service.warehousereceipt.DevWarehouseReceiptService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,9 @@ public class DevWarehouseReceiptController extends BaseController {
 
 	@Autowired
 	private DevWarehouseReceiptService devWarehouseReceiptService;
+
+	@Autowired
+	private DevInWarehouseService devInWarehouseService;
 	
 	@ModelAttribute
 	public DevWarehouseReceipt get(@RequestParam(required=false) String id) {
@@ -75,6 +80,29 @@ public class DevWarehouseReceiptController extends BaseController {
 		return "modules/dev/warehousereceipt/devWarehouseReceiptFormDetail";
 	}
 
+	/**
+	 * 其他设备入库单编辑
+	 * @param devInWarehouse
+	 * @param request
+	 * @param response
+	 * @param devWarehouseReceipt
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("dev:warehousereceipt:devWarehouseReceipt:edit")
+	@RequestMapping(value = "formOtherDetail")
+	public String formOtherDetail(DevInWarehouse devInWarehouse,HttpServletRequest request, HttpServletResponse response, DevWarehouseReceipt devWarehouseReceipt, Model model) {
+		model.addAttribute("devWarehouseReceipt", devWarehouseReceipt);
+		DevInWarehouse devInWarehouseCondition = new DevInWarehouse();
+		devInWarehouseCondition.setWarehouseReceiptId(devWarehouseReceipt.getId());
+		devInWarehouseCondition.setType(devWarehouseReceipt.getType());
+		Page<DevInWarehouse> page = devInWarehouseService.findPage(new Page<DevInWarehouse>(request, response), devInWarehouseCondition);
+		model.addAttribute("page", page);
+		return "modules/dev/warehousereceipt/devWarehouseReceiptFormOtherDetail";
+	}
+
+
+
 	@RequiresPermissions("dev:warehousereceipt:devWarehouseReceipt:edit")
 	@RequestMapping(value = "save")
 	public String save(DevWarehouseReceipt devWarehouseReceipt, Model model, RedirectAttributes redirectAttributes) {
@@ -83,7 +111,7 @@ public class DevWarehouseReceiptController extends BaseController {
 		}
 		devWarehouseReceiptService.save(devWarehouseReceipt);
 		addMessage(redirectAttributes, "保存入库单成功");
-		return "redirect:"+Global.getAdminPath()+"/dev/warehousereceipt/devWarehouseReceipt/?repage";
+		return "redirect:"+Global.getAdminPath()+"/dev/warehousereceipt/devWarehouseReceipt/?repage&type="+devWarehouseReceipt.getType();
 	}
 	
 	@RequiresPermissions("dev:warehousereceipt:devWarehouseReceipt:edit")
@@ -91,7 +119,7 @@ public class DevWarehouseReceiptController extends BaseController {
 	public String delete(DevWarehouseReceipt devWarehouseReceipt, RedirectAttributes redirectAttributes) {
 		devWarehouseReceiptService.delete(devWarehouseReceipt);
 		addMessage(redirectAttributes, "删除入库单成功");
-		return "redirect:"+Global.getAdminPath()+"/dev/warehousereceipt/devWarehouseReceipt/?repage";
+		return "redirect:"+Global.getAdminPath()+"/dev/warehousereceipt/devWarehouseReceipt/?repage&type="+devWarehouseReceipt.getType();
 	}
 
 }

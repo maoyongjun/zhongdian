@@ -19,9 +19,9 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/">入库单列表</a></li>
-		<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit"><li><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/form">入库单添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit"><li><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/form?type=${devWarehouseReceipt.type}">入库单添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="devWarehouseReceipt" action="${ctx}/dev/warehousereceipt/devWarehouseReceipt/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="devWarehouseReceipt" action="${ctx}/dev/warehousereceipt/devWarehouseReceipt/?type=${devWarehouseReceipt.type}" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -54,7 +54,13 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="devWarehouseReceipt">
 			<tr>
-				<td><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/formDetail?id=${devWarehouseReceipt.id}">
+				<td>
+					<c:if test="${devWarehouseReceipt.type=='A4'}">
+						<a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/formDetail?id=${devWarehouseReceipt.id}&type=${devWarehouseReceipt.type}">
+					</c:if>
+					<c:if test="${devWarehouseReceipt.type!='A4'}">
+						<a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/formOtherDetail?id=${devWarehouseReceipt.id}&type=${devWarehouseReceipt.type}">
+					</c:if>
 					${devWarehouseReceipt.name}
 				</a></td>
 				<td>
@@ -73,8 +79,13 @@
 					${fns:getDictLabel(devWarehouseReceipt.type, 'dev_type', '')}
 				</td>
 				<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit"><td>
-    				<a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/formDetail?id=${devWarehouseReceipt.id}">修改</a>
-					<a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/delete?id=${devWarehouseReceipt.id}" onclick="return confirmx('确认要删除该入库单吗？', this.href)">删除</a>
+					<c:if test="${devWarehouseReceipt.type=='A4'}">
+						<a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/formDetail?id=${devWarehouseReceipt.id}&type=${devWarehouseReceipt.type}">修改</a>
+					</c:if>
+					<c:if test="${devWarehouseReceipt.type!='A4'}">
+						<a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/formOtherDetail?id=${devWarehouseReceipt.id}&type=${devWarehouseReceipt.type}">修改</a>
+					</c:if>
+					<a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/delete?id=${devWarehouseReceipt.id}&type=${devWarehouseReceipt.type}" onclick="return confirmx('确认要删除该入库单吗？', this.href)">删除</a>
 					<a href="#">导出</a>
 				</td></shiro:hasPermission>
 			</tr>
