@@ -16,7 +16,7 @@ import com.thinkgem.jeesite.modules.dev.dao.vehicle.DevVehicleDao;
 /**
  * 车辆管理Service
  * @author myj
- * @version 2020-07-07
+ * @version 2020-07-15
  */
 @Service
 @Transactional(readOnly = true)

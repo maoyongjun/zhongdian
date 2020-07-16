@@ -29,7 +29,7 @@
 				<form:input path="name" htmlEscape="false" maxlength="300" class="input-medium"/>
 			</li>
 			<li><label>车辆类型：</label>
-				<form:select path="type" class="input-medium">
+				<form:select path="vechicleType" class="input-medium">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('vehicle_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
@@ -46,9 +46,6 @@
 					</c:if>
 
 				</form:select>
-			</li>
-			<li><label>入库单id：</label>
-				<form:input path="warehouseReceiptId" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
@@ -80,7 +77,7 @@
 					${devVehicle.name}
 				</a></td>
 				<td>
-					${fns:getDictLabel(devVehicle.type, 'vehicle_type', '')}
+					${fns:getDictLabel(devVehicle.vechicleType, 'vehicle_type', '')}
 				</td>
 				<td>
 					${devVehicle.location}
@@ -110,6 +107,9 @@
 				</td>
 				<td>
 					${devVehicle.projectName}
+				</td>
+				<td>
+						${devVehicle.warehouseReceiptId}
 				</td>
 				<shiro:hasPermission name="dev:vehicle:devVehicle:edit"><td>
 					<c:if test="${devStatus==1}">

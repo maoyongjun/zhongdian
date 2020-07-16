@@ -29,8 +29,7 @@
 				<form:input path="name" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
 			<li><label>入库单类型：</label>
-				<form:select path="type" class="input-medium">
-					<form:option value="" label=""/>
+				<form:select path="type" class="input-medium" disabled="true">
 					<form:options items="${fns:getDictList('dev_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>

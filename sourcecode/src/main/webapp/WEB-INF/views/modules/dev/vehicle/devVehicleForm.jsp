@@ -41,7 +41,7 @@
 		<div class="control-group">
 			<label class="control-label">车辆类型：</label>
 			<div class="controls">
-				<form:select path="type" class="input-xlarge ">
+				<form:select path="vechicleType" class="input-xlarge ">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('vehicle_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>

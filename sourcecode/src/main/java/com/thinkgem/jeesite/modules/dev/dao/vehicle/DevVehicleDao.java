@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.dev.entity.vehicle.DevVehicle;
 /**
  * 车辆管理DAO接口
  * @author myj
- * @version 2020-07-07
+ * @version 2020-07-15
  */
 @MyBatisDao
 public interface DevVehicleDao extends CrudDao<DevVehicle> {

@@ -27,7 +27,7 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/">入库单列表</a></li>
+		<li><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/?type=${devWarehouseReceipt.type}">入库单列表</a></li>
 		<li class="active"><a href="${ctx}/dev/warehousereceipt/devWarehouseReceipt/form?id=${devWarehouseReceipt.id}">入库单<shiro:hasPermission name="dev:warehousereceipt:devWarehouseReceipt:edit">${not empty devWarehouseReceipt.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:warehousereceipt:devWarehouseReceipt:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="devWarehouseReceipt" action="${ctx}/dev/warehousereceipt/devWarehouseReceipt/save" method="post" class="form-horizontal">

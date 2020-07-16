@@ -5,7 +5,7 @@
 	<sql id="devVehicleColumns">
 		a.id AS "id",
 		a.name AS "name",
-		a.type AS "type",
+		a.vechicle_type AS "vechicleType",
 		a.location AS "location",
 		a.specifications AS "specifications",
 		a.model AS "model",
@@ -42,8 +42,8 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
-			<if test="type != null and type != ''">
-				AND a.type = #{type}
+			<if test="vechicleType != null and vechicleType != ''">
+				AND a.vechicle_type = #{vechicleType}
 			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
@@ -85,7 +85,7 @@
 		INSERT INTO dev_vehicle(
 			id,
 			name,
-			type,
+			vechicle_type,
 			location,
 			specifications,
 			model,
@@ -99,7 +99,7 @@
 		) VALUES (
 			#{id},
 			#{name},
-			#{type},
+			#{vechicleType},
 			#{location},
 			#{specifications},
 			#{model},
@@ -116,7 +116,7 @@
 	<update id="update">
 		UPDATE dev_vehicle SET 	
 			name = #{name},
-			type = #{type},
+			vechicle_type = #{vechicleType},
 			location = #{location},
 			specifications = #{specifications},
 			model = #{model},

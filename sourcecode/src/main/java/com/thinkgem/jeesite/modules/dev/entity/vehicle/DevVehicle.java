@@ -12,13 +12,13 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 车辆管理Entity
  * @author myj
- * @version 2020-07-07
+ * @version 2020-07-15
  */
 public class DevVehicle extends DataEntity<DevVehicle> {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;		// 车辆名称
-	private Integer type;		// 车辆类型
+	private Integer vechicleType;		// 车辆类型
 	private String location;		// 车辆所在地
 	private String specifications;		// 设备规格
 	private String model;		// 设备型号
@@ -47,12 +47,12 @@ public class DevVehicle extends DataEntity<DevVehicle> {
 		this.name = name;
 	}
 	
-	public Integer getType() {
-		return type;
+	public Integer getVechicleType() {
+		return vechicleType;
 	}
 
-	public void setType(Integer type) {
-		this.type = type;
+	public void setVechicleType(Integer vechicleType) {
+		this.vechicleType = vechicleType;
 	}
 	
 	@Length(min=0, max=500, message="车辆所在地长度必须介于 0 和 500 之间")

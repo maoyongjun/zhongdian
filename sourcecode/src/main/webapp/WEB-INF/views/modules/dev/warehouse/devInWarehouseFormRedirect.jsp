@@ -85,8 +85,12 @@
 		</div>
 		<div class="control-group">
 			<label class="control-label">采购项目：</label>
+<%--			<div class="controls">--%>
+<%--				<form:input path="purchaseProject" htmlEscape="false" maxlength="200" class="input-xlarge "/>--%>
+<%--			</div>--%>
 			<div class="controls">
-				<form:input path="purchaseProject" htmlEscape="false" maxlength="200" class="input-xlarge "/>
+				<sys:treeselect id="projectId" name="projectId" value="${devVehicle.projectId}" labelName="projectName" labelValue="${devVehicle.projectName}"
+								title="项目名称" url="/dev/material/devMaterialProject/treeData"  cssClass="" allowClear="true"/>
 			</div>
 		</div>
 		<div class="control-group">

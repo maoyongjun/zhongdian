@@ -42,12 +42,6 @@
 			<li><label>设备所在地：</label>
 				<form:input path="location" htmlEscape="false" maxlength="500" class="input-medium"/>
 			</li>
-			<li><label>合同id：</label>
-				<form:input path="contractId" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
-			<li><label>入库单id：</label>
-				<form:input path="warehouseReceiptId" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>

@@ -114,7 +114,7 @@
 							${devVehicle.name}
 					</a></td>
 					<td>
-							${fns:getDictLabel(devVehicle.type, 'vehicle_type', '')}
+							${fns:getDictLabel(devVehicle.vechicleType, 'vehicle_type', '')}
 					</td>
 					<td>
 							${devVehicle.location}
