@@ -83,14 +83,17 @@
 				<form:input path="purchaser" htmlEscape="false" maxlength="200" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" >
 			<label class="control-label">采购项目：</label>
-<%--			<div class="controls">--%>
-<%--				<form:input path="purchaseProject" htmlEscape="false" maxlength="200" class="input-xlarge "/>--%>
-<%--			</div>--%>
-			<div class="controls">
-				<sys:treeselect id="projectId" name="projectId" value="${devVehicle.projectId}" labelName="projectName" labelValue="${devVehicle.projectName}"
-								title="项目名称" url="/dev/material/devMaterialProject/treeData"  cssClass="" allowClear="true"/>
+			<div class="controls" >
+				<c:if test="${not empty devInWarehouse.id}">
+					<form:input path="purchaseProject" htmlEscape="false" maxlength="200" class="input-xlarge " disabled="true"/>
+				</c:if>
+				<c:if test="${empty devInWarehouse.id}">
+
+					<sys:treeselect id="purchaseProjectId" name="purchaseProjectId" value="${devInWarehouse.purchaseProjectId}" labelName="purchaseProject" labelValue="${devInWarehouse.purchaseProject}"
+									title="项目名称" url="/dev/material/devMaterialProject/treeData"  cssClass="" allowClear="true" />
+				</c:if>
 			</div>
 		</div>
 		<div class="control-group">
@@ -131,7 +134,7 @@
 				<form:input path="contractId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" style="display: none">
 			<label class="control-label">入库单id：</label>
 			<div class="controls">
 				<form:input path="warehouseReceiptId" htmlEscape="false" maxlength="64" class="input-xlarge "/>

@@ -13,6 +13,7 @@
 		a.account_number AS "accountNumber",
 		a.purchaser AS "purchaser",
 		a.purchase_project AS "purchaseProject",
+		a.purchase_project_id AS "purchaseProjectId",
 		a.manufacturer AS "manufacturer",
 		a.in_date AS "inDate",
 		a.acceptance_results AS "acceptanceResults",
@@ -54,6 +55,9 @@
 			</if>
 			<if test="purchaseProject != null and purchaseProject != ''">
 				AND a.purchase_project = #{purchaseProject}
+			</if>
+			<if test="purchaseProjectId != null and purchaseProjectId != ''">
+				AND a.purchase_project_id = #{purchaseProjectId}
 			</if>
 			<if test="location != null and location != ''">
 				AND a.location = #{location}
@@ -103,6 +107,7 @@
 			account_number,
 			purchaser,
 			purchase_project,
+			purchase_project_id,
 			manufacturer,
 			in_date,
 			acceptance_results,
@@ -121,6 +126,7 @@
 			#{accountNumber},
 			#{purchaser},
 			#{purchaseProject},
+			#{purchaseProjectId},
 			#{manufacturer},
 			#{inDate},
 			#{acceptanceResults},
@@ -142,6 +148,7 @@
 			account_number = #{accountNumber},
 			purchaser = #{purchaser},
 			purchase_project = #{purchaseProject},
+			purchase_project_id = #{purchaseProjectId},
 			manufacturer = #{manufacturer},
 			in_date = #{inDate},
 			acceptance_results = #{acceptanceResults},

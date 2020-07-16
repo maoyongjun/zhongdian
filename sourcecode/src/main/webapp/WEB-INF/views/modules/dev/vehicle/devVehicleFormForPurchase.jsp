@@ -90,8 +90,7 @@
 		<div class="control-group">
 			<label class="control-label">状态：</label>
 			<div class="controls">
-				<form:select path="status" class="input-xlarge ">
-					<form:option value="" label=""/>
+				<form:select path="status" class="input-xlarge " disabled="true">
 					<form:options items="${fns:getDictList('dev_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
@@ -99,8 +98,14 @@
 		<div class="control-group">
 			<label class="control-label">所属项目：</label>
 			<div class="controls">
-				<sys:treeselect id="projectId" name="projectId" value="${devVehicle.projectId}" labelName="projectName" labelValue="${devVehicle.projectName}"
-								title="项目名称" url="/dev/material/devMaterialProject/treeData"  cssClass="" allowClear="true"/>
+				<c:if test="${not empty devVehicle.id}">
+					<form:input path="projectName" htmlEscape="false" maxlength="255" class="input-xlarge " disabled="true"/>
+				</c:if>
+				<c:if test="${empty devVehicle.id}">
+					<sys:treeselect id="projectId" name="projectId" value="${devVehicle.projectId}" labelName="projectName" labelValue="${devVehicle.projectName}"
+									title="项目名称" url="/dev/material/devMaterialProject/treeData"  cssClass="" allowClear="true"/>
+				</c:if>
+
 			</div>
 		</div>
 		<div class="control-group">

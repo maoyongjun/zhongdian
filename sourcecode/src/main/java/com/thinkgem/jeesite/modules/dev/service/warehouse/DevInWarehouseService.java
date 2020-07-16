@@ -16,7 +16,7 @@ import com.thinkgem.jeesite.modules.dev.dao.warehouse.DevInWarehouseDao;
 /**
  * 在库设备Service
  * @author myj
- * @version 2020-07-13
+ * @version 2020-07-16
  */
 @Service
 @Transactional(readOnly = true)

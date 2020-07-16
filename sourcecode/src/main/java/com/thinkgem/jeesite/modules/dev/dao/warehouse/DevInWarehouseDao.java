@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevInWarehouse;
 /**
  * 在库设备DAO接口
  * @author myj
- * @version 2020-07-13
+ * @version 2020-07-16
  */
 @MyBatisDao
 public interface DevInWarehouseDao extends CrudDao<DevInWarehouse> {

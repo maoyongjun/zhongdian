@@ -12,7 +12,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 在库设备Entity
  * @author myj
- * @version 2020-07-13
+ * @version 2020-07-16
  */
 public class DevInWarehouse extends DataEntity<DevInWarehouse> {
 	
@@ -26,6 +26,7 @@ public class DevInWarehouse extends DataEntity<DevInWarehouse> {
 	private String accountNumber;		// 财务记账票号
 	private String purchaser;		// 采购人
 	private String purchaseProject;		// 采购项目
+	private String purchaseProjectId;		// 采购项目id
 	private String manufacturer;		// 生产厂家
 	private Date inDate;		// 进场日期
 	private String acceptanceResults;		// 验收结果
@@ -120,6 +121,15 @@ public class DevInWarehouse extends DataEntity<DevInWarehouse> {
 
 	public void setPurchaseProject(String purchaseProject) {
 		this.purchaseProject = purchaseProject;
+	}
+	
+	@Length(min=0, max=64, message="采购项目id长度必须介于 0 和 64 之间")
+	public String getPurchaseProjectId() {
+		return purchaseProjectId;
+	}
+
+	public void setPurchaseProjectId(String purchaseProjectId) {
+		this.purchaseProjectId = purchaseProjectId;
 	}
 	
 	@Length(min=0, max=200, message="生产厂家长度必须介于 0 和 200 之间")
