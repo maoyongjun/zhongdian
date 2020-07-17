@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.dev.entity.writeoff.DevWriteOff;
 /**
  * 核销单DAO接口
  * @author myj
- * @version 2020-07-09
+ * @version 2020-07-17
  */
 @MyBatisDao
 public interface DevWriteOffDao extends CrudDao<DevWriteOff> {

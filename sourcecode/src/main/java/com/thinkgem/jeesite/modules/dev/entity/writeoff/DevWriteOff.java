@@ -12,7 +12,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 核销单Entity
  * @author myj
- * @version 2020-07-09
+ * @version 2020-07-17
  */
 public class DevWriteOff extends DataEntity<DevWriteOff> {
 	
@@ -25,6 +25,7 @@ public class DevWriteOff extends DataEntity<DevWriteOff> {
 	private Date applicantDate;		// 申请时间
 	private Date reviewerDate;		// 审核时间
 	private Integer status;		// 状态
+	private String devtype;		// 设备类型
 	
 	public DevWriteOff() {
 		super();
@@ -103,6 +104,15 @@ public class DevWriteOff extends DataEntity<DevWriteOff> {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	
+	@Length(min=0, max=300, message="设备类型长度必须介于 0 和 300 之间")
+	public String getDevtype() {
+		return devtype;
+	}
+
+	public void setDevtype(String devtype) {
+		this.devtype = devtype;
 	}
 	
 }

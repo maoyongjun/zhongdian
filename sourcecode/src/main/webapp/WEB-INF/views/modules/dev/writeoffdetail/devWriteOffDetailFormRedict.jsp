@@ -33,15 +33,16 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">设备id：</label>
+			<label class="control-label">设备：</label>
 			<div class="controls">
-				<form:input path="devid" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">设备名称：</label>
-			<div class="controls">
-				<form:input path="devname" htmlEscape="false" maxlength="300" class="input-xlarge "/>
+				<c:if test="${devtype eq 'A4'}">
+					<sys:treeselect id="devid" name="devid" value="${devAllocationDetail.devid}" labelName="devname" labelValue="${devAllocationDetail.devname}"
+									title="设备名称" url="/dev/vehicle/devVehicle/treeData?projectId=${projectId}"  cssClass="" allowClear="true"/>
+				</c:if>
+				<c:if test="${devtype ne 'A4'}">
+					<sys:treeselect id="devid" name="devid" value="${devAllocationDetail.devid}" labelName="devname" labelValue="${devAllocationDetail.devname}"
+									title="设备名称" url="/dev/warehouse/devInWarehouse/treeData?projectId=${projectId}"  cssClass="" allowClear="true"/>
+				</c:if>
 			</div>
 		</div>
 		<div class="control-group" style="display: none">
@@ -50,18 +51,18 @@
 				<form:input path="writeoffId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">项目id：</label>
-			<div class="controls">
-				<form:input path="projectid" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">项目名称：</label>
-			<div class="controls">
-				<form:input path="projectname" htmlEscape="false" maxlength="300" class="input-xlarge "/>
-			</div>
-		</div>
+<%--		<div class="control-group">--%>
+<%--			<label class="control-label">项目id：</label>--%>
+<%--			<div class="controls">--%>
+<%--				<form:input path="projectid" htmlEscape="false" maxlength="64" class="input-xlarge "/>--%>
+<%--			</div>--%>
+<%--		</div>--%>
+<%--		<div class="control-group">--%>
+<%--			<label class="control-label">项目名称：</label>--%>
+<%--			<div class="controls">--%>
+<%--				<form:input path="projectname" htmlEscape="false" maxlength="300" class="input-xlarge "/>--%>
+<%--			</div>--%>
+<%--		</div>--%>
 		<div class="form-actions">
 			<shiro:hasPermission name="dev:writeoffdetail:devWriteOffDetail:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>

@@ -33,22 +33,17 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/dev/writeoff/devWriteOff/">核销单列表</a></li>
-		<li class="active"><a href="${ctx}/dev/writeoff/devWriteOff/form?id=${devWriteOff.id}">核销单<shiro:hasPermission name="dev:writeoff:devWriteOff:edit">${not empty devWriteOff.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:writeoff:devWriteOff:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/dev/writeoff/devWriteOff/?devtype=${devWriteOff.devtype}">核销单列表</a></li>
+		<li class="active"><a href="${ctx}/dev/writeoff/devWriteOff/form?id=${devWriteOff.id}&devtype=${devWriteOff.devtype}">核销单<shiro:hasPermission name="dev:writeoff:devWriteOff:edit">${not empty devWriteOff.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:writeoff:devWriteOff:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="devWriteOff" action="${ctx}/dev/writeoff/devWriteOff/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">项目id：</label>
-			<div class="controls">
-				<form:input path="projectid" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
+		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">项目名称：</label>
 			<div class="controls">
-				<form:input path="projectname" htmlEscape="false" maxlength="300" class="input-xlarge "/>
+				<sys:treeselect id="projectid" name="projectid" value="${devWriteOff.projectid}" labelName="projectname" labelValue="${devWriteOff.projectname}"
+								title="项目名称" url="/dev/material/devMaterialProject/treeData"  cssClass="" allowClear="true"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -101,7 +96,7 @@
 	<div>
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="${ctx}/dev/writeoffdetail/devWriteOffDetail/">核销单明细列表</a></li>
-			<shiro:hasPermission name="dev:writeoffdetail:devWriteOffDetail:edit"><li><a href="${ctx}/dev/writeoffdetail/devWriteOffDetail/formRedict?writeoffId=${devWriteOff.id}">核销单明细添加</a></li></shiro:hasPermission>
+			<shiro:hasPermission name="dev:writeoffdetail:devWriteOffDetail:edit"><li><a href="${ctx}/dev/writeoffdetail/devWriteOffDetail/formRedict?writeoffId=${devWriteOff.id}&devtype=${devWriteOff.devtype}&projectId=${devWriteOff.projectid}">核销单明细添加</a></li></shiro:hasPermission>
 		</ul>
 		<form:form id="searchForm" modelAttribute="devWriteOffDetail" action="${ctx}/dev/writeoffdetail/devWriteOffDetail/?writeoffId=${devWriteOff.id}" method="post" class="breadcrumb form-search">
 			<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -114,8 +109,6 @@
 				<th>设备id</th>
 				<th>设备名称</th>
 				<th>核销单id</th>
-				<th>项目id</th>
-				<th>项目名称</th>
 				<shiro:hasPermission name="dev:writeoffdetail:devWriteOffDetail:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 			</thead>
@@ -131,14 +124,8 @@
 					<td>
 							${devWriteOffDetail.writeoffId}
 					</td>
-					<td>
-							${devWriteOffDetail.projectid}
-					</td>
-					<td>
-							${devWriteOffDetail.projectname}
-					</td>
 					<shiro:hasPermission name="dev:writeoffdetail:devWriteOffDetail:edit"><td>
-						<a href="${ctx}/dev/writeoffdetail/devWriteOffDetail/formRedict?id=${devWriteOffDetail.id}">修改</a>
+						<a href="${ctx}/dev/writeoffdetail/devWriteOffDetail/formRedict?id=${devWriteOffDetail.id}&devtype=${devWriteOff.devtype}&projectId=${devWriteOff.projectid}">修改</a>
 						<a href="${ctx}/dev/writeoffdetail/devWriteOffDetail/deleteRedirectDetail?id=${devWriteOffDetail.id}" onclick="return confirmx('确认要删除该核销单明细吗？', this.href)">删除</a>
 					</td></shiro:hasPermission>
 				</tr>

@@ -11,7 +11,8 @@
 		a.reviewer AS "reviewer",
 		a.applicant_date AS "applicantDate",
 		a.reviewer_date AS "reviewerDate",
-		a.status AS "status"
+		a.status AS "status",
+		a.devtype AS "devtype"
 	</sql>
 	
 	<sql id="devWriteOffJoins">
@@ -32,6 +33,9 @@
 		<include refid="devWriteOffJoins"/>
 		<where>
 			
+			<if test="projectid != null and projectid != ''">
+				AND a.projectid = #{projectid}
+			</if>
 			<if test="projectname != null and projectname != ''">
 				AND a.projectname = #{projectname}
 			</if>
@@ -43,6 +47,9 @@
 			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
+			</if>
+			<if test="devtype != null and devtype != ''">
+				AND a.devtype = #{devtype}
 			</if>
 		</where>
 		<choose>
@@ -81,7 +88,8 @@
 			reviewer,
 			applicant_date,
 			reviewer_date,
-			status
+			status,
+			devtype
 		) VALUES (
 			#{id},
 			#{projectid},
@@ -91,7 +99,8 @@
 			#{reviewer},
 			#{applicantDate},
 			#{reviewerDate},
-			#{status}
+			#{status},
+			#{devtype}
 		)
 	</insert>
 	
@@ -104,7 +113,8 @@
 			reviewer = #{reviewer},
 			applicant_date = #{applicantDate},
 			reviewer_date = #{reviewerDate},
-			status = #{status}
+			status = #{status},
+			devtype = #{devtype}
 		WHERE id = #{id}
 	</update>
 	

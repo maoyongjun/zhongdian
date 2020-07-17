@@ -68,8 +68,10 @@ public class DevWriteOffDetailController extends BaseController {
 
 	@RequiresPermissions("dev:writeoffdetail:devWriteOffDetail:view")
 	@RequestMapping(value = "formRedict")
-	public String formRedict(DevWriteOffDetail devWriteOffDetail, Model model) {
+	public String formRedict(DevWriteOffDetail devWriteOffDetail, Model model,String devtype,String projectId) {
 		model.addAttribute("devWriteOffDetail", devWriteOffDetail);
+		model.addAttribute("devtype",devtype);
+		model.addAttribute("projectId",projectId);
 		return "modules/dev/writeoffdetail/devWriteOffDetailFormRedict";
 	}
 

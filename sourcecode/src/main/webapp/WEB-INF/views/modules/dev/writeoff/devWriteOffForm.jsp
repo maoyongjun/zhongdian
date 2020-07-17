@@ -30,19 +30,14 @@
 		<li><a href="${ctx}/dev/writeoff/devWriteOff/">核销单列表</a></li>
 		<li class="active"><a href="${ctx}/dev/writeoff/devWriteOff/form?id=${devWriteOff.id}">核销单<shiro:hasPermission name="dev:writeoff:devWriteOff:edit">${not empty devWriteOff.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:writeoff:devWriteOff:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="devWriteOff" action="${ctx}/dev/writeoff/devWriteOff/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="devWriteOff" action="${ctx}/dev/writeoff/devWriteOff/save?devtype=${devWriteOff.devtype}" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">项目id：</label>
-			<div class="controls">
-				<form:input path="projectid" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
+		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">项目名称：</label>
 			<div class="controls">
-				<form:input path="projectname" htmlEscape="false" maxlength="300" class="input-xlarge "/>
+				<sys:treeselect id="projectid" name="projectid" value="${devWriteOff.projectid}" labelName="projectname" labelValue="${devWriteOff.projectname}"
+								title="项目名称" url="/dev/material/devMaterialProject/treeData"  cssClass="" allowClear="true"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -81,9 +76,17 @@
 		</div>
 		<div class="control-group" style="display: none">
 			<label class="control-label">状态：</label>
-			<div class="controls" >
+			<div class="controls">
 				<form:select path="status" class="input-xlarge ">
 					<form:options items="${fns:getDictList('writeoff_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">设备类型：</label>
+			<div class="controls">
+				<form:select path="devtype" class="input-xlarge " disabled="true">
+					<form:options items="${fns:getDictList('dev_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 		</div>

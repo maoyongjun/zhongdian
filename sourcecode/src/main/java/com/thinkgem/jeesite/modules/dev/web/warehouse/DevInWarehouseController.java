@@ -6,6 +6,9 @@ package com.thinkgem.jeesite.modules.dev.web.warehouse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.thinkgem.jeesite.modules.dev.entity.vehicle.DevVehicle;
 import com.thinkgem.jeesite.modules.dev.entity.warehousereceipt.DevWarehouseReceipt;
 import com.thinkgem.jeesite.modules.dev.service.warehousereceipt.DevWarehouseReceiptService;
 import com.thinkgem.jeesite.modules.util.BeanUtils;
@@ -16,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -139,6 +143,27 @@ public class DevInWarehouseController extends BaseController {
 		Page<DevInWarehouse> page = devInWarehouseService.findPage(new Page<DevInWarehouse>(request, response), devInWarehouseCondition);
 		model.addAttribute("page", page);
 		return "modules/dev/warehousereceipt/devWarehouseReceiptFormOtherDetail";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "treeData")
+	public List<Map<String, Object>> treeData(@RequestParam(required=false) String projectId, HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		DevInWarehouse devInWarehouseCondition = new DevInWarehouse();
+		devInWarehouseCondition.setPurchaseProjectId(projectId);
+//		devInWarehouseCondition.sets
+		List<DevInWarehouse> list = devInWarehouseService.findList(devInWarehouseCondition);
+		for (int i=0; i<list.size(); i++){
+			DevInWarehouse e = list.get(i);
+			if (!StringUtils.isBlank(e.getId())){
+				Map<String, Object> map = Maps.newHashMap();
+				map.put("id", e.getId());
+				map.put("pId", "0");
+				map.put("name", e.getPurchaseProject()+"_"+e.getName());
+				mapList.add(map);
+			}
+		}
+		return mapList;
 	}
 
 }

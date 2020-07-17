@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.modules.dev.entity.vehicle.DevVehicle;
+import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevInWarehouse;
 import com.thinkgem.jeesite.modules.dev.entity.writeoffdetail.DevWriteOffDetail;
 import com.thinkgem.jeesite.modules.dev.service.vehicle.DevVehicleService;
+import com.thinkgem.jeesite.modules.dev.service.warehouse.DevInWarehouseService;
 import com.thinkgem.jeesite.modules.dev.service.writeoffdetail.DevWriteOffDetailService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,9 @@ public class DevWriteOffController extends BaseController {
 
 	@Autowired
 	private DevVehicleService devVehicleService;
+
+	@Autowired
+	private DevInWarehouseService devInWarehouseService;
 
 	@ModelAttribute
 	public DevWriteOff get(@RequestParam(required=false) String id) {
@@ -93,7 +98,7 @@ public class DevWriteOffController extends BaseController {
 		}
 		devWriteOffService.save(devWriteOff);
 		addMessage(redirectAttributes, "保存核销单成功");
-		return "redirect:"+Global.getAdminPath()+"/dev/writeoff/devWriteOff/?repage";
+		return "redirect:"+Global.getAdminPath()+"/dev/writeoff/devWriteOff/?repage&devtype="+devWriteOff.getDevtype();
 	}
 	
 	@RequiresPermissions("dev:writeoff:devWriteOff:edit")
@@ -101,7 +106,7 @@ public class DevWriteOffController extends BaseController {
 	public String delete(DevWriteOff devWriteOff, RedirectAttributes redirectAttributes) {
 		devWriteOffService.delete(devWriteOff);
 		addMessage(redirectAttributes, "删除核销单成功");
-		return "redirect:"+Global.getAdminPath()+"/dev/writeoff/devWriteOff/?repage";
+		return "redirect:"+Global.getAdminPath()+"/dev/writeoff/devWriteOff/?repage&devtype="+devWriteOff.getDevtype();
 	}
 
 	@RequiresPermissions("dev:writeoff:devWriteOff:edit")
@@ -112,17 +117,32 @@ public class DevWriteOffController extends BaseController {
 		DevWriteOffDetail devWriteOffDetailCondition = new DevWriteOffDetail();
 		devWriteOffDetailCondition.setWriteoffId(devWriteOff.getId());
 		List<DevWriteOffDetail> list = devWriteOffDetailService.findList(devWriteOffDetailCondition);
-		//将设备状态修改为待核销
-		for(DevWriteOffDetail devWriteOffDetail:list){
-			DevVehicle devVehicleCondition = new DevVehicle();
-			devVehicleCondition.setId(devWriteOffDetail.getDevid());
-			DevVehicle devVehicle = devVehicleService.get(devVehicleCondition);
-			if(devVehicle!=null){
-				devVehicle.setStatus(devWriteOff.getStatus());//待核销
-				devVehicleService.save(devVehicle);
-			}
+		if("A4".equals(devWriteOff.getDevtype())){
+			//将设备状态修改为待核销
+			for(DevWriteOffDetail devWriteOffDetail:list){
+				DevVehicle devVehicleCondition = new DevVehicle();
+				devVehicleCondition.setId(devWriteOffDetail.getDevid());
+				DevVehicle devVehicle = devVehicleService.get(devVehicleCondition);
+				if(devVehicle!=null){
+					devVehicle.setStatus(devWriteOff.getStatus());//待核销
+					devVehicleService.save(devVehicle);
+				}
 
+			}
+		}else{
+			//将设备状态修改为待核销
+			for(DevWriteOffDetail devWriteOffDetail:list){
+				DevInWarehouse devInWarehouseCondition = new DevInWarehouse();
+				devInWarehouseCondition.setId(devWriteOffDetail.getDevid());
+				DevInWarehouse devInWarehouse = devInWarehouseService.get(devInWarehouseCondition);
+				if(devInWarehouse!=null){
+//					devInWarehouse.setStatus(devWriteOff.getStatus());//待核销
+					devInWarehouseService.save(devInWarehouse);
+				}
+
+			}
 		}
+
 		if(devWriteOff.getStatus() == 2){
 			addMessage(redirectAttributes, "申请核销成功");
 		}else if(devWriteOff.getStatus() == 3){
