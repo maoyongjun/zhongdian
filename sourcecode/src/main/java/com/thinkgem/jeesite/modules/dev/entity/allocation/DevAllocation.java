@@ -12,7 +12,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 设备调拨Entity
  * @author myj
- * @version 2020-07-11
+ * @version 2020-07-16
  */
 public class DevAllocation extends DataEntity<DevAllocation> {
 	
@@ -24,6 +24,7 @@ public class DevAllocation extends DataEntity<DevAllocation> {
 	private Date allocationDate;		// 调拨时间
 	private String projectCheckinId;		// 入库的项目id
 	private Integer status;		// 状态
+	private String devtype;		// 调拨设备类型
 	
 	public DevAllocation() {
 		super();
@@ -93,6 +94,15 @@ public class DevAllocation extends DataEntity<DevAllocation> {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	
+	@Length(min=0, max=50, message="调拨设备类型长度必须介于 0 和 50 之间")
+	public String getDevtype() {
+		return devtype;
+	}
+
+	public void setDevtype(String devtype) {
+		this.devtype = devtype;
 	}
 	
 }

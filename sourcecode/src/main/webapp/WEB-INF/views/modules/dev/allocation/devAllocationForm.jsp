@@ -27,10 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/dev/allocation/devAllocation/">设备调拨列表</a></li>
-		<li class="active"><a href="${ctx}/dev/allocation/devAllocation/form?id=${devAllocation.id}">设备调拨<shiro:hasPermission name="dev:allocation:devAllocation:edit">${not empty devAllocation.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:allocation:devAllocation:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/dev/allocation/devAllocation/?devtype=${devAllocation.devtype}">设备调拨列表</a></li>
+		<li class="active"><a href="${ctx}/dev/allocation/devAllocation/form?id=${devAllocation.id}&devtype=${devAllocation.devtype}">设备调拨<shiro:hasPermission name="dev:allocation:devAllocation:edit">${not empty devAllocation.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:allocation:devAllocation:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="devAllocation" action="${ctx}/dev/allocation/devAllocation/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="devAllocation" action="${ctx}/dev/allocation/devAllocation/save?devtype=${devAllocation.devtype}" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -67,6 +67,15 @@
 			<div class="controls">
 				<form:select path="status" class="input-xlarge ">
 					<form:options items="${fns:getDictList('allocation_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">调拨设备类型：</label>
+			<div class="controls">
+				<form:select path="devtype" class="input-xlarge " disabled="true">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('dev_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 		</div>

@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.dev.entity.allocation.DevAllocation;
 /**
  * 设备调拨DAO接口
  * @author myj
- * @version 2020-07-07
+ * @version 2020-07-16
  */
 @MyBatisDao
 public interface DevAllocationDao extends CrudDao<DevAllocation> {

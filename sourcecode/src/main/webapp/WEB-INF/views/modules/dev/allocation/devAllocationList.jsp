@@ -19,9 +19,9 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/dev/allocation/devAllocation/">设备调拨列表</a></li>
-		<shiro:hasPermission name="dev:allocation:devAllocation:edit"><li><a href="${ctx}/dev/allocation/devAllocation/form">设备调拨添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="dev:allocation:devAllocation:edit"><li><a href="${ctx}/dev/allocation/devAllocation/form?devtype=${devAllocation.devtype}">设备调拨添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="devAllocation" action="${ctx}/dev/allocation/devAllocation/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="devAllocation" action="${ctx}/dev/allocation/devAllocation/?devtype=${devAllocation.devtype}" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -32,6 +32,12 @@
 				<form:select path="status" class="input-medium">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('allocation_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>
+			<li><label>设备类型：</label>
+				<form:select path="devtype" class="input-medium" disabled="true">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('dev_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
@@ -47,6 +53,7 @@
 				<th>入库的项目</th>
 				<th>调拨时间</th>
 				<th>状态</th>
+				<th>设备类型</th>
 				<shiro:hasPermission name="dev:allocation:devAllocation:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -68,15 +75,15 @@
 				<td>
 					${fns:getDictLabel(devAllocation.status, 'allocation_status', '')}
 				</td>
+				<td>
+					${fns:getDictLabel(devAllocation.devtype, 'dev_type', '')}
+				</td>
 				<shiro:hasPermission name="dev:allocation:devAllocation:edit"><td>
     				<a href="${ctx}/dev/allocation/devAllocation/formDetail?id=${devAllocation.id}">修改</a>
 					<a href="${ctx}/dev/allocation/devAllocation/delete?id=${devAllocation.id}" onclick="return confirmx('确认要删除该设备调拨吗？', this.href)">删除</a>
-
-					<c:if test="${devAllocation.status==1}">
+                    <c:if test="${devAllocation.status==1}">
 						<a href="${ctx}/dev/allocation/devAllocation/sureAllocate?id=${devAllocation.id}">确认调拨</a>
-					</c:if>
-
-				</td></shiro:hasPermission>
+					</c:if>				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>

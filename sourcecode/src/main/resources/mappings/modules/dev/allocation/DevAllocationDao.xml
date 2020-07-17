@@ -10,7 +10,8 @@
 		a.project_checkin AS "projectCheckin",
 		a.allocation_date AS "allocationDate",
 		a.project_checkin_id AS "projectCheckinId",
-		a.status AS "status"
+		a.status AS "status",
+		a.devtype AS "devtype"
 	</sql>
 	
 	<sql id="devAllocationJoins">
@@ -39,6 +40,9 @@
 			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
+			</if>
+			<if test="devtype != null and devtype != ''">
+				AND a.devtype = #{devtype}
 			</if>
 		</where>
 		<choose>
@@ -76,7 +80,8 @@
 			project_checkin,
 			allocation_date,
 			project_checkin_id,
-			status
+			status,
+			devtype
 		) VALUES (
 			#{id},
 			#{name},
@@ -85,7 +90,8 @@
 			#{projectCheckin},
 			#{allocationDate},
 			#{projectCheckinId},
-			#{status}
+			#{status},
+			#{devtype}
 		)
 	</insert>
 	
@@ -97,7 +103,8 @@
 			project_checkin = #{projectCheckin},
 			allocation_date = #{allocationDate},
 			project_checkin_id = #{projectCheckinId},
-			status = #{status}
+			status = #{status},
+			devtype = #{devtype}
 		WHERE id = #{id}
 	</update>
 	

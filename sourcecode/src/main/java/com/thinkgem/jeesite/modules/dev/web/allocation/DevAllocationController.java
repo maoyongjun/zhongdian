@@ -113,7 +113,7 @@ public class DevAllocationController extends BaseController {
 		}
 		devAllocationService.save(devAllocation);
 		addMessage(redirectAttributes, "保存设备调拨成功");
-		return "redirect:"+Global.getAdminPath()+"/dev/allocation/devAllocation/?repage";
+		return "redirect:"+Global.getAdminPath()+"/dev/allocation/devAllocation/?repage&devtype="+devAllocation.getDevtype();
 	}
 	
 	@RequiresPermissions("dev:allocation:devAllocation:edit")

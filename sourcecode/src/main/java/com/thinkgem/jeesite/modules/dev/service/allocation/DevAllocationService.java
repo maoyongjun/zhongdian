@@ -16,7 +16,7 @@ import com.thinkgem.jeesite.modules.dev.dao.allocation.DevAllocationDao;
 /**
  * 设备调拨Service
  * @author myj
- * @version 2020-07-07
+ * @version 2020-07-16
  */
 @Service
 @Transactional(readOnly = true)
