@@ -133,6 +133,15 @@
 				<form:input path="warehouseReceiptId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
+		<div class="control-group">
+			<label class="control-label">状态：</label>
+			<div class="controls">
+				<form:select path="devstatus" class="input-xlarge ">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('dev_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
 		<div class="form-actions">
 			<shiro:hasPermission name="dev:warehouse:devInWarehouse:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>

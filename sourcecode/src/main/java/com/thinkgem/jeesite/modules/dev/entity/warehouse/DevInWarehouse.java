@@ -12,7 +12,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 在库设备Entity
  * @author myj
- * @version 2020-07-16
+ * @version 2020-07-17
  */
 public class DevInWarehouse extends DataEntity<DevInWarehouse> {
 	
@@ -34,6 +34,7 @@ public class DevInWarehouse extends DataEntity<DevInWarehouse> {
 	private String location;		// 设备所在地
 	private String contractId;		// 合同id
 	private String warehouseReceiptId;		// 入库单id
+	private Integer status;		// 状态
 	
 	public DevInWarehouse() {
 		super();
@@ -193,6 +194,14 @@ public class DevInWarehouse extends DataEntity<DevInWarehouse> {
 
 	public void setWarehouseReceiptId(String warehouseReceiptId) {
 		this.warehouseReceiptId = warehouseReceiptId;
+	}
+	
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 	
 }

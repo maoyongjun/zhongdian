@@ -42,6 +42,11 @@
 			<li><label>设备所在地：</label>
 				<form:input path="location" htmlEscape="false" maxlength="500" class="input-medium"/>
 			</li>
+			<li><label>状态：</label>
+				<form:select path="devstatus" class="input-medium">
+					<form:options items="${fns:getDictList('dev_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -66,6 +71,7 @@
 				<th>设备所在地</th>
 				<th>合同id</th>
 				<th>入库单id</th>
+				<th>状态</th>
 				<shiro:hasPermission name="dev:warehouse:devInWarehouse:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -128,6 +134,9 @@
 				</td>
 				<td>
 					${devInWarehouse.warehouseReceiptId}
+				</td>
+				<td>
+						${fns:getDictLabel(devInWarehouse.devstatus, 'dev_status', '')}
 				</td>
 				<shiro:hasPermission name="dev:warehouse:devInWarehouse:edit"><td>
     				<a href="${ctx}/dev/warehouse/devInWarehouse/form?id=${devInWarehouse.id}">修改</a>

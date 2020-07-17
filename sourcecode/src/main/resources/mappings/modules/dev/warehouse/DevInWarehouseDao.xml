@@ -20,7 +20,8 @@
 		a.charger AS "charger",
 		a.location AS "location",
 		a.contract_id AS "contractId",
-		a.warehouse_receipt_id AS "warehouseReceiptId"
+		a.warehouse_receipt_id AS "warehouseReceiptId",
+		a.devstatus AS "devstatus"
 	</sql>
 	
 	<sql id="devInWarehouseJoins">
@@ -68,6 +69,9 @@
 			<if test="warehouseReceiptId != null and warehouseReceiptId != ''">
 				AND a.warehouse_receipt_id = #{warehouseReceiptId}
 			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -114,7 +118,8 @@
 			charger,
 			location,
 			contract_id,
-			warehouse_receipt_id
+			warehouse_receipt_id,
+			status
 		) VALUES (
 			#{id},
 			#{type},
@@ -133,7 +138,8 @@
 			#{charger},
 			#{location},
 			#{contractId},
-			#{warehouseReceiptId}
+			#{warehouseReceiptId},
+			#{status}
 		)
 	</insert>
 	
@@ -155,7 +161,8 @@
 			charger = #{charger},
 			location = #{location},
 			contract_id = #{contractId},
-			warehouse_receipt_id = #{warehouseReceiptId}
+			warehouse_receipt_id = #{warehouseReceiptId},
+			status = #{status}
 		WHERE id = #{id}
 	</update>
 	
