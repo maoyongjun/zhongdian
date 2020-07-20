@@ -21,7 +21,7 @@
 		<li class="active"><a href="#">在库设备列表</a></li>
 <%--		<shiro:hasPermission name="dev:warehouse:devInWarehouse:edit"><li><a href="${ctx}/dev/warehouse/devInWarehouse/form?type=${devInWarehouse.type}">在库设备添加</a></li></shiro:hasPermission>--%>
 	</ul>
-	<form:form id="searchForm" modelAttribute="devInWarehouse" action="${ctx}/dev/warehouse/devInWarehouse/?type=${devInWarehouse.type}" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="devInWarehouse" action="${ctx}/dev/warehouse/devInWarehouse/?type=${devInWarehouse.type}&devstatus=${devInWarehouse.devstatus}" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">

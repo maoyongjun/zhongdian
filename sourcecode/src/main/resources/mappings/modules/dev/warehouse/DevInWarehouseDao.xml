@@ -69,8 +69,8 @@
 			<if test="warehouseReceiptId != null and warehouseReceiptId != ''">
 				AND a.warehouse_receipt_id = #{warehouseReceiptId}
 			</if>
-			<if test="status != null and status != ''">
-				AND a.status = #{status}
+			<if test="devstatus != null and devstatus != ''">
+				AND a.devstatus = #{devstatus}
 			</if>
 		</where>
 		<choose>
@@ -119,7 +119,7 @@
 			location,
 			contract_id,
 			warehouse_receipt_id,
-			status
+			devstatus
 		) VALUES (
 			#{id},
 			#{type},
@@ -139,7 +139,7 @@
 			#{location},
 			#{contractId},
 			#{warehouseReceiptId},
-			#{status}
+			#{devstatus}
 		)
 	</insert>
 	
@@ -162,7 +162,7 @@
 			location = #{location},
 			contract_id = #{contractId},
 			warehouse_receipt_id = #{warehouseReceiptId},
-			status = #{status}
+			devstatus = #{devstatus}
 		WHERE id = #{id}
 	</update>
 	

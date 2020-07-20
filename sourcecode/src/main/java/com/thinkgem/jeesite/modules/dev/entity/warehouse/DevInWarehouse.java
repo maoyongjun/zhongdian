@@ -34,7 +34,7 @@ public class DevInWarehouse extends DataEntity<DevInWarehouse> {
 	private String location;		// 设备所在地
 	private String contractId;		// 合同id
 	private String warehouseReceiptId;		// 入库单id
-	private Integer status;		// 状态
+	private Integer devstatus;		// 状态
 	
 	public DevInWarehouse() {
 		super();
@@ -196,12 +196,12 @@ public class DevInWarehouse extends DataEntity<DevInWarehouse> {
 		this.warehouseReceiptId = warehouseReceiptId;
 	}
 	
-	public Integer getStatus() {
-		return status;
+	public Integer getDevstatus() {
+		return devstatus;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setDevstatus(Integer devstatus) {
+		this.devstatus = devstatus;
 	}
 	
 }

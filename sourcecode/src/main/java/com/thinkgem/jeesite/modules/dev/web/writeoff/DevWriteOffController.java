@@ -28,7 +28,9 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.dev.entity.writeoff.DevWriteOff;
 import com.thinkgem.jeesite.modules.dev.service.writeoff.DevWriteOffService;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 核销单Controller
@@ -90,6 +92,45 @@ public class DevWriteOffController extends BaseController {
 		return "modules/dev/writeoff/devWriteOffFormDetail";
 	}
 
+
+	@RequiresPermissions("dev:writeoff:devWriteOff:view")
+	@RequestMapping(value = "createWriteOff")
+	public String createWriteOff(String[] ids,String devtype, Model model, HttpServletRequest request, HttpServletResponse response) {
+		//查询今天的核销单数量
+
+		DevWriteOff devWriteOff = new DevWriteOff();
+		devWriteOff.setId(UUID.randomUUID().toString());
+		devWriteOff.setName("核销单"+);
+		devWriteOff.setStatus(1);
+		devWriteOff.setProjectname("测试项目001");
+		devWriteOff.setProjectid("aaa1111");
+		devWriteOff.setApplicantDate(new Date());
+		devWriteOffService.save(devWriteOff);
+		model.addAttribute("devWriteOff", devWriteOff);
+		for(String id : ids){
+			DevWriteOffDetail devWriteOffDetail = new DevWriteOffDetail();
+			devWriteOffDetail.setDevid(id);
+			devWriteOffDetail.setWriteoffId(devWriteOff.getId());
+			if("A4".equals(devtype)){
+				DevVehicle devVehicle = devVehicleService.get(id);
+				devWriteOffDetail.setDevname(devVehicle.getName());
+
+			}else{
+				DevInWarehouse devInWarehouse = devInWarehouseService.get(id);
+				devWriteOffDetail.setDevname(devInWarehouse.getName());
+
+			}
+			devWriteOffDetailService.save(devWriteOffDetail);
+
+		}
+		DevWriteOffDetail devWriteOffDetailCondition = new DevWriteOffDetail();
+		devWriteOffDetailCondition.setWriteoffId(devWriteOff.getId());
+		Page<DevWriteOffDetail> page = devWriteOffDetailService.findPage(new Page<DevWriteOffDetail>(request, response), devWriteOffDetailCondition);
+		model.addAttribute("page", page);
+		return "modules/dev/writeoff/devWriteOffFormDetail";
+	}
+
+
 	@RequiresPermissions("dev:writeoff:devWriteOff:edit")
 	@RequestMapping(value = "save")
 	public String save(DevWriteOff devWriteOff, Model model, RedirectAttributes redirectAttributes) {
@@ -136,7 +177,7 @@ public class DevWriteOffController extends BaseController {
 				devInWarehouseCondition.setId(devWriteOffDetail.getDevid());
 				DevInWarehouse devInWarehouse = devInWarehouseService.get(devInWarehouseCondition);
 				if(devInWarehouse!=null){
-//					devInWarehouse.setStatus(devWriteOff.getStatus());//待核销
+					devInWarehouse.setDevstatus(devWriteOff.getStatus());//待核销
 					devInWarehouseService.save(devInWarehouse);
 				}
 
