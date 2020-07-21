@@ -28,6 +28,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.dev.entity.writeoff.DevWriteOff;
 import com.thinkgem.jeesite.modules.dev.service.writeoff.DevWriteOffService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -97,15 +99,25 @@ public class DevWriteOffController extends BaseController {
 	@RequestMapping(value = "createWriteOff")
 	public String createWriteOff(String[] ids,String devtype, Model model, HttpServletRequest request, HttpServletResponse response) {
 		//查询今天的核销单数量
-
+		Date beginDate = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String formatBeginDate = sdf.format(beginDate);
+		try {
+			beginDate=sdf.parse(formatBeginDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		DevWriteOff devWriteOffCondition = new DevWriteOff();
+		devWriteOffCondition.setApplicantDate(beginDate);
+		List<DevWriteOff> list = devWriteOffService.findList(devWriteOffCondition);
+		int size = list.size();
 		DevWriteOff devWriteOff = new DevWriteOff();
 		devWriteOff.setId(UUID.randomUUID().toString());
-		devWriteOff.setName("核销单"+);
+		devWriteOff.setName("核销单"+formatBeginDate+String.format("%03d",size+1));
 		devWriteOff.setStatus(1);
-		devWriteOff.setProjectname("测试项目001");
-		devWriteOff.setProjectid("aaa1111");
+
 		devWriteOff.setApplicantDate(new Date());
-		devWriteOffService.save(devWriteOff);
+
 		model.addAttribute("devWriteOff", devWriteOff);
 		for(String id : ids){
 			DevWriteOffDetail devWriteOffDetail = new DevWriteOffDetail();
@@ -114,15 +126,20 @@ public class DevWriteOffController extends BaseController {
 			if("A4".equals(devtype)){
 				DevVehicle devVehicle = devVehicleService.get(id);
 				devWriteOffDetail.setDevname(devVehicle.getName());
+				devWriteOff.setProjectname(devVehicle.getProjectName());
+				devWriteOff.setProjectid(devVehicle.getProjectId());
 
 			}else{
 				DevInWarehouse devInWarehouse = devInWarehouseService.get(id);
 				devWriteOffDetail.setDevname(devInWarehouse.getName());
+				devWriteOff.setProjectid(devInWarehouse.getPurchaseProjectId());
+				devWriteOff.setProjectname(devInWarehouse.getPurchaseProject());
 
 			}
 			devWriteOffDetailService.save(devWriteOffDetail);
 
 		}
+		devWriteOffService.save(devWriteOff);
 		DevWriteOffDetail devWriteOffDetailCondition = new DevWriteOffDetail();
 		devWriteOffDetailCondition.setWriteoffId(devWriteOff.getId());
 		Page<DevWriteOffDetail> page = devWriteOffDetailService.findPage(new Page<DevWriteOffDetail>(request, response), devWriteOffDetailCondition);

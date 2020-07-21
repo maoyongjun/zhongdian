@@ -45,6 +45,9 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
+			<if test="applicantDate != null and applicantDate != ''">
+				AND a.applicant_date &gt;= #{applicantDate}
+			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
 			</if>
