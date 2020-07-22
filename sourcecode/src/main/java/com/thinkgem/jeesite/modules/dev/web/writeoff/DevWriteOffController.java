@@ -115,12 +115,14 @@ public class DevWriteOffController extends BaseController {
 		devWriteOff.setId(UUID.randomUUID().toString());
 		devWriteOff.setName("核销单"+formatBeginDate+String.format("%03d",size+1));
 		devWriteOff.setStatus(1);
+		devWriteOff.setDevtype(devtype);
 
 		devWriteOff.setApplicantDate(new Date());
 
 		model.addAttribute("devWriteOff", devWriteOff);
 		for(String id : ids){
 			DevWriteOffDetail devWriteOffDetail = new DevWriteOffDetail();
+			devWriteOffDetail.setId(UUID.randomUUID().toString());
 			devWriteOffDetail.setDevid(id);
 			devWriteOffDetail.setWriteoffId(devWriteOff.getId());
 			if("A4".equals(devtype)){
@@ -136,9 +138,11 @@ public class DevWriteOffController extends BaseController {
 				devWriteOff.setProjectname(devInWarehouse.getPurchaseProject());
 
 			}
+			devWriteOffDetail.setIsNewRecord(true);
 			devWriteOffDetailService.save(devWriteOffDetail);
 
 		}
+		devWriteOff.setIsNewRecord(true);
 		devWriteOffService.save(devWriteOff);
 		DevWriteOffDetail devWriteOffDetailCondition = new DevWriteOffDetail();
 		devWriteOffDetailCondition.setWriteoffId(devWriteOff.getId());

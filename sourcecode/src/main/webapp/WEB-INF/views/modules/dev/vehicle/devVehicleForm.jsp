@@ -29,7 +29,7 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/dev/vehicle/devVehicle/form?id=${devVehicle.id}">采购车辆入库信息<shiro:hasPermission name="dev:vehicle:devVehicle:edit">${not empty devVehicle.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:vehicle:devVehicle:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="devVehicle" action="${ctx}/dev/vehicle/devVehicle/saveRedirectWarehousereceipt?status=${devVehicle.status}" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="devVehicle" action="${ctx}/dev/vehicle/devVehicle/saveRedirectWarehousereceipt?status=1" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -88,7 +88,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">状态：</label>
+			<label class="control-label">状态111：</label>
 			<div class="controls">
 				<form:select path="status" class="input-xlarge " disabled="true">
 					<form:options items="${fns:getDictList('dev_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>

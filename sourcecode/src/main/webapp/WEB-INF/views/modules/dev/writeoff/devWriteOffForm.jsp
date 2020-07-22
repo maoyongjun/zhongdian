@@ -27,7 +27,7 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/dev/writeoff/devWriteOff/">核销单列表</a></li>
+		<li><a href="${ctx}/dev/writeoff/devWriteOff/?devtype=${devWriteOff.devtype}">核销单列表</a></li>
 		<li class="active"><a href="${ctx}/dev/writeoff/devWriteOff/form?id=${devWriteOff.id}">核销单<shiro:hasPermission name="dev:writeoff:devWriteOff:edit">${not empty devWriteOff.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dev:writeoff:devWriteOff:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="devWriteOff" action="${ctx}/dev/writeoff/devWriteOff/save?devtype=${devWriteOff.devtype}" method="post" class="form-horizontal">

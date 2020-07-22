@@ -12,9 +12,40 @@
 				ids = getCheckedIds();
 			});
 			$("#btnCreateWriteOff").click(function () {
-				console.log(ids);
-				window.open("${ctx}/dev/writeoff/devWriteOff/createWriteOff?ids="+ids+"&devtype=A4");
+			    var projectName = "";
+				for(var i = 0;i<ids.length;i++){
+				    var currentProjectName = $("#"+ids[i]).parent().next().next().next().next().next().next().next().next().next().next().text();
+				    if(projectName==""){
+                        projectName = currentProjectName;
+                    }else{
+				        if(projectName!=currentProjectName){
+				            alert("请选择相同项目的设备！");
+				            return;
+                        }
+                    }
+
+				}
+				window.open("${ctx}/dev/writeoff/devWriteOff/createWriteOff?ids="+ids+"&devtype=A4","_self");
 			});
+
+            $("#btnCreateAllocation").click(function () {
+                var projectName = "";
+                for(var i = 0;i<ids.length;i++){
+                    var currentProjectName = $("#"+ids[i]).parent().next().next().next().next().next().next().next().next().next().next().text();
+                    if(projectName==""){
+                        projectName = currentProjectName;
+                    }else{
+                        if(projectName!=currentProjectName){
+                            alert("请选择相同项目的设备！");
+                            return;
+                        }
+                    }
+
+                }
+                window.open("${ctx}/dev/allocation/devAllocation/createAllocation?ids="+ids+"&devtype=A4","_self");
+            });
+
+
 
 
 		});
@@ -70,7 +101,8 @@
 				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
-				<input id="btnCreateWriteOff" class="btn btn-primary"   type="button"  value="生成核销单"/></li>
+                <input id="btnCreateWriteOff" class="btn btn-primary"   type="button"  value="生成核销单"/>
+                <input id="btnCreateAllocation" class="btn btn-primary"   type="button"  value="生成调拨单"/></li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>

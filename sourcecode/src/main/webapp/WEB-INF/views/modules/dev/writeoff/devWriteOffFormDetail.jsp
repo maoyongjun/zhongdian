@@ -95,7 +95,7 @@
 	</form:form>
 	<div>
 		<ul class="nav nav-tabs">
-			<li class="active"><a href="${ctx}/dev/writeoffdetail/devWriteOffDetail/">核销单明细列表</a></li>
+			<li class="active"><a href="${ctx}/dev/writeoffdetail/devWriteOffDetail/?devtype=${devWriteOff.devtype}">核销单明细列表</a></li>
 			<shiro:hasPermission name="dev:writeoffdetail:devWriteOffDetail:edit"><li><a href="${ctx}/dev/writeoffdetail/devWriteOffDetail/formRedict?writeoffId=${devWriteOff.id}&devtype=${devWriteOff.devtype}&projectId=${devWriteOff.projectid}">核销单明细添加</a></li></shiro:hasPermission>
 		</ul>
 		<form:form id="searchForm" modelAttribute="devWriteOffDetail" action="${ctx}/dev/writeoffdetail/devWriteOffDetail/?writeoffId=${devWriteOff.id}" method="post" class="breadcrumb form-search">

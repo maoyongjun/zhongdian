@@ -9,8 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.thinkgem.jeesite.modules.dev.entity.allocationdetail.DevAllocationDetail;
 import com.thinkgem.jeesite.modules.dev.entity.vehicle.DevVehicle;
 import com.thinkgem.jeesite.modules.dev.entity.vehicledetail.DevVehicleDetail;
+import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevInWarehouse;
+import com.thinkgem.jeesite.modules.dev.entity.writeoff.DevWriteOff;
+import com.thinkgem.jeesite.modules.dev.entity.writeoffdetail.DevWriteOffDetail;
 import com.thinkgem.jeesite.modules.dev.service.allocationdetail.DevAllocationDetailService;
 import com.thinkgem.jeesite.modules.dev.service.vehicle.DevVehicleService;
+import com.thinkgem.jeesite.modules.dev.service.warehouse.DevInWarehouseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +31,11 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.dev.entity.allocation.DevAllocation;
 import com.thinkgem.jeesite.modules.dev.service.allocation.DevAllocationService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 设备调拨Controller
@@ -46,6 +54,9 @@ public class DevAllocationController extends BaseController {
 	//设备
 	@Autowired
 	private DevVehicleService devVehicleService;
+
+	@Autowired
+	private DevInWarehouseService devInWarehouseService;
 	
 	@ModelAttribute
 	public DevAllocation get(@RequestParam(required=false) String id) {
@@ -102,6 +113,64 @@ public class DevAllocationController extends BaseController {
 		devAllocationDetail.setAllocationId(devAllocation.getId());
 		Page<DevAllocationDetail> page = devAllocationDetailService.findPage(new Page<DevAllocationDetail>(request,response), devAllocationDetail);
 		model.addAttribute("page", page);
+		return "modules/dev/allocation/devAllocationFormDetail";
+	}
+
+	@RequiresPermissions("dev:allocation:devAllocation:view")
+	@RequestMapping(value = "createAllocation")
+	public String createAllocation(String[] ids,String devtype, Model model, HttpServletRequest request, HttpServletResponse response) {
+		//查询今天的核销单数量
+		Date beginDate = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String formatBeginDate = sdf.format(beginDate);
+		try {
+			beginDate=sdf.parse(formatBeginDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		DevAllocation devAllocationCondition = new DevAllocation();
+		devAllocationCondition.setCreateDate(beginDate);
+		List<DevAllocation> list = devAllocationService.findList(devAllocationCondition);
+		int size = list.size();
+		DevAllocation devAllocation = new DevAllocation();
+		devAllocation.setId(UUID.randomUUID().toString());
+		devAllocation.setName("核销单"+formatBeginDate+String.format("%03d",size+1));
+		devAllocation.setStatus(1);
+		devAllocation.setDevtype(devtype);
+
+		devAllocation.setCreateDate(new Date());
+		devAllocation.setAllocationDate(new Date());
+
+		model.addAttribute("devAllocation", devAllocation);
+		for(String id : ids){
+			DevAllocationDetail devAllocationDetail = new DevAllocationDetail();
+			devAllocationDetail.setId(UUID.randomUUID().toString());
+			devAllocationDetail.setDevId(id);
+			devAllocationDetail.setAllocationId(devAllocation.getId());
+			if("A4".equals(devtype)){
+				DevVehicle devVehicle = devVehicleService.get(id);
+				devAllocationDetail.setDevName(devVehicle.getName());
+				devAllocation.setProjectCheckout(devVehicle.getProjectName());
+				devAllocation.setProjectCheckoutId(devVehicle.getProjectId());
+
+			}else{
+				DevInWarehouse devInWarehouse = devInWarehouseService.get(id);
+				devAllocationDetail.setDevName(devInWarehouse.getName());
+				devAllocation.setProjectCheckoutId(devInWarehouse.getPurchaseProjectId());
+				devAllocation.setProjectCheckout(devInWarehouse.getPurchaseProject());
+
+			}
+			devAllocationDetail.setIsNewRecord(true);
+			devAllocationDetailService.save(devAllocationDetail);
+
+		}
+		devAllocation.setIsNewRecord(true);
+		devAllocationService.save(devAllocation);
+		DevAllocationDetail devAllocationDetailCondition = new DevAllocationDetail();
+		devAllocationDetailCondition.setAllocationId(devAllocation.getId());
+		Page<DevAllocationDetail> page = devAllocationDetailService.findPage(new Page<DevAllocationDetail>(request, response), devAllocationDetailCondition);
+		model.addAttribute("page", page);
+
 		return "modules/dev/allocation/devAllocationFormDetail";
 	}
 
