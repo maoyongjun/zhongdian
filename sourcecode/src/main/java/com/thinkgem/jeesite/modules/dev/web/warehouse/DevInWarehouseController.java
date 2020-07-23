@@ -8,10 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.thinkgem.jeesite.modules.dev.entity.vehicledetail.DevVehicleDetail;
+import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevAll;
 import com.thinkgem.jeesite.modules.dev.entity.vehicle.DevVehicle;
 import com.thinkgem.jeesite.modules.dev.entity.warehousereceipt.DevWarehouseReceipt;
+import com.thinkgem.jeesite.modules.dev.service.vehicle.DevVehicleService;
 import com.thinkgem.jeesite.modules.dev.service.warehousereceipt.DevWarehouseReceiptService;
-import com.thinkgem.jeesite.modules.util.BeanUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevInWarehouse;
 import com.thinkgem.jeesite.modules.dev.service.warehouse.DevInWarehouseService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +48,9 @@ public class DevInWarehouseController extends BaseController {
 	private DevInWarehouseService devInWarehouseService;
 	@Autowired
 	private DevWarehouseReceiptService devWarehouseReceiptService;
+
+	@Autowired
+	private DevVehicleService devVehicleService;
 	
 	@ModelAttribute
 	public DevInWarehouse get(@RequestParam(required=false) String id) {
@@ -165,5 +171,30 @@ public class DevInWarehouseController extends BaseController {
 		}
 		return mapList;
 	}
+
+	/**
+	 * 统计所有的设备
+	 * @param devInWarehouse
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("dev:warehouse:devInWarehouse:view")
+	@RequestMapping(value = {"totallist"})
+	public String totalList(DevAll devAllCondition, HttpServletRequest request, HttpServletResponse response, Model model) {
+		List<DevAll> allDev = devInWarehouseService.findAllDev(new Page<DevAll>(request, response), devAllCondition);
+		Integer count = devInWarehouseService.findAllDevCount(devAllCondition);
+		if(count==null){
+			count = 0;
+		}
+		Page<DevAll> page = new Page<DevAll>();
+		page.setList(allDev);
+		page.setCount(count);
+		page.setPageSize(30);
+		model.addAttribute("page", page);
+		return "modules/dev/warehouse/devAllList";
+	}
+
 
 }

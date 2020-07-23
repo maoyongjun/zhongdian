@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.dev.service.warehouse;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevAll;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,5 +44,19 @@ public class DevInWarehouseService extends CrudService<DevInWarehouseDao, DevInW
 	public void delete(DevInWarehouse devInWarehouse) {
 		super.delete(devInWarehouse);
 	}
+
+	@Transactional(readOnly = false)
+	public List<DevAll> findAllDev(Page<DevAll> page,DevAll devAllCondition){
+		int fromIndex = page.getPageNo()>0? (page.getPageNo()-1)*page.getPageSize():0;
+		devAllCondition.setFromIndex(fromIndex);
+		devAllCondition.setPageSize(page.getPageSize());
+		return super.dao.findAllDev(devAllCondition);
+	}
+	@Transactional(readOnly = false)
+	public Integer findAllDevCount(DevAll devAllCondition){
+		return super.dao.findAllDevCount(devAllCondition);
+	}
+
+
 	
 }

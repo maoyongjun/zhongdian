@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dev.dao.devallwriteoff.DevAllWriteoffDao">
+    
+	<sql id="devAllWriteoffColumns">
+		a.id AS "id",
+		a.type AS "type",
+		a.name AS "name",
+		a.specifications AS "specifications",
+		a.model AS "model",
+		a.count AS "count",
+		a.cost AS "cost",
+		a.accountnumber AS "accountnumber",
+		a.purchaser AS "purchaser",
+		a.projectid AS "projectid",
+		a.projectname AS "projectname",
+		a.manufacturer AS "manufacturer",
+		a.createdate AS "createdate",
+		a.acceptanceresults AS "acceptanceresults",
+		a.charger AS "charger",
+		a.location AS "location",
+		a.contractid AS "contractid",
+		a.warehousereceiptid AS "warehousereceiptid",
+		a.devstatus AS "devstatus",
+		a.vechicletype AS "vechicletype",
+		a.useby AS "useby",
+		a.insurancedate AS "insurancedate",
+		a.reviewdate AS "reviewdate"
+	</sql>
+	
+	<sql id="devAllWriteoffJoins">
+	</sql>
+    
+	<select id="get" resultType="DevAllWriteoff">
+		SELECT 
+			<include refid="devAllWriteoffColumns"/>
+		FROM dev_all_writeoff a
+		<include refid="devAllWriteoffJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DevAllWriteoff">
+		SELECT 
+			<include refid="devAllWriteoffColumns"/>
+		FROM dev_all_writeoff a
+		<include refid="devAllWriteoffJoins"/>
+		<where>
+			
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="projectname != null and projectname != ''">
+				AND a.projectname = #{projectname}
+			</if>
+			<if test="location != null and location != ''">
+				AND a.location = #{location}
+			</if>
+			<if test="devstatus != null and devstatus != ''">
+				AND a.devstatus = #{devstatus}
+			</if>
+			<if test="vechicletype != null and vechicletype != ''">
+				AND a.vechicletype = #{vechicletype}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DevAllWriteoff">
+		SELECT 
+			<include refid="devAllWriteoffColumns"/>
+		FROM dev_all_writeoff a
+		<include refid="devAllWriteoffJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dev_all_writeoff(
+			id,
+			type,
+			name,
+			specifications,
+			model,
+			count,
+			cost,
+			accountnumber,
+			purchaser,
+			projectid,
+			projectname,
+			manufacturer,
+			createdate,
+			acceptanceresults,
+			charger,
+			location,
+			contractid,
+			warehousereceiptid,
+			devstatus,
+			vechicletype,
+			useby,
+			insurancedate,
+			reviewdate
+		) VALUES (
+			#{id},
+			#{type},
+			#{name},
+			#{specifications},
+			#{model},
+			#{count},
+			#{cost},
+			#{accountnumber},
+			#{purchaser},
+			#{projectid},
+			#{projectname},
+			#{manufacturer},
+			#{createdate},
+			#{acceptanceresults},
+			#{charger},
+			#{location},
+			#{contractid},
+			#{warehousereceiptid},
+			#{devstatus},
+			#{vechicletype},
+			#{useby},
+			#{insurancedate},
+			#{reviewdate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dev_all_writeoff SET 	
+			type = #{type},
+			name = #{name},
+			specifications = #{specifications},
+			model = #{model},
+			count = #{count},
+			cost = #{cost},
+			accountnumber = #{accountnumber},
+			purchaser = #{purchaser},
+			projectid = #{projectid},
+			projectname = #{projectname},
+			manufacturer = #{manufacturer},
+			createdate = #{createdate},
+			acceptanceresults = #{acceptanceresults},
+			charger = #{charger},
+			location = #{location},
+			contractid = #{contractid},
+			warehousereceiptid = #{warehousereceiptid},
+			devstatus = #{devstatus},
+			vechicletype = #{vechicletype},
+			useby = #{useby},
+			insurancedate = #{insurancedate},
+			reviewdate = #{reviewdate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dev_all_writeoff
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

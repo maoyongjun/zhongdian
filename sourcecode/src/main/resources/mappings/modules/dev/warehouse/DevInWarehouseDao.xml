@@ -170,5 +170,65 @@
 		DELETE FROM dev_in_warehouse
 		WHERE id = #{id}
 	</update>
+
+	<select id="findAllDev" resultType="com.thinkgem.jeesite.modules.dev.entity.warehouse.DevAll" parameterType="com.thinkgem.jeesite.modules.dev.entity.warehouse.DevAll">
+		SELECT id,type,name,specifications,model,count,cost,accountNumber,purchaser,
+		projectId,projectName,manufacturer,createDate,acceptanceResults,charger,location,
+		contractId,warehouseReceiptId,devstatus,vechicleType,useBy,insuranceDate,reviewDate
+		FROM (
+		SELECT id,type,name,specifications,model,count,cost,account_number as accountNumber,
+		purchaser,purchase_project_id as projectId,purchase_project as projectName,manufacturer,in_date as createDate,
+		acceptance_results as acceptanceResults,charger,location,contract_id as contractId,warehouse_receipt_id as warehouseReceiptId,devstatus ,
+		'' as vechicleType,'' as useBy,'1990-01-01' as insuranceDate,'1990-01-01' as reviewDate
+		FROM dev_in_warehouse
+		UNION
+		SELECT id,'A4' as type,name,specifications,model,1 as count ,'' as cost,'' as accountNumber,
+		'' as purchaser,project_id  as projectId, project_name as projectName,'' as manufacturer,create_date as createDate,
+		'' as acceptanceResults,'' as charger,location,'' as contractId,warehouse_receipt_id as warehouseReceiptId,status as devstatus,
+		vechicle_type,use_by,IFNULL(insurance_date,'1990-01-01') as insuranceDate,IFNULL(review_date,'1990-01-01') as reviewDate
+		FROM dev_vehicle
+		) t
+		WHERE 1=1
+		<if test="name != null and name != ''">
+			AND t.name LIKE
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+			<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+		</if>
+		<if test="devstatus != null and devstatus != ''">
+			AND t.devstatus = #{devstatus}
+		</if>
+		<if test="type != null and type != ''">
+			AND t.type = #{type}
+		</if>
+		limit #{fromIndex},#{pageSize}
+
+	</select>
+
+
+	<select id="findAllDevCount" resultType="int" parameterType="com.thinkgem.jeesite.modules.dev.entity.warehouse.DevAll">
+		SELECT count(1)
+		FROM (
+		SELECT id
+		FROM dev_in_warehouse
+		UNION
+		SELECT id
+		FROM dev_vehicle
+		) t
+		WHERE 1=1
+		<if test="name != null and name != ''">
+			AND t.name LIKE
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+			<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+		</if>
+		<if test="devstatus != null and devstatus != ''">
+			AND t.devstatus = #{devstatus}
+		</if>
+		<if test="type != null and type != ''">
+			AND t.type = #{type}
+		</if>
+
+	</select>
 	
 </mapper>

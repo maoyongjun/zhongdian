@@ -5,7 +5,10 @@ package com.thinkgem.jeesite.modules.dev.dao.warehouse;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
+import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevAll;
 import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevInWarehouse;
+
+import java.util.List;
 
 /**
  * 在库设备DAO接口
@@ -14,5 +17,7 @@ import com.thinkgem.jeesite.modules.dev.entity.warehouse.DevInWarehouse;
  */
 @MyBatisDao
 public interface DevInWarehouseDao extends CrudDao<DevInWarehouse> {
-	
+	public List<DevAll> findAllDev(DevAll DevAllCondition);
+	public Integer findAllDevCount(DevAll DevAllCondition);
+
 }

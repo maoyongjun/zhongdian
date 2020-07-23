@@ -31,9 +31,6 @@
 			<if test="allocationId != null and allocationId != ''">
 				AND a.allocation_id = #{allocationId}
 			</if>
-			<if test="itemNumber != null and itemNumber != ''">
-				AND a.item_number = #{itemNumber}
-			</if>
 			<if test="devId != null and devId != ''">
 				AND a.dev_id = #{devId}
 			</if>
@@ -71,13 +68,11 @@
 		INSERT INTO dev_allocation_detail(
 			id,
 			allocation_id,
-			item_number,
 			dev_id,
 			dev_name
 		) VALUES (
 			#{id},
 			#{allocationId},
-			#{itemNumber},
 			#{devId},
 			#{devName}
 		)
@@ -86,7 +81,6 @@
 	<update id="update">
 		UPDATE dev_allocation_detail SET 	
 			allocation_id = #{allocationId},
-			item_number = #{itemNumber},
 			dev_id = #{devId},
 			dev_name = #{devName}
 		WHERE id = #{id}

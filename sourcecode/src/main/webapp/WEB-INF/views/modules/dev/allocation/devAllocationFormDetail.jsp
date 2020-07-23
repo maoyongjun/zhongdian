@@ -90,7 +90,7 @@
 		<table id="contentTable" class="table table-striped table-bordered table-condensed">
 			<thead>
 			<tr>
-				<th>序号</th>
+<%--				<th>序号</th>--%>
 				<th>设备id</th>
 				<th>设备名称</th>
 				<shiro:hasPermission name="dev:allocationdetail:devAllocationDetail:edit"><th>操作</th></shiro:hasPermission>
@@ -99,11 +99,12 @@
 			<tbody>
 			<c:forEach items="${page.list}" var="devAllocationDetail">
 				<tr>
+<%--					<td>--%>
+<%--							${devAllocationDetail.itemNumber}--%>
+<%--					</td>--%>
 					<td><a href="${ctx}/dev/allocationdetail/devAllocationDetail/formByProjectOfDev?id=${devAllocationDetail.id}&projectId=${devAllocation.projectCheckoutId}">
-							${devAllocationDetail.itemNumber}
-					</a></td>
-					<td>
 							${devAllocationDetail.devId}
+					</a>
 					</td>
 					<td>
 							${devAllocationDetail.devName}

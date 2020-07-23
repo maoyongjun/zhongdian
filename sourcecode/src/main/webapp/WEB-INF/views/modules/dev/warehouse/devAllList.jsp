@@ -69,12 +69,13 @@
 		<li class="active"><a href="#">在库设备列表</a></li>
 <%--		<shiro:hasPermission name="dev:warehouse:devInWarehouse:edit"><li><a href="${ctx}/dev/warehouse/devInWarehouse/form?type=${devInWarehouse.type}">在库设备添加</a></li></shiro:hasPermission>--%>
 	</ul>
-	<form:form id="searchForm" modelAttribute="devInWarehouse" action="${ctx}/dev/warehouse/devInWarehouse/?type=${devInWarehouse.type}&devstatus=${devInWarehouse.devstatus}" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="devInWarehouse" action="${ctx}/dev/warehouse/devInWarehouse/totallist" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			<li><label>设备类别：</label>
-				<form:select path="type" class="input-medium" disabled="true">
+				<form:select path="type" class="input-medium">
+					<form:option value="" label="全部"/>
 					<form:options items="${fns:getDictList('dev_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
@@ -92,6 +93,7 @@
 <%--			</li>--%>
 			<li><label>状态：</label>
 				<form:select path="devstatus" class="input-medium">
+					<form:option value="" label="全部"/>
 					<form:options items="${fns:getDictList('dev_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
