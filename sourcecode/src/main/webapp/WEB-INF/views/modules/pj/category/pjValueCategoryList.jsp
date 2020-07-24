@@ -39,12 +39,7 @@
 			<tr>
 				<th>名称</th>
 				<th>状态</th>
-				<th>创建者</th>
 				<th>创建日期</th>
-				<th>更新者</th>
-				<th>更新日期</th>
-<%--				<th>是否合并</th>--%>
-<%--				<th>合并类目</th>--%>
 				<shiro:hasPermission name="pj:category:pjValueCategory:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -57,24 +52,11 @@
 				<td>
 					${fns:getDictLabel(pjValueCategory.statu, 'pj_category_status', '')}
 				</td>
+
 				<td>
-					${pjValueCategory.createBy.id}
+					<fmt:formatDate value="${pjValueCategory.createDate}" pattern="yyyy-MM-dd"/>
 				</td>
-				<td>
-					<fmt:formatDate value="${pjValueCategory.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${pjValueCategory.updateBy.id}
-				</td>
-				<td>
-					<fmt:formatDate value="${pjValueCategory.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-<%--				<td>--%>
-<%--					${pjValueCategory.isMerge}--%>
-<%--				</td>--%>
-<%--				<td>--%>
-<%--					${pjValueCategory.mergeItem}--%>
-<%--				</td>--%>
+
 				<shiro:hasPermission name="pj:category:pjValueCategory:edit"><td>
     				<a href="${ctx}/pj/category/pjValueCategory/form?id=${pjValueCategory.id}">修改</a>
 					<a href="${ctx}/pj/category/pjValueCategory/delete?id=${pjValueCategory.id}" onclick="return confirmx('确认要删除该类目吗？', this.href)">删除</a>

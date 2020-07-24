@@ -45,6 +45,7 @@
                 ORDER BY ${page.orderBy}
             </when>
             <otherwise>
+				ORDER BY a.create_date desc
             </otherwise>
         </choose>
     </select>
@@ -136,6 +137,7 @@
             and DATE_FORMAT(#{endDate},'%Y-%m-01')>=DATE_FORMAT(a.create_date,'%Y-%m-01')
         </if>
         GROUP BY a.raterby_id
+        order by base_score desc
 
     </select>
 

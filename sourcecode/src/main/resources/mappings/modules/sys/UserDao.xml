@@ -57,7 +57,8 @@
 			</collection>
 		</collection>
 	</resultMap> -->
-	
+
+
     <sql id="userColumns">
     	a.id,
     	a.company_id AS "company.id",
@@ -82,6 +83,7 @@
 		a.del_flag,
 		a.level,
 		a.coefficient,
+		a.work_status,
     	c.name AS "company.name",
     	c.parent_id AS "company.parent.id",
     	c.parent_ids AS "company.parentIds",
@@ -103,8 +105,8 @@
     	ou.id AS "office.primaryPerson.id",
     	ou.name AS "office.primaryPerson.name",
     	ou2.id AS "office.deputyPerson.id",
-    	ou2.name AS "office.deputyPerson.name"<!-- ,
-        r.id AS "roleList.id",
+    	ou2.name AS "office.deputyPerson.name"
+    	<!-- ,r.id AS "roleList.id",
         r.office_id AS "roleList.office.id",
         r.name AS "roleList.name",
         r.enname AS "roleList.enname",
@@ -120,8 +122,8 @@
 		LEFT JOIN sys_user cu ON cu.id = c.primary_person
 		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
 		LEFT JOIN sys_user ou ON ou.id = o.primary_person
-		LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person<!-- 
-		LEFT JOIN sys_user_role ur ON ur.user_id = a.id
+		LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person
+		<!-- LEFT JOIN sys_user_role ur ON ur.user_id = a.id
         LEFT JOIN sys_role r ON r.id = ur.role_id -->
     </sql>
 	
@@ -185,6 +187,9 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
 		</if>
+		<if test="workStatus != null and workStatus != ''">
+			AND a.work_status = #{workStatus}
+		</if>
 		<!-- 数据范围过滤 -->
 		${sqlMap.dsf}
 		<choose>
@@ -192,7 +197,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY c.code, o.code, a.name
+				ORDER BY a.level+0 desc,a.name, c.code, o.code
 			</otherwise>
 		</choose>
 	</select>
@@ -248,7 +253,8 @@
 			photo, 
 			del_flag,
 			level,
-			coefficient
+			coefficient,
+			work_status
 		) VALUES (
 			#{id}, 
 			#{company.id}, 
@@ -270,7 +276,8 @@
 			#{photo}, 
 			#{delFlag},
 			#{level},
-			#{coefficient}
+			#{coefficient},
+			#{workStatus}
 		)
 	</insert>
 	
@@ -293,7 +300,8 @@
 			login_flag = #{loginFlag},
 			photo = #{photo},
 			level = #{level},
-			coefficient = #{coefficient}
+			coefficient = #{coefficient},
+			work_status = #{workStatus}
 		WHERE id = #{id}
 	</update>
 	

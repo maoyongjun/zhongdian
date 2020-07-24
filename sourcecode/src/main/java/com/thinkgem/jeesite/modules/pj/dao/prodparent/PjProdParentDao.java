@@ -22,7 +22,7 @@ import java.util.List;
 public interface PjProdParentDao extends CrudDao<PjProdParent> {
     List<PjProdParent> getPjProdParentByRaterId(String raterId);
 
-    List<WXParentVo> getWXParentVoByRaterId(String raterId);
+    List<WXParentVo> getWXParentVoByRaterIdOrTitle(@Param(value = "raterId")String raterId,@Param(value = "title")String title);
 
     List<PjProdParent> getParentListByRaterbyIdStarEndDate(@Param(value = "raterbyId")String raterbyId, @Param(value = "startDate")Date startDate, @Param(value = "endDate")Date endDate);
 

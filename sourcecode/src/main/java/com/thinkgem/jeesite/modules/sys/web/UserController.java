@@ -348,6 +348,25 @@ public class UserController extends BaseController {
 		}
 		return mapList;
 	}
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "treeDataWorkStatus")
+	public List<Map<String, Object>> treeDataWorkStatus(HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		User user = new User();
+		user.setWorkStatus("0");
+		List<User> list = systemService.findUser(user);
+		for (int i=0; i<list.size(); i++){
+			User e = list.get(i);
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("id", "u_"+e.getId());
+			map.put("pId", "0");
+			map.put("name", StringUtils.replace(e.getName(), " ", ""));
+			mapList.add(map);
+		}
+		return mapList;
+	}
+
 
 	@RequiresPermissions("user")
 	@ResponseBody

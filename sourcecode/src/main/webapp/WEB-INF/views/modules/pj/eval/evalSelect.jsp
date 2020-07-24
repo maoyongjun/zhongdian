@@ -16,18 +16,8 @@
         .eval-container {
             /*border: 1px solid gray;*/
             padding: 2%;
-            height: 86%;
+            height: 80%;
             overflow-y: scroll;
-        }
-
-        .rateTitle {
-            height: 22px;
-            width: 400px;
-            margin-bottom: 8px;
-            padding: 2px 8px;
-            border-radius: 2px;
-            outline: none;
-            border: 1px solid #999999;
         }
 
         label {
@@ -41,14 +31,13 @@
             display: inline-block;
         }
 
-
         .item-container {
             /*padding: 20px;*/
         }
 
         .eval-item {
-            border-radius: 10px;
-            box-shadow: 1px 1px 2px #888888;
+            border-radius: 4px;
+            box-shadow: 0 1px 1px #aaaaaa;
             border: 1px solid lightgray;
             padding: 20px;
             margin: 10px 0;
@@ -68,14 +57,18 @@
             margin-left: 20px;
         }
 
-
     </style>
 </head>
 <body>
 
-<sys:message content="${message}"/>
 
-<h3>评价选择</h3>
+<div id="alertDiv">
+
+</div>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a>价值评价发布</a></li>
+</ul>
 <div class="eval-container">
 
     <div class="control-group">
@@ -83,18 +76,18 @@
         <div class="controls" style="display: inline-block">
             <sys:treeselect id="raterbyId" name="raterbyId" value="${pjProdParent.raterbyId}" labelName="raterby.name"
                             labelValue="${pjProdParent.raterby.name}"
-                            title="用户" url="/sys/user/treeDataAll" cssClass="required" allowClear="true"
+                            title="用户" url="/sys/user/treeDataWorkStatus" cssClass="required" allowClear="true"
                             notAllowSelectParent="true"/>
             <span class="help-inline"><font color="red">*</font> </span>
         </div>
 
-<%--        <label style="margin-left: 5%;">标题：</label>--%>
+        <%--        <label style="margin-left: 5%;">标题：</label>--%>
         <div class="optionBtnContainer">
-<%--            <input id="rateTitle" class="rateTitle" placeholder="XX年X月XX的价值评价" />--%>
-<%--            <span class="help-inline"><font color="red">*</font> </span>--%>
+            <%--            <input id="rateTitle" class="rateTitle" placeholder="XX年X月XX的价值评价" />--%>
+            <%--            <span class="help-inline"><font color="red">*</font> </span>--%>
 
             <button class="btn btn-primary" onclick="addRaterBox()">添加评价人</button>
-            <button class="btn btn-danger"  onclick="delRaterBox()">删除评价人</button>
+            <button class="btn btn-danger" onclick="delRaterBox()">删除评价人</button>
         </div>
     </div>
 
@@ -116,12 +109,11 @@
     var RATER_COUNT = 0;
 
     $(function () {
-        console.log("hahahaha");
         addRaterBox();
     });
 
     function seletcUserFrame(elementId, elementName) {
-        top.$.jBox.open("iframe:/jeesite/a/tag/treeselect?url=" + encodeURIComponent("/sys/user/treeDataAll") + "&module=&checked=&extId=&isAll=", "选择用户", 300, 420, {
+        top.$.jBox.open("iframe:/jeesite/a/tag/treeselect?url=" + encodeURIComponent("/sys/user/treeDataWorkStatus") + "&module=&checked=&extId=&isAll=", "选择用户", 300, 420, {
             ajaxData: {selectIds: $("#" + elementId).val()},
             buttons: {"确定": "ok", "清除": "clear", "关闭": true},
             submit: function (v, h, f) {
@@ -158,14 +150,15 @@
         });
     }
 
+    //选择类目
     function seletcCateFrame(elementId, elementName) {
-        console.log("elementId:" + elementId + ",elementName:" + elementName);
+        // console.log("elementId:" + elementId + ",elementName:" + elementName);
         top.$.jBox.open("iframe:/jeesite/a/tag/treeselect?url=" + encodeURIComponent("/pj/category/pjValueCategory/treeDataStatus") + "&module=&checked=true&extId=&isAll=", "选择评价大项", 300, 420, {
             ajaxData: {selectIds: $("#" + elementId).val()},
             buttons: {"确定": "ok", "清除": "clear", "关闭": true},
             submit: function (v, h, f) {
                 if (v == "ok") {
-                    console.log("v==ok");
+                    // console.log("v==ok");
                     var tree = h.find("iframe")[0].contentWindow.tree;
                     var ids = [], names = [], nodes = [];
                     nodes = tree.getCheckedNodes(true);
@@ -174,7 +167,7 @@
                     // } else {
                     // 	nodes = tree.getSelectedNodes();
                     // }
-                    console.log("nodes.length: " + nodes.length);
+                    // console.log("nodes.length: " + nodes.length);
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i].isParent) {
                             top.$.jBox.tip("不能选择父节点（" + nodes[i].name + "）请重新选择。");
@@ -183,7 +176,7 @@
                         ids.push(nodes[i].id);
                         names.push(nodes[i].name);
                     }
-                    console.log("ids: " + ids);
+                    // console.log("ids: " + ids);
                     $("#" + elementId).val(ids.join(",").replace(/u_/ig, ""));
                     $("#" + elementName).val(names.join(","));
                 } else if (v == "clear") {
@@ -200,6 +193,7 @@
         });
     }
 
+    //添加评价人
     function addRaterBox() {
         RATER_COUNT += 1;
         var out = $('#evals');
@@ -227,7 +221,7 @@
             "                       class=\"required\" style=\"\">",
             "                <a id=\"valueCate" + RATER_COUNT + "Button\" href=\"javascript:\" class=\"btn hide\" style=\"\">&nbsp;<i class=\"icon-search\"></i>&nbsp;</a>&nbsp;&nbsp;",
             "            </div>",
-            "            <button onclick=\"getDetials(\'detailsItem" + RATER_COUNT + "\',\'valueCate" + RATER_COUNT + "Id\')\" class=\"btn btn-success\" style=\"margin-bottom: 10px;\">",
+            "            <button onclick=\"getDetials(\'raterId" + RATER_COUNT + "Id\', \'detailsItem" + RATER_COUNT + "\',\'valueCate" + RATER_COUNT + "Id\')\" class=\"btn btn-success\" style=\"margin-bottom: 10px;\">",
             "                获取细则",
             "            </button>",
             "        </div>",
@@ -258,12 +252,19 @@
     }
 
     //获取细则
-    function getDetials(detailsItemId, valueCateId) {
+    function getDetials(raterId, detailsItemId, valueCateId) {
         var out = $('#' + detailsItemId);
         var dataStr = {};
+        var raterId = $('#' + raterId).val();
+        if (raterId === "") {
+            // alert("请先选择评价人");
+            alertView("请先选择评价人。");
+            return;
+        }
         dataStr.cateIds = $('#' + valueCateId).val();
+        dataStr.raterId = raterId;
         dataStr = JSON.stringify(dataStr);
-        console.log(dataStr);
+        // console.log(dataStr);
         $.ajax({
             url: "/jeesite/a/pj/eval/getDetailsListByCate",
             type: "POST",
@@ -283,16 +284,18 @@
                         var detail = inList[j];
                         var id = detail.id;
                         var name = detail.name;
-                        var random = Math.floor(Math.random()*10);//生成0-9的随机数
-                        if(j%7==3||random>7){
+                        var random = Math.floor(Math.random() * 10);//生成0-9的随机数
+                        if (j >= 2 && (j % 7 == 3 || random > 7)) {
                             inner += "<p><input type='checkbox' name='checkbox" + detailsItemId + "' value='" + id + "' checked='checked' />" + name + "</p>";
-                        }else{
+                        } else {
                             inner += "<p><input type='checkbox' name='checkbox" + detailsItemId + "' value='" + id + "' />" + name + "</p>";
                         }
                     }
                     inner += "<hr/>";
                 }
                 out.html(inner);
+
+                $('#' + valueCateId).val(result.cateIds);
             },
             error: function (e) {
                 console.log(e.status);
@@ -306,10 +309,10 @@
      * @param arr
      * @returns {boolean}
      */
-    function isRepeat(arr){
+    function isRepeat(arr) {
         var hash = {};
-        for(var i in arr) {
-            if(hash[arr[i]]){ //hash 哈希
+        for (var i in arr) {
+            if (hash[arr[i]]) { //hash 哈希
                 return true;
             }
             hash[arr[i]] = true;
@@ -324,9 +327,10 @@
         var data = {};
         data.raterbyId = $('#raterbyIdId').val();
         // data.title = $('#rateTitle').val();
-        if(data.raterbyId.trim() === ""){
-            $("#messageBox").text("输入有误，请先更正。");
-            alert("被评价人不能为空！");
+        if (data.raterbyId.trim() === "") {
+            // $("#messageBox").text("输入有误，请先更正。");
+            // alert("被评价人不能为空！");
+            alertView("被评价人不能为空。");
             return;
         }
         // if(data.title.trim() === ""){
@@ -339,22 +343,25 @@
             var rateInfo = {};
             rateInfo.raterId = $('#raterId' + i + "Id").val();
             rateInfo.bigCate = $("#valueCate" + i + "Id").val();
-            if(rateInfo.raterId === ""){
-                alert("评价人不能为空！");
+            if (rateInfo.raterId === "") {
+                // alert("评价人不能为空！");
+                alertView("评价人不能为空。");
                 return;
             }
-            raterArr[i-1] = rateInfo.raterId;
+            raterArr[i - 1] = rateInfo.raterId;
             var checkName = "checkbox" + "detailsItem" + i;
             rateInfo.details = getRateDetails(checkName);
-            if(rateInfo.details.length===0){
-                alert("请选择评价细则！");
+            if (rateInfo.details.length === 0) {
+                // alert("请选择评价细则！");
+                alertView("评价细则不能为空。");
                 return;
             }
             evals[i - 1] = rateInfo;
         }
 
-        if(isRepeat(raterArr)){
-            alert("评价人不能重复的");
+        if (isRepeat(raterArr)) {
+            // alert("评价人不能重复的");
+            alertView("评价人不能重复。");
             return;
         }
 
@@ -375,10 +382,13 @@
             data: dataStr,
             async: false,
             success: function (result) {
-                console.log(result);
-                if(result.code==="ok"){
+                // console.log(result);
+                if (result.code === "ok") {
                     alert("发布成功");
                     window.location.reload();//刷新当前页面
+                } else if (result.code === "error") {
+                    // alert(result.msg);
+                    alertView(result.msg);
                 }
 
             },
@@ -402,6 +412,16 @@
         return rateDetails;
     }
 
+    function alertView(msg) {
+        var out = $('#alertDiv');
+        var inner = "<div class=\"alert alert-warning\" style=\"padding:6px 2%\">" +
+            "        <a href=\"#\" class=\"close\" data-dismiss=\"alert\">" +
+            "            &times;" +
+            "        </a>" +
+            "        <strong>警告！</strong>" + msg +
+            "    </div>";
+        out.html(inner);
+    }
 
 </script>
 </body>

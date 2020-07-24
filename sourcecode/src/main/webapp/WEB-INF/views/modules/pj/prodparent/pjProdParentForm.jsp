@@ -66,32 +66,6 @@
 			</div>
 		</div>
 
-
-
-<%--		<div class="control-group">--%>
-<%--			<label class="control-label">备注1：</label>--%>
-<%--			<div class="controls">--%>
-<%--				<form:input path="note1" htmlEscape="false" maxlength="255" class="input-xlarge "/>--%>
-<%--			</div>--%>
-<%--		</div>--%>
-<%--		<div class="control-group">--%>
-<%--			<label class="control-label">备注2：</label>--%>
-<%--			<div class="controls">--%>
-<%--				<form:input path="note2" htmlEscape="false" maxlength="255" class="input-xlarge "/>--%>
-<%--			</div>--%>
-<%--		</div>--%>
-<%--		<div class="control-group">--%>
-<%--			<label class="control-label">备注3：</label>--%>
-<%--			<div class="controls">--%>
-<%--				<form:input path="note3" htmlEscape="false" maxlength="255" class="input-xlarge "/>--%>
-<%--			</div>--%>
-<%--		</div>--%>
-<%--		<div class="control-group">--%>
-<%--			<label class="control-label">备注4：</label>--%>
-<%--			<div class="controls">--%>
-<%--				<form:input path="note4" htmlEscape="false" maxlength="255" class="input-xlarge "/>--%>
-<%--			</div>--%>
-<%--		</div>--%>
 		<div class="form-actions">
 			<shiro:hasPermission name="pj:prodparent:pjProdParent:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
@@ -104,7 +78,7 @@
 
 		<table class="table table-bordered table-striped ">
 			<tr>
-				<th>细则</th><th>分值</th><th>评价日期</th>
+				<th>细则</th><th>评价状态</th><th>评价日期</th>
 			</tr>
 			<c:forEach items="${pjProdChildList}" var="child">
 				<tr>
@@ -112,7 +86,12 @@
 						<a href="${ctx}/pj/prodchild/pjProdChild/form?id=${child.id}">${child.pjValueDetails.name}</a>
 					</td>
 					<td>
-						${child.realScore}
+						<c:if test="${not empty child.realScore}">
+							已评价
+						</c:if>
+						<c:if test="${empty child.realScore}">
+							<span style="color: red;">未评价</span>
+						</c:if>
 					</td>
 
 					<td>

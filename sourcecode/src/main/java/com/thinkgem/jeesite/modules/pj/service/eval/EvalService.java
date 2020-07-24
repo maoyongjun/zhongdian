@@ -21,11 +21,8 @@ import com.thinkgem.jeesite.modules.pj.vo.eval.*;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
@@ -123,6 +120,7 @@ public class EvalService {
      */
     @Transactional(readOnly = false)
     public boolean publishEval(JSONObject object) {
+
         String code = IdGen.uuid();
         //base
         String raterbyId = (String) object.get("raterbyId");
@@ -134,7 +132,7 @@ public class EvalService {
         Date secondMonthDate = cal.getTime();
         cal.add(Calendar.MONTH, 1);
         Date thirdMonthDate = cal.getTime();
-        String title = user.getName() + "价值考评";
+        String title = user.getName() + "-" + year + "年" + month + "月" + "价值考评";
 
         int inBaseRes = insertPjProdBase(raterbyId, title, code);
 
@@ -172,7 +170,7 @@ public class EvalService {
      * getEvalListById的子方法
      *
      * @param createDate
-     * @return
+     * @return eg. 2020年6月-2020年8月
      */
     private String getStartEndDate(Date createDate) {
         Calendar cal = Calendar.getInstance();
@@ -194,15 +192,14 @@ public class EvalService {
      * @param raterId
      * @return
      */
-    public List<WXParentVo> getEvalListById(String raterId) {
-        List<WXParentVo> wxParentVoList = pjProdParentDao.getWXParentVoByRaterId(raterId);
+    public List<WXParentVo> getEvalListById(String raterId, String title) {
+        List<WXParentVo> wxParentVoList = pjProdParentDao.getWXParentVoByRaterIdOrTitle(raterId, title);
         for (WXParentVo parentVo : wxParentVoList) {
             Date createDate = parentVo.getCreateDate();
             String startEndDate = getStartEndDate(createDate);
             parentVo.setStartEndDate(startEndDate);
-
         }
-        return pjProdParentDao.getWXParentVoByRaterId(raterId);
+        return wxParentVoList;
     }
 
     /**
@@ -212,7 +209,6 @@ public class EvalService {
      * @return
      */
     public List<WXChildVo> getWXChildListByParentId(String parentId) {
-
         return pjProdChildDao.getWXChildListByParentId(parentId);
     }
 
@@ -241,27 +237,21 @@ public class EvalService {
                 PjProdParent parent = pjProdParentDao.get(child.getParentId());
                 Date createDate = parent.getCreateDate();
                 int months = new Date().getMonth() - createDate.getMonth();
+
+                months = 2; // 测试 。。。。。。。。。。。。。。。。
+
                 parent.setUpdateDate(new Date());
                 count += pjProdParentDao.update(parent);
                 if (months >= 2) {
-                    parent.setStatu("1");
+                    parent.setStatu("1");   //第三个月，修改parent的状态为已评价
                     count += pjProdParentDao.update(parent);
 
                     //添加至统计表 ... 每个评价第三个月提交后生成类目汇总数据
                     String parentId = parent.getId();
                     List<PjRaterbySummary> summaryList = evalDao.getsummaryList(parentId);
-//                    double raterCoeff = parent.getCoefficient();
-//                    double coefficientSum = 0.0;    //总权重系数
-//                    PjProdParent query2 = new PjProdParent();
-//                    query2.setCode(parent.getCode());
-//                    List<PjProdParent> pjProdParents = pjProdParentDao.findList(query2);
-//                    for (PjProdParent p : pjProdParents) {
-//                        coefficientSum += p.getCoefficient();
-//                    }
-//                    double r = raterCoeff/coefficientSum;
+
                     for (PjRaterbySummary summary : summaryList) {
                         summary.setId(IdGen.uuid());
-//                        summary.setFirstCorrectionScores(summary.getScores()*r);
                         pjRaterbySummaryDao.insert(summary);
                     }
                 }
@@ -284,8 +274,10 @@ public class EvalService {
                         base.setStatu("1");
                         pjProdBaseDao.update(base);
 
-                        //添加总分汇总表
-                        addToPjSummaryTotal(base.getRaterbyId(), base.getCreateDate());
+                        //进行总分汇总
+                        if (addToPjSummaryTotal(base) != 0) {   //汇总失败
+                            count = -1;
+                        }
                     }
                 }
             }
@@ -296,13 +288,16 @@ public class EvalService {
 
 
     /**
-     * 一个季度评价完后，添加汇总表 pj_summary_total
+     * 一个季度评价完后，进行总分汇总   添加数据到 pj_summary_total
      *
-     * @param raterbyId
-     * @param createDate
+     * @param base
      * @return
      */
-    private int addToPjSummaryTotal(String raterbyId, Date createDate) {
+    private int addToPjSummaryTotal(PjProdBase base) {
+
+        String raterbyId = base.getRaterbyId();
+        Date createDate = base.getCreateDate();
+
         List<SummaryVo> summaryVoList = evalDao.getSummaryVoList(raterbyId, createDate, "");
 
         List<SummaryVo> cate2List = evalDao.getSummaryVoList(raterbyId, createDate, "2");//行为特征
@@ -323,18 +318,22 @@ public class EvalService {
 
         double ddcxAvg = qzAvgScore(cate6List);
         double wfdAvg = qzAvgScore(cate3List);
-
         double secondTotal = firstTotal - xwAvg - ddtzAvg + xwSecondScore + ddtzSecondScore;
         double dandangzhi = ddtzAvg + ddcxAvg;
 
         PjSummaryTotal pjSummaryTotal = new PjSummaryTotal();
         pjSummaryTotal.setId(IdGen.uuid());
+        pjSummaryTotal.setRaterbyId(raterbyId);
         pjSummaryTotal.setBaseScore(firstTotal);
         pjSummaryTotal.setSecondScore(secondTotal);
         pjSummaryTotal.setThirdScore(secondTotal);
         pjSummaryTotal.setBearScore(dandangzhi);
         pjSummaryTotal.setFakeScore(wfdAvg);
-        pjSummaryTotal.setBearRate(dandangzhi / 560.0);
+        Map<String, Double> cateScoreMap = getCateSumScore();
+        double bearRate = Math.pow(dandangzhi / (cateScoreMap.get("5") + cateScoreMap.get("6")), 2);
+        pjSummaryTotal.setBearRate(bearRate);
+        pjSummaryTotal.setCreateDate(createDate);
+
         pjSummaryTotalDao.insert(pjSummaryTotal);
 
         return 0;
@@ -374,9 +373,9 @@ public class EvalService {
             LinkedHashMap<String, Double> scoreMap = cateMap.get(detailsName);
             for (PjProdParent parent : parents) {
                 if ("1".equals(flag)) {
-                    scoreMap.put(parent.getRater().getName(), 0.0);
+                    scoreMap.put(parent.getRater().getName(), 999.0);
                 } else if ("2".equals(flag)) {
-                    scoreMap.put(parent.getRaterby().getName(), 0.0);
+                    scoreMap.put(parent.getRaterby().getName(), 999.0);
                 }
             }
             if ("1".equals(flag)) {
@@ -384,8 +383,6 @@ public class EvalService {
             } else if ("2".equals(flag)) {
                 scoreMap.put("平均值", 0.0);
             }
-
-
         }
 
         return map;
@@ -457,14 +454,76 @@ public class EvalService {
             if (cateScore1 != null && cateScore2 != null && cateScore5 != null && cateScore6 != null) {
                 double r = (cateScore1 + cateScore2) / striveSum
                         - (cateScore5 + cateScore6) / bearSum;
-                orangeMap.put(raterName, r > 0.35);//实际使用
-//                orangeMap.put(raterName, true);//测试使用
+                System.out.println("RRRRRRRR-" + raterName + ":" + r);
+                orangeMap.put(raterName, r > 0.35); //实际使用
             }
         }
 
         return orangeMap;
     }
 
+    /**
+     * 获取十级以上的系数之和
+     *
+     * @param parents
+     * @return
+     */
+    private double getCoef10Sum(List<PjProdParent> parents) {
+        double sum = 0.0;
+        for (PjProdParent p : parents) {
+            if (p.getCoefficient() >= 1.0) {
+                sum += p.getCoefficient();
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * 获取导师的系数之和
+     *
+     * @param parents
+     * @return
+     */
+    private double getCoefTeacherSum(List<PjProdParent> parents) {
+        double sum = 0.0;
+        for (PjProdParent p : parents) {
+            if (p.getCoefficient() >= 1.5) {
+                sum += p.getCoefficient();
+            }
+        }
+        return sum;
+    }
+
+
+    /**
+     * 获取细则系数和Map
+     *
+     * @param evalDetailsList
+     * @param tableMap
+     * @return
+     */
+    private Map<String, Double> getCateCoeffSumMap(List<EvalDetails> evalDetailsList, Map<String, LinkedHashMap<String, LinkedHashMap<String, Double>>> tableMap) {
+        Map<String, Double> map = new HashMap<>();
+        Map<String, Double> cateMap = new HashMap<>();
+        for (EvalDetails details : evalDetailsList) {
+            String raterName = details.getRaterName();
+            String cateName = details.getCateName();
+            String detailsName = details.getDetailsName();
+            double coeff = details.getCoefficient();
+
+            if ("在与奋斗者团队合作时正直诚信的奋斗态度。".equals(detailsName)) {
+                System.out.println(raterName + ": " + coeff);
+            }
+            if (!map.containsKey(detailsName)) {
+                map.put(detailsName, 0.0);
+            }
+            double sumCoeff = map.get(detailsName) + coeff;
+            map.put(detailsName, sumCoeff);
+            cateMap.put(cateName, sumCoeff);
+        }
+
+        return cateMap;
+    }
 
     /**
      * 被评价人报表Map生成
@@ -477,15 +536,11 @@ public class EvalService {
     public Map<String, Object> showRaterbyEvalDetailsMap(String raterbyId, Date beginDate, Date endDate) {
         Map<String, Object> map = new HashMap<>();
         List<EvalDetails> evalDetailsList = evalDao.getEvalDetailsListByRaterbyId(raterbyId, beginDate, endDate);
-
         List<PjProdParent> parents = pjProdParentDao.getParentListByRaterbyIdStarEndDate(raterbyId, beginDate, endDate);
-
-        double coefSum = removeDupWithOrderReturnCoeffSum(parents, "1");
-        double coef10Sum = 0.0;
-        double coefTeacherSum = 0.0;
 
         Map<String, LinkedHashMap<String, LinkedHashMap<String, Double>>> tableMap = initEvalDetailsMap(parents, "1");
         Map<String, Map<String, Double>> raterSumMap = new LinkedHashMap<>();
+        Map<String, Double> cateCoeffSumMap = getCateCoeffSumMap(evalDetailsList, tableMap);
 
         for (EvalDetails details : evalDetailsList) {
             String cateId = details.getCateId();
@@ -499,8 +554,10 @@ public class EvalService {
                 LinkedHashMap<String, Double> scoreMap = tableMap.get(cateName).get(detailsName);
                 scoreMap.put(raterName, realScore);
                 double coef = details.getCoefficient();
-                double avg = scoreMap.get("权重均值") + realScore * (coef / coefSum);
-                avg = (double) Math.round(avg * 100) / 100;
+                double coefTemp = cateCoeffSumMap.get(cateName);
+
+                double avg = scoreMap.get("权重均值") + realScore * (coef / coefTemp);
+                avg = keepNDecimal(avg, 7);
                 scoreMap.put("权重均值", avg);
 
                 //sum
@@ -538,7 +595,6 @@ public class EvalService {
         List<EvalDetailsRater> evalDetailsList = evalDao.getEvalDetailsRaterListByRaterId(raterId, beginInDate, endInDate);
 
         List<PjProdParent> parents = pjProdParentDao.getParentListByRaterIdStarEndDate(raterId, beginInDate, endInDate);
-
         Map<String, LinkedHashMap<String, LinkedHashMap<String, Double>>> map = initEvalDetailsMap(parents, "2");
 
         int raterbyNum = parents.size();
@@ -551,7 +607,7 @@ public class EvalService {
                 double realScore = details.getRealScore();
                 scoreMap.put(raterbyName, realScore);
                 double avg = scoreMap.get("平均值") + realScore / raterbyNum;
-                avg = (double) Math.round(avg * 100) / 100;
+                avg = keepNDecimal(avg, 7);
                 scoreMap.put("平均值", avg);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -573,22 +629,48 @@ public class EvalService {
         return dou;
     }
 
+
+    private double getCoeffSum(List<SummaryVo> list) {
+        double sum = 0.0;
+        Set set = new HashSet();
+        for (SummaryVo summary : list) {
+            if (set.add(summary.getRaterId())) {
+                sum += summary.getReterCoefficient();
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * 通过pj_raterby_summary表内的数据计算 权重均值
+     *
+     * @param list
+     * @return
+     */
     private double qzAvgScore(List<SummaryVo> list) {
-        double coefSum = 0.0;
-        //计算系数之和
-        for (SummaryVo sumVo : list) {
-            coefSum += sumVo.getReterCoefficient();
-        }
-        //计算权重均分
         double avgScore = 0.0;
-        for (SummaryVo sumVo : list) {
-            avgScore += (sumVo.getScores() * (sumVo.getReterCoefficient() / coefSum));
+        Map<String, List<SummaryVo>> cateMap = new HashMap<>();
+        for (SummaryVo vo : list) {
+            String cateId = vo.getCateId();
+            if (!cateMap.containsKey(cateId)) {
+                cateMap.put(cateId, new ArrayList<>());
+            }
+            cateMap.get(cateId).add(vo);
         }
+
+        for (Map.Entry<String, List<SummaryVo>> entry : cateMap.entrySet()) {
+            List<SummaryVo> cateList = entry.getValue();
+            double coefSum = getCoeffSum(cateList);
+            for (SummaryVo sumVo : cateList) {
+                avgScore += (sumVo.getScores() * (sumVo.getReterCoefficient() / coefSum));
+            }
+        }
+
         return avgScore;
     }
 
     /**
-     * 计算权重，偏离率
+     * 计算不同类目的权重，偏离率
      *
      * @param list        入参数据
      * @param pMap        存放偏离率
@@ -611,7 +693,7 @@ public class EvalService {
         int xwZCount = 0, xwFCount = 0;
         //计算偏离率，put到map
         for (SummaryVo xw : list) {
-            double r = keepNDecimal((xw.getScores() - avgScore) / avgScore, 4);
+            double r = keepNDecimal((xw.getScores() - avgScore) / avgScore, 7);
             pMap.put(xw.getRaterName(), r);
             max = Math.max(max, r);
             min = Math.min(min, r);
@@ -632,8 +714,8 @@ public class EvalService {
         double xwFR = (min + zSum / xwZCount) / raterCount;
         double secondXwScore = avgScore - avgScore * xwZR - avgScore * xwFR;
 
-        secondScore.put("AvgScore", keepNDecimal(avgScore, 2));
-        secondScore.put("secondScore", keepNDecimal(secondXwScore, 2));
+        secondScore.put("AvgScore", keepNDecimal(avgScore, 7));
+        secondScore.put("secondScore", keepNDecimal(secondXwScore, 7));
 
     }
 
@@ -658,17 +740,33 @@ public class EvalService {
         crrentScoreByCate(xingweiList, xwMap, xwSecondScore);//修正偏离率计算
         crrentScoreByCate(dandangList, ddMap, ddSecondScore);//修正偏离率计算
 
-        SummaryTotalVo summaryTotalVo = pjSummaryTotalDao.getSummaryTotalByRaterIdCreateDate(raterbyId, createDate);
+        List<SummaryTotalVo> summaryTotalVoList = pjSummaryTotalDao.getSummaryTotalByRaterIdCreateDate(raterbyId, createDate);
 
+        if (summaryTotalVoList.size() > 1) {
+            map.put("code", "error");
+            map.put("msg", "该评价者此月数据重复，请通过后台管理检查");
+            return map;
+        }
+        SummaryTotalVo summaryTotalVo = null;
+        if (summaryTotalVoList.size() == 1) {
+            summaryTotalVo = summaryTotalVoList.get(0);
+        }
+
+        User user = UserUtils.getUser();
+        map.put("userType",user.getUserType());
+
+        map.put("code", "ok");
         map.put("xwRMap", xwMap);
         map.put("ddRMap", ddMap);
         map.put("wxSecondScore", xwSecondScore);
         map.put("ddSecondScore", ddSecondScore);
-
         map.put("summaryTotalVo", summaryTotalVo);
+
+
 
         return map;
     }
+
 
     /**
      * 获取价值评价汇总表
@@ -700,27 +798,118 @@ public class EvalService {
         return cfj;
     }
 
-    /**
-     * 担当金汇总
-     *
-     * @param beginDate
-     * @param endDate
-     * @return
-     */
-    public Map<String, Object> getMoneySummaryTable(Date beginDate, Date endDate) {
-        Map<String, Object> map = new HashMap<>();
-        List<SummaryVo> summaryRaterList = evalDao.getRaterMoneySummaryVoList(beginDate, endDate);//获取所有评价人
-        List<SummaryVo> summaryRaterbyList = evalDao.getRaterByMoneySummaryVoList(beginDate, endDate);//获取所有被评价人
+//    /**
+//     * 担当金汇总
+//     *
+//     * @param beginDate
+//     * @param endDate
+//     * @return
+//     */
+//    public Map<String, Object> getMoneySummaryTable(Date beginDate, Date endDate) {
+//        Map<String, Object> map = new HashMap<>();
+//        List<SummaryVo> summaryRaterList = evalDao.getRaterMoneySummaryVoList(beginDate, endDate);//获取所有评价人
+//        List<SummaryVo> summaryRaterbyList = evalDao.getRaterByMoneySummaryVoList(beginDate, endDate);//获取所有被评价人
+//
+//        Map<String, RaterByMoneyInfo> raterbyMap = new LinkedHashMap<>();
+//
+//        for (SummaryVo raterby : summaryRaterbyList) {  //数据计算
+//            RaterByMoneyInfo raterByMoneyInfo = new RaterByMoneyInfo();     //一条被评价人的信息
+//            raterbyMap.put(raterby.getRaterbyName(), raterByMoneyInfo);
+//            Map<String, RaterMoneyInfo> raterMoneyInfoMap = raterByMoneyInfo.getRaterMoneyInfoMap();    //一个被评价人的所有评价人的偏离率，惩罚金等信息
+//            List<SummaryVo> raterScoresList =
+//                    evalDao.getRaterScoreMoneySummaryVoList(raterby.getRaterbyId(), beginDate, endDate);//该评价人的评价人和担当值
+//            double coeffSum = 0.0, avgScores = 0.0;
+//
+//            for (SummaryVo summaryVo : raterScoresList) {   //计算系数和
+//                coeffSum += summaryVo.getReterCoefficient();
+//            }
+//            coeffSum = coeffSum == 0.0 ? 1 : coeffSum;
+//            for (SummaryVo summaryVo : raterScoresList) {   //计算权重均分
+//                avgScores += summaryVo.getScores() * (summaryVo.getReterCoefficient() / coeffSum);
+//            }
+//
+//            raterByMoneyInfo.setRaterbyId(raterby.getRaterbyId());
+//            raterByMoneyInfo.setRaterbyName(raterby.getRaterbyName());
+//            raterByMoneyInfo.setAvgScore(avgScores);
+//            for (SummaryVo summaryVo : raterScoresList) {   //计算偏离率，惩罚金等
+//                String raterName = summaryVo.getRaterName();
+//                double pll = (summaryVo.getScores() - avgScores) / avgScores;
+//                double cfj = getCFJByPLL(pll);
+//                RaterMoneyInfo newRaterMoneyInfo = new RaterMoneyInfo();
+//                newRaterMoneyInfo.setPll(pll);
+//                newRaterMoneyInfo.setPunishMoney(cfj);
+//                raterMoneyInfoMap.put(raterName, newRaterMoneyInfo);
+//            }
+//        }
+//
+//        Map<String, JSONObject> raterMoneyTotalMap = new LinkedHashMap<>();
+//        for (SummaryVo summaryVo : summaryRaterList) {      //raterMoneyTotalMap初始化
+//            JSONObject obj = new JSONObject();
+//            obj.put("raterName", summaryVo.getRaterName());
+//            obj.put("maxTimes", 0);
+//            obj.put("cfjSum", 0.0);
+//            obj.put("maxCfj", 0.0);
+//            raterMoneyTotalMap.put(summaryVo.getRaterName(), obj);
+//        }
+//
+//        for (SummaryVo summaryVo : summaryRaterbyList) {    //计算偏离率是否是最大偏离率
+//            RaterByMoneyInfo raterByMoneyInfo = raterbyMap.get(summaryVo.getRaterbyName());
+//            Map<String, RaterMoneyInfo> raterMoneyInfoMap = raterByMoneyInfo.getRaterMoneyInfoMap();
+//            String raterName = "";
+//            double maxPll = 0.0;
+//            for (Map.Entry<String, RaterMoneyInfo> entry : raterMoneyInfoMap.entrySet()) {
+//                if (entry.getValue().getPunishMoney() != 0.0 && maxPll < Math.abs(entry.getValue().getPll())) {
+//                    maxPll = entry.getValue().getPll();
+//                    raterName = entry.getKey();
+//                }
+//            }
+//            if (!"".equals(raterName)) {
+//                raterMoneyInfoMap.get(raterName).setMaxPl(true);
+//            }
+//        }
+//
+//        for (SummaryVo rater : summaryRaterList) {  //raterMoneyTotalMap压值，评价人最大偏离次数，惩罚金合计，最大惩罚金
+//            String raterName = rater.getRaterName();
+//            int maxTimes = 0;
+//            double cfjSum = 0.0, maxCfj = 0.0;
+//            for (SummaryVo raterby : summaryRaterbyList) {
+//                RaterMoneyInfo raterMoneyInfo = raterbyMap.get(raterby.getRaterbyName()).getRaterMoneyInfoMap().get(raterName);
+//                if (raterMoneyInfo == null) {
+//                    continue;
+//                }
+//                double cfj = raterMoneyInfo.getPunishMoney();
+//                if (raterMoneyInfo.isMaxPl()) {
+//                    maxTimes++;
+//                    maxCfj = Math.max(maxCfj, cfj);
+//                }
+//                cfjSum += cfj;
+//            }
+//            JSONObject obj = raterMoneyTotalMap.get(raterName);
+//            obj.put("maxTimes", maxTimes);
+//            obj.put("cfjSum", cfjSum);
+//            obj.put("maxCfj", maxCfj == 0.0 ? "" : maxCfj);
+//        }
+//        map.put("raterMoneyTotalMap", raterMoneyTotalMap);
+//        map.put("raterbyMap", raterbyMap);
+//
+//        return map;
+//    }
 
-        Map<String, RaterByMoneyInfo> raterbyMap = new LinkedHashMap<>();
+
+
+    private void getMoneySummaryTableHadle(Date beginDate, Date endDate, Map<String, JSONObject> raterMoneyTotalMap,Map<String, RaterByMoneyInfo> raterbyMap,String cateId){
+        List<SummaryVo> summaryRaterList = evalDao.getRaterMoneySummaryVoList(beginDate, endDate,cateId);//获取所有评价人
+        List<SummaryVo> summaryRaterbyList = evalDao.getRaterByMoneySummaryVoList(beginDate, endDate,cateId);//获取所有被评价人
+
 
         for (SummaryVo raterby : summaryRaterbyList) {  //数据计算
             RaterByMoneyInfo raterByMoneyInfo = new RaterByMoneyInfo();     //一条被评价人的信息
             raterbyMap.put(raterby.getRaterbyName(), raterByMoneyInfo);
             Map<String, RaterMoneyInfo> raterMoneyInfoMap = raterByMoneyInfo.getRaterMoneyInfoMap();    //一个被评价人的所有评价人的偏离率，惩罚金等信息
             List<SummaryVo> raterScoresList =
-                    evalDao.getRaterScoreMoneySummaryVoList(raterby.getRaterbyId(), beginDate, endDate);//该评价人的评价人和担当值
+                    evalDao.getRaterScoreMoneySummaryVoList(raterby.getRaterbyId(), beginDate, endDate,cateId);//该评价人的评价人和担当值
             double coeffSum = 0.0, avgScores = 0.0;
+
             for (SummaryVo summaryVo : raterScoresList) {   //计算系数和
                 coeffSum += summaryVo.getReterCoefficient();
             }
@@ -728,6 +917,7 @@ public class EvalService {
             for (SummaryVo summaryVo : raterScoresList) {   //计算权重均分
                 avgScores += summaryVo.getScores() * (summaryVo.getReterCoefficient() / coeffSum);
             }
+
             raterByMoneyInfo.setRaterbyId(raterby.getRaterbyId());
             raterByMoneyInfo.setRaterbyName(raterby.getRaterbyName());
             raterByMoneyInfo.setAvgScore(avgScores);
@@ -742,7 +932,7 @@ public class EvalService {
             }
         }
 
-        Map<String, JSONObject> raterMoneyTotalMap = new LinkedHashMap<>();
+
         for (SummaryVo summaryVo : summaryRaterList) {      //raterMoneyTotalMap初始化
             JSONObject obj = new JSONObject();
             obj.put("raterName", summaryVo.getRaterName());
@@ -763,7 +953,7 @@ public class EvalService {
                     raterName = entry.getKey();
                 }
             }
-            if(!"".equals(raterName)){
+            if (!"".equals(raterName)) {
                 raterMoneyInfoMap.get(raterName).setMaxPl(true);
             }
         }
@@ -788,16 +978,33 @@ public class EvalService {
             obj.put("maxTimes", maxTimes);
             obj.put("cfjSum", cfjSum);
             obj.put("maxCfj", maxCfj == 0.0 ? "" : maxCfj);
-
         }
+    }
 
-        map.put("raterMoneyTotalMap", raterMoneyTotalMap);
+    /**
+     * 担当金汇总
+     *
+     * @param beginDate
+     * @param endDate
+     * @return
+     */
+    public Map<String, Object> getMoneySummaryTable(Date beginDate, Date endDate) {
+        Map<String, Object> map = new HashMap<>();
+        Map<String, JSONObject> raterMoneyTotalMap2 = new LinkedHashMap<>();
+        Map<String, RaterByMoneyInfo> raterbyMap2 = new LinkedHashMap<>();
+        getMoneySummaryTableHadle(beginDate, endDate, raterMoneyTotalMap2, raterbyMap2, "2");
 
-        map.put("raterbyMap", raterbyMap);
 
+        Map<String, JSONObject> raterMoneyTotalMap5 = new LinkedHashMap<>();
+        Map<String, RaterByMoneyInfo> raterbyMap5 = new LinkedHashMap<>();
+        getMoneySummaryTableHadle(beginDate, endDate, raterMoneyTotalMap5, raterbyMap5, "5");
+
+        map.put("raterMoneyTotalMap2", raterMoneyTotalMap2);
+        map.put("raterbyMap2", raterbyMap2);
+
+        map.put("raterMoneyTotalMap5", raterMoneyTotalMap5);
+        map.put("raterbyMap5", raterbyMap5);
 
         return map;
     }
-
-
 }

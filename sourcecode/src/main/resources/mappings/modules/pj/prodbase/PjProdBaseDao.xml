@@ -67,7 +67,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -139,5 +139,10 @@
 		DELETE FROM pj_prod_base
 		WHERE id = #{id}
 	</update>
+
+	<select id="hasDataCurMonth" resultType="java.lang.Integer">
+		SELECT count(*) from pj_prod_base a
+		where a.raterby_id = #{raterbyId} and DATE_FORMAT(a.create_date,'%Y-%m')=DATE_FORMAT(now(),'%Y-%m')
+	</select>
 	
 </mapper>

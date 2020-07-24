@@ -61,12 +61,13 @@ public class PjProdBaseController extends BaseController {
         return "modules/pj/prodbase/pjProdBaseList";
     }
 
+
     @RequiresPermissions("pj:prodbase:pjProdBase:view")
     @RequestMapping(value = "form")
     public String form(PjProdBase pjProdBase, Model model) {
         model.addAttribute("pjProdBase", pjProdBase);
         List<PjProdParent> pjProdParentList = new ArrayList<>();
-        if (null!=pjProdBase.getCode()&&!"".equals(pjProdBase.getCode())) {
+        if (null != pjProdBase.getCode() && !"".equals(pjProdBase.getCode())) {
             PjProdParent query = new PjProdParent();
             query.setCode(pjProdBase.getCode());
             pjProdParentList = pjProdParentService.findList(query);
@@ -90,7 +91,8 @@ public class PjProdBaseController extends BaseController {
     @RequiresPermissions("pj:prodbase:pjProdBase:edit")
     @RequestMapping(value = "delete")
     public String delete(PjProdBase pjProdBase, RedirectAttributes redirectAttributes) {
-        pjProdBaseService.delete(pjProdBase);
+//        pjProdBaseService.delete(pjProdBase);
+        pjProdBaseService.deleteAllEvalData(pjProdBase);
         addMessage(redirectAttributes, "删除评价基本信息成功");
         return "redirect:" + Global.getAdminPath() + "/pj/prodbase/pjProdBase/?repage";
     }

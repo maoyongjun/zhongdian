@@ -95,7 +95,7 @@
 
         var dataStr = JSON.stringify(data);
         // console.log(dataStr);
-        var urlStr = '${ctx}/pj/eval/getMoneySummaryTable';
+        var urlStr = '${ctf}/app/getMoneySummaryTable';
         $.ajax({
             url: urlStr,
             type: "POST",
@@ -105,9 +105,9 @@
             async: false,
             success: function (result) {
                 // console.log(JSON.stringify(result));
-                var inner = paintPLTable(result.raterMoneyTotalMap2, result.raterbyMap2,"table2", "奋斗行为担当金统计");
+                var inner = paintPLTable(result.raterMoneyTotalMap2, result.raterbyMap2, "table2", "奋斗行为担当金统计");
 
-                inner += paintPLTable(result.raterMoneyTotalMap5, result.raterbyMap5,"table5", "事业担当特征担当金统计");
+                inner += paintPLTable(result.raterMoneyTotalMap5, result.raterbyMap5, "table5", "事业担当特征担当金统计");
 
                 out.html(inner);
             },
@@ -118,12 +118,12 @@
         });
     }
 
-    function paintPLTable(raterMoneyTotalMap, raterbyMap,tableId, title) {
+    function paintPLTable(raterMoneyTotalMap, raterbyMap, tableId, title) {
 
         var raterNameArr = Object.keys(raterMoneyTotalMap);
         var raterbyNameArr = Object.keys(raterbyMap);
 
-        var inner = "<table id='"+tableId+"' class='table table-bordered'><caption>" + title + "</caption><tr><th style=''></th><th style='width: 20%;' colspan='2'>评价人员</th>";
+        var inner = "<table id='" + tableId + "' class='table table-bordered'><caption>" + title + "</caption><tr><th style=''></th><th style='width: 20%;' colspan='2'>评价人员</th>";
         for (var i in raterNameArr) {
             inner += "<th>" + raterNameArr[i] + "</th>";
         }
@@ -201,14 +201,14 @@
         var beginInDate = $("#beginInDate").val();
         var endInDate = $("#endInDate").val();
         var dateStr = "";
-        if(beginInDate!==""&&endInDate!==""){
+        if (beginInDate !== "" && endInDate !== "") {
             dateStr = beginInDate + '至' + endInDate;
         }
 
         $('#table2').table2excel({
             exclude: '.noExcl',                  //标记不导出行的CSS，用到td上会导致后面的td前移
             name: 'ExcelDocumentName',       	//导出的Excel文档的名称
-            filename: dateStr+'奋斗行为特征担当金汇总表',                //生成文件名
+            filename: dateStr + '奋斗行为特征担当金汇总表',                //生成文件名
             fileext: 'xls',                      //导出文件后缀，似乎也没什么用，IE保存没有后缀名
             preserveColors: true,               //保留颜色
             exclude_img: true,                  //是否导出图片
@@ -219,7 +219,7 @@
         $('#table5').table2excel({
             exclude: '.noExcl',                  //标记不导出行的CSS，用到td上会导致后面的td前移
             name: 'ExcelDocumentName',       	//导出的Excel文档的名称
-            filename: dateStr+'事业担当特征担当金汇总表',                //生成文件名
+            filename: dateStr + '事业担当特征担当金汇总表',                //生成文件名
             fileext: 'xls',                      //导出文件后缀，似乎也没什么用，IE保存没有后缀名
             preserveColors: true,               //保留颜色
             exclude_img: true,                  //是否导出图片
@@ -229,20 +229,6 @@
     }
 
 
-    $(function () {
-        //JS代码来判断：屏幕宽度 < 屏幕高度时，即竖屏，就让页面.lingan_1元素横屏显示
-        var width = document.documentElement.clientWidth; //获取当前手机屏宽
-        var height = document.documentElement.clientHeight; //手机褡高
-        if (width < height) { //如果宽小于高，就是代表竖屏
-            var contentDOM = document.getElementById('hengshu'); //获取lingan_1元素
-            contentDOM.style.width = height + 'px';  //设置该元素的宽等于屏高
-            contentDOM.style.height = width + 'px'; //设置该元素的高等于屏宽
-            contentDOM.style.top = (height - width) / 2 + 'px';
-            contentDOM.style.left = 0 - (height - width) / 2 + 'px';
-            contentDOM.style.transform = 'rotate(90deg)'; //让该元素旋转90度，使其横屏展示
-        }
-
-    })
 
 
 </script>

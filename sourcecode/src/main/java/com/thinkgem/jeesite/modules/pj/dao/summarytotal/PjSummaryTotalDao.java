@@ -20,8 +20,8 @@ import java.util.List;
  */
 @MyBatisDao
 public interface PjSummaryTotalDao extends CrudDao<PjSummaryTotal> {
-    SummaryTotalVo getSummaryTotalByRaterIdCreateDate(@Param(value = "raterbyId") String raterbyId, @Param(value = "createDate") Date createDate);
+    List<SummaryTotalVo> getSummaryTotalByRaterIdCreateDate(@Param(value = "raterbyId") String raterbyId, @Param(value = "createDate") Date createDate);
 
-   List<SummaryTotalVo> getSummaryTotalByCreateDate(@Param(value = "beginDate") Date beginDate, @Param(value = "endDate") Date endDate);
+    List<SummaryTotalVo> getSummaryTotalByCreateDate(@Param(value = "beginDate") Date beginDate, @Param(value = "endDate") Date endDate);
 
 }

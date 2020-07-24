@@ -83,7 +83,7 @@
 			data.endInDate = endDate;
 
 			var dataStr = JSON.stringify(data);
-			var urlStr = '${ctx}/pj/eval/showRaterEvalDetailsTable';
+			var urlStr = '${ctf}/app/showRaterEvalDetailsTable';
 			$.ajax({
 				url:urlStr,
 				type: "POST",
@@ -137,18 +137,10 @@
 		}
 
 		function toExcel() {
-			var name = $("#raterIdName").val();
-			var beginInDate = $("#beginInDate").val();
-			var endInDate = $("#endInDate").val();
-			var dateStr = "";
-			if(beginInDate!==""&&endInDate!==""){
-				dateStr = beginInDate + '至' + endInDate;
-			}
-
 			$('#tableInfo').table2excel({
 				exclude:'.noExcl',                  //标记不导出行的CSS，用到td上会导致后面的td前移
 				name:'ExcelDocumentName',       	//导出的Excel文档的名称
-				filename:dateStr + name + '评价详情报表',   //生成文件名
+				filename:'FileName',                //生成文件名
 				fileext:'xls',                      //导出文件后缀，似乎也没什么用，IE保存没有后缀名
 				preserveColors: true,               //保留颜色
 				exclude_img:false,                  //是否导出图片

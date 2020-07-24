@@ -40,10 +40,7 @@
 				<th>担当金基数</th>
 				<th>范围值左</th>
 				<th>范围值右</th>
-				<th>创建者</th>
 				<th>创建时间</th>
-				<th>修改时间</th>
-				<th>修改者</th>
 				<shiro:hasPermission name="pj:money:pjCommitmentMoney:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -63,16 +60,7 @@
 					${pjCommitmentMoney.rightNum}
 				</td>
 				<td>
-					${pjCommitmentMoney.createBy.id}
-				</td>
-				<td>
-					<fmt:formatDate value="${pjCommitmentMoney.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					<fmt:formatDate value="${pjCommitmentMoney.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${pjCommitmentMoney.updateBy.id}
+					<fmt:formatDate value="${pjCommitmentMoney.createDate}" pattern="yyyy-MM-dd"/>
 				</td>
 				<shiro:hasPermission name="pj:money:pjCommitmentMoney:edit"><td>
     				<a href="${ctx}/pj/money/pjCommitmentMoney/form?id=${pjCommitmentMoney.id}">修改</a>

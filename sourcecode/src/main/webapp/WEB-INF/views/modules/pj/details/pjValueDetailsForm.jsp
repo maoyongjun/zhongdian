@@ -37,13 +37,13 @@
 			<label class="control-label">类目：</label>
 
 			<sys:treeselect id="cateId" name="cateId" value="${pjValueDetails.pjValueCategory.id}" labelName="pjValueCategory.name" labelValue="${pjValueDetails.pjValueCategory.name}"
-							title="类目" url="/pj/category/pjValueCategory/treeData" cssClass="input-xlarge required"  cssStyle="margin-left:20px;" allowClear="true"/>
+							title="类目" url="/pj/category/pjValueCategory/treeData" cssClass="input-large required"  cssStyle="margin-left:20px;" allowClear="true"/>
 
 		</div>
 		<div class="control-group">
 			<label class="control-label">细则：</label>
 			<div class="controls">
-				<form:textarea path="name" htmlEscape="false" rows="4" class="input-xxlarge "/>
+				<form:input path="name" htmlEscape="false" class="input-xxlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -58,24 +58,6 @@
 				<form:input path="note1" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">备注：</label>
-			<div class="controls">
-				<form:input path="note2" htmlEscape="false" maxlength="255" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注：</label>
-			<div class="controls">
-				<form:input path="note3" htmlEscape="false" maxlength="255" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注：</label>
-			<div class="controls">
-				<form:input path="note4" htmlEscape="false" maxlength="255" class="input-xlarge "/>
-			</div>
-		</div>
 		<div class="form-actions">
 			<shiro:hasPermission name="pj:details:pjValueDetails:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
@@ -83,3 +65,5 @@
 	</form:form>
 </body>
 </html>
+
+

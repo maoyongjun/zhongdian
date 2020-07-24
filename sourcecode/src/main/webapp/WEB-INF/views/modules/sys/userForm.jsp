@@ -147,7 +147,17 @@
 			<div class="controls">
 				<form:select path="level" class="input-xlarge">
 					<form:option value="" label="请选择"/>
-					<form:options items="${fns:getDictList('userLevel')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('user_level')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">在职状态:</label>
+			<div class="controls">
+				<form:select path="workStatus" class="input-xlarge">
+					<form:option value="" label="请选择"/>
+					<form:options items="${fns:getDictList('workStatus')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 		</div>

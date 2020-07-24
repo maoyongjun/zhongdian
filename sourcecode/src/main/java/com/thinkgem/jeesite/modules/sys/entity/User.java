@@ -58,6 +58,7 @@ public class User extends DataEntity<User> {
 	private String note2;
 	private String note3;
 	private String note4;
+	private String workStatus;
 
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
 
@@ -357,6 +358,14 @@ public class User extends DataEntity<User> {
 		this.note4 = note4;
 	}
 
+	public String getWorkStatus() {
+		return workStatus;
+	}
+
+	public void setWorkStatus(String workStatus) {
+		this.workStatus = workStatus;
+	}
+
 	/**
 	 * 用户拥有的角色名称字符串, 多个角色名称用','分隔.
 	 */
@@ -371,6 +380,8 @@ public class User extends DataEntity<User> {
 	public static boolean isAdmin(String id){
 		return id != null && "1".equals(id);
 	}
+
+
 	
 	@Override
 	public String toString() {

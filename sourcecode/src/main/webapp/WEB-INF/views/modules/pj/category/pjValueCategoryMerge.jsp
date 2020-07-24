@@ -54,7 +54,7 @@
 			<div class="control-group ">
 				<label class="control-label">类目2：</label>
 				<sys:treeselect id="note1" name="note1" value="${pjValueDetails.pjValueCategory.id}" labelName="pjValueCategory.name" labelValue="${pjValueDetails.pjValueCategory.name}"
-								title="类目2" url="/pj/category/pjValueCategory/treeData" cssClass="input-medium required"  cssStyle="margin-left:20px;" allowClear="true"/>
+								title="类目2" url="/pj/category/pjValueCategory/treeDataCate2" cssClass="input-medium required"  cssStyle="margin-left:20px;" allowClear="true"/>
 			</div>
 		</div>
 	<div class="row">

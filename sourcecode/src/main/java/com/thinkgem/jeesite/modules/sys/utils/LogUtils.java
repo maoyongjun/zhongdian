@@ -99,7 +99,7 @@ public class LogUtils {
 			}
 			// 保存日志信息
 			log.preInsert();
-			logDao.insert(log);
+//			logDao.insert(log);
 		}
 	}
 

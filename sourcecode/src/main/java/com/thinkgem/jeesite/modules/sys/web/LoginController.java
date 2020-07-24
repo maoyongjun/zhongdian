@@ -54,6 +54,8 @@ public class LoginController extends BaseController{
 //		if (tabmode == null){
 //			CookieUtils.setCookie(response, "tabmode", "1");
 //		}
+
+
 		
 		if (logger.isDebugEnabled()){
 			logger.debug("login, active session size: {}", sessionDAO.getActiveSessions(false).size());
@@ -94,7 +96,8 @@ public class LoginController extends BaseController{
 		boolean mobile = WebUtils.isTrue(request, FormAuthenticationFilter.DEFAULT_MOBILE_PARAM);
 		String exception = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
 		String message = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
-		
+
+
 		if (StringUtils.isBlank(message) || StringUtils.equals(message, "null")){
 			message = "用户或密码错误, 请重试.";
 		}

@@ -52,10 +52,7 @@
 <hr>
 
 <button class="btn btn-success" style="margin-left: 2%" onclick="toExcel()">导出Excel</button>
-
 <div id="table-container" style="padding: 4px 2%">
-
-
 
 </div>
 
@@ -77,7 +74,7 @@
 
         var dataStr = JSON.stringify(data);
         // console.log(dataStr);
-        var urlStr = '${ctx}/pj/eval/getRaterbyEvalCorrect';
+        var urlStr = '${ctf}/app/getRaterbyEvalCorrect';
         $.ajax({
             url: urlStr,
             type: "POST",
@@ -118,7 +115,6 @@
      * @returns {string}
      */
     function paintPLTable(result) {
-        var userType = result.userType;
         var xwRMap = result.xwRMap;
         var ddRMap = result.ddRMap;
         var wxSecondScoreMap = result.wxSecondScore;
@@ -156,10 +152,8 @@
                 + "<td>" + summaryTotalVo.bearScore + "</td>"
                 + "<td>" + summaryTotalVo.bearRate + "</td></tr></table><hr>";
 
-            if("9"===userType){
-                inner += "<lable>总经理修正：</lable><input id='zjlScore' style='height: 30px;margin-top: 10px;' type='number' step='0.01' max='" + 20 + "' min='" + -20 + "' placeholder='-20% ~ 20%' />" +
-                    "<button onclick='updateThirdScore()' style='margin-left: 20px;' class='btn btn-primary'>确定</button>";
-            }
+            inner += "<lable>总经理修正：</lable><input id='zjlScore' style='height: 30px;margin-top: 10px;' type='number' step='0.01' max='" + 20 + "' min='" + -20 + "' placeholder='-20% ~ 20%' />" +
+                "<button onclick='updateThirdScore()' style='margin-left: 20px;' class='btn btn-primary'>确定</button>";
 
             inner += " <input class='btn btn-default' type='button'  value='返 回' onclick='history.go(-1)' />";
         }
@@ -183,7 +177,7 @@
 
         var dataStr = JSON.stringify(data);
         // console.log(dataStr);
-        var urlStr = '${ctx}/pj/eval/updateThirdScore';
+        var urlStr = '${ctf}/app/updateThirdScore';
         $.ajax({
             url: urlStr,
             type: "POST",
@@ -204,11 +198,10 @@
     }
 
     function toExcel() {
-
         $('#tableInfo').table2excel({
             exclude: '.noExcl',                  //标记不导出行的CSS，用到td上会导致后面的td前移
             name: 'ExcelDocumentName',       	//导出的Excel文档的名称
-            filename: '${raterbyName}修正信息报表',                //生成文件名
+            filename: 'FileName',                //生成文件名
             fileext: 'xls',                      //导出文件后缀，似乎也没什么用，IE保存没有后缀名
             preserveColors: true,               //保留颜色
             // exclude_img: false,                  //是否导出图片

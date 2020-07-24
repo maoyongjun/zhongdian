@@ -73,7 +73,7 @@
 					${pjSummaryTotal.bearRate}
 				</td>
 				<td>
-					<fmt:formatDate value="${pjSummaryTotal.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${pjSummaryTotal.createDate}" pattern="yyyy-MM-dd"/>
 				</td>
 				<shiro:hasPermission name="pj:summarytotal:pjSummaryTotal:edit"><td>
     				<a href="${ctx}/pj/summarytotal/pjSummaryTotal/form?id=${pjSummaryTotal.id}">修改</a>

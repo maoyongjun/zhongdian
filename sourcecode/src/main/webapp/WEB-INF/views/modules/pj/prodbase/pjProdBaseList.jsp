@@ -19,7 +19,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/pj/prodbase/pjProdBase/">评价基本信息列表</a></li>
-		<shiro:hasPermission name="pj:prodbase:pjProdBase:edit"><li><a href="${ctx}/pj/prodbase/pjProdBase/form">评价基本信息添加</a></li></shiro:hasPermission>
+<%--		<shiro:hasPermission name="pj:prodbase:pjProdBase:edit"><li><a href="${ctx}/pj/prodbase/pjProdBase/form">评价基本信息添加</a></li></shiro:hasPermission>--%>
 	</ul>
 	<form:form id="searchForm" modelAttribute="pjProdBase" action="${ctx}/pj/prodbase/pjProdBase/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

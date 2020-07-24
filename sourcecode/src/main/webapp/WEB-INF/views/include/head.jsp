@@ -19,3 +19,8 @@
 <link href="${ctxStatic}/common/jeesite.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js" type="text/javascript"></script>
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>
+
+<%-- 自定义 by chang --%>
+<script src="${ctxStatic}/jquery-table2excel/jquery.table2excel.js" type="text/javascript"></script>
+
+

@@ -20,10 +20,10 @@ public interface EvalDao {
 
     List<SummaryVo> getSummaryVoList(@Param("raterbyId") String raterbyId, @Param("createDate") Date createDate, @Param("cateId") String cateId);
 
-    List<SummaryVo> getRaterMoneySummaryVoList(@Param("beginDate") Date beginDate, @Param("endDate") Date endDate);
+    List<SummaryVo> getRaterMoneySummaryVoList(@Param("beginDate") Date beginDate, @Param("endDate") Date endDate, @Param("cateId") String cateId);
 
-    List<SummaryVo> getRaterByMoneySummaryVoList(@Param("beginDate") Date beginDate, @Param("endDate") Date endDate);
+    List<SummaryVo> getRaterByMoneySummaryVoList(@Param("beginDate") Date beginDate, @Param("endDate") Date endDate, @Param("cateId") String cateId);
 
-    List<SummaryVo> getRaterScoreMoneySummaryVoList(@Param("raterbyId") String raterbyId, @Param("beginDate") Date beginDate, @Param("endDate") Date endDate);
+    List<SummaryVo> getRaterScoreMoneySummaryVoList(@Param("raterbyId") String raterbyId, @Param("beginDate") Date beginDate, @Param("endDate") Date endDate, @Param("cateId") String cateId);
 
 }

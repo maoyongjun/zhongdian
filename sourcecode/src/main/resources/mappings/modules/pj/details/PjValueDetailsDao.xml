@@ -50,6 +50,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
+				ORDER BY a.cate_id, a.score+0
 			</otherwise>
 		</choose>
 	</select>

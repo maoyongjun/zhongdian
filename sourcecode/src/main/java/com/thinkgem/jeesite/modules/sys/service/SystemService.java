@@ -13,6 +13,8 @@ import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.Encodes;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.Servlets;
+import com.thinkgem.jeesite.modules.pj.entity.prodbase.PjProdBase;
+import com.thinkgem.jeesite.modules.pj.service.prodbase.PjProdBaseService;
 import com.thinkgem.jeesite.modules.sys.dao.MenuDao;
 import com.thinkgem.jeesite.modules.sys.dao.RoleDao;
 import com.thinkgem.jeesite.modules.sys.dao.UserDao;
@@ -67,6 +69,9 @@ public class SystemService extends BaseService implements InitializingBean {
 
     @Autowired
     private IdentityService identityService;
+
+    @Autowired
+    private PjProdBaseService pjProdBaseService;
 
     //-- User Service --//
 
@@ -173,6 +178,18 @@ public class SystemService extends BaseService implements InitializingBean {
             // 更新用户数据
             user.preUpdate();
             userDao.update(user);
+
+            if ("1".equals(user.getWorkStatus())) {  //离职
+                //删除正在评价中的数据
+                PjProdBase base = new PjProdBase();
+                base.setRaterbyId(user.getId());
+                base.setStatu("0");
+                pjProdBaseService.deleteAllEvalData(base);
+                base.setRaterbyId(null);
+                base.setRaterId(user.getId());
+                pjProdBaseService.deleteAllEvalData(base);
+            }
+
         }
         if (StringUtils.isNotBlank(user.getId())) {
             // 更新用户与角色关联

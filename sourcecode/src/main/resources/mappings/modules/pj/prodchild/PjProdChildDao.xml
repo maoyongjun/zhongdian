@@ -128,10 +128,12 @@
 		WHERE id = #{id}
 	</update>
 
+
+	<!--now()-->
 	<select id="getWXChildListByParentId" resultType="com.thinkgem.jeesite.modules.pj.vo.eval.WXChildVo">
 		select a.id as "id",a.statu as "statu",a.real_score as "realScore",a.create_date as "createDate", CONCAT(d.`name`,'(', round(d.score) ,'分)') as "name",d.score as "score"
 		from pj_prod_child a LEFT JOIN pj_value_details d on a.value_detail_id=d.id
-		where a.parent_id=#{parentId} and date_format(a.create_date,'%Y-%m')=date_format(now(), '%Y-%m')
+		where a.parent_id=#{parentId} and date_format(a.create_date,'%Y-%m')=date_format('2020/9/13', '%Y-%m')
 		ORDER BY d.cate_id
 	</select>
 	
